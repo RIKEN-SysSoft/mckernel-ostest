@@ -14,29 +14,29 @@ all::
 	@(cd socket_TP; make)
 	@(cd test_drv; make)
 	@(cd test_mck; make)
-	mkdir ../bin
-	cp execve_app/execve_app ../bin/
-	cp hello_world/glibc_hello_world ../bin/
-	cp large_bss/large_bss ../bin/
-	cp lv07_read-write_with-glibc/lv07-st ../bin/
-	cp lv07_read-write_with-glibc/lv07-pth ../bin/
-	cp lv09_syscall_page_fault_forwqarding/lv09-pgf ../bin/
-	cp lv11_copy_on_write/lv11 ../bin/
-	cp lv12_signal/lv12-kill ../bin/
-	cp lv12_signal/lv12-kill-single ../bin/
-	cp lv12_signal/lv12-segv ../bin/
-	cp lv14_large_pages/lv14 ../bin/
-	cp lv15_continuous_execution/lv15-kill ../bin/
-	cp lv15_continuous_execution/lv15-manon ../bin/
-	cp lv15_continuous_execution/lv15-mfile ../bin/
-	cp show_affinity/show_affinity ../bin/
-	cp socket_TP/single_node ../bin/
-	cp socket_TP/2node_send ../bin/
-	cp socket_TP/2node_recv ../bin/
-	cp test_drv/test_mck.ko ../bin/
-	cp test_mck/bin/test_mck ../bin/
-	cp coredump_util/autorun.inf ../bin/
-	cp shellscript/test_shell.sh ../bin/
+	-mkdir ../bin
+	install -p execve_app/execve_app ../bin/
+	install -p hello_world/glibc_hello_world ../bin/
+	install -p large_bss/large_bss ../bin/
+	install -p lv07_read-write_with-glibc/lv07-st ../bin/
+	install -p lv07_read-write_with-glibc/lv07-pth ../bin/
+	install -p lv09_syscall_page_fault_forwqarding/lv09-pgf ../bin/
+	install -p lv11_copy_on_write/lv11 ../bin/
+	install -p lv12_signal/lv12-kill ../bin/
+	install -p lv12_signal/lv12-kill-single ../bin/
+	install -p lv12_signal/lv12-segv ../bin/
+	install -p lv14_large_pages/lv14 ../bin/
+	install -p lv15_continuous_execution/lv15-kill ../bin/
+	install -p lv15_continuous_execution/lv15-manon ../bin/
+	install -p lv15_continuous_execution/lv15-mfile ../bin/
+	install -p show_affinity/show_affinity ../bin/
+	install -p socket_TP/single_node ../bin/
+	install -p socket_TP/2node_send ../bin/
+	install -p socket_TP/2node_recv ../bin/
+	install -p test_drv/test_mck.ko ../bin/
+	install -p test_mck/bin/test_mck ../bin/
+	install -p coredump_util/autorun.inf ../bin/
+	install -p shellscript/test_shell.sh ../bin/
 
 clean::
 	@(cd execve_app; make clean)
