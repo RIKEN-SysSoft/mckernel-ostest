@@ -1,0 +1,2411 @@
+use uid:1001 gid:1001
+10+0 records in
+10+0 records out
+10485760 bytes (10 MB) copied, 0.0131856 s, 795 MB/s
+set 4 4 1 7 => /proc/sys/kernel/printk
+set core.host.%p => /proc/sys/kernel/core_pattern
+boot McKernel, processor id 0 core is HOST assigned, other core assigned McKernel.
+get McKernel memory size.
+mck_max_mem_size:1862270976
+insmod test_drv
+insmod /root/test_set/util/../bin/test_mck.ko
+create charcter device /dev/test_mck/mmap_dev(247:0)
+create charcter device /dev/test_mck/mmap_dev2(247:1)
+## hello_world ##
+Hello World
+## lv07 ##
+0:Linux
+
+use default thread_num = 2.
+1:Linux
+
+0:Linux
+
+use thread_num = 1.
+0:Linux
+
+use thread_num = 2.
+0:Linux
+
+1:Linux
+
+use thread_num = 3.
+1:Linux
+
+0:Linux
+
+2:Linux
+
+use thread_num = 4.
+1:Linux
+
+2:Linux
+
+0:Linux
+
+3:Linux
+
+use thread_num = 5.
+1:Linux
+
+2:Linux
+
+3:Linux
+
+0:Linux
+
+4:Linux
+
+use thread_num = 6.
+1:Linux
+
+2:Linux
+
+3:Linux
+
+4:Linux
+
+0:Linux
+
+5:Linux
+
+use thread_num = 7.
+1:Linux
+
+2:Linux
+
+3:Linux
+
+4:Linux
+
+5:Linux
+
+6:Linux
+
+0:Linux
+
+## lv09 ##
+aaabbbcccdddeeefffggghhh\naaabbbcccdddeeefffggghhh\n## lv11 ##
+mmap-writemmap-writemmap-writemmap-writeaaabbbcccdddeeefffggghhh\naaabbbcccdddeeefffggghhh\naaabbbcccdddeeefffggghhh\naaabbbcccdddeeefffggghhh\naaabbbcccdddeeefffggghhh\naaabbbcccdddeeefffggghhh\naaabbbcccdddeeefffggghhh\n## lv12 ##
+sig_num = 1, sig_name:SIGHUP received.
+sig_num = 2, sig_name:SIGINT received.
+sig_num = 3, sig_name:SIGQUIT received.
+sig_num = 4, sig_name:SIGILL received.
+sig_num = 5, sig_name:SIGTRAP received.
+sig_num = 6, sig_name:SIGABRT / SIGIOT received.
+sig_num = 6, sig_name:SIGABRT / SIGIOT received.
+sig_num = 7, sig_name:SIGBUS received.
+sig_num = 8, sig_name:SIGFPE received.
+signal function set failed. sig_num = 9, sig_name:SIGKILL
+sig_num = 10, sig_name:SIGUSR1 received.
+sig_num = 11, sig_name:SIGSEGV received.
+sig_num = 12, sig_name:SIGUSR2 received.
+sig_num = 13, sig_name:SIGPIPE received.
+sig_num = 14, sig_name:SIGALRM received.
+sig_num = 15, sig_name:SIGTERM received.
+sig_num = 16, sig_name:SIGSTKFLT received.
+sig_num = 17, sig_name:SIGCHLD received.
+sig_num = 18, sig_name:SIGCONT received.
+signal function set failed. sig_num = 19, sig_name:SIGSTOP
+sig_num = 20, sig_name:SIGTSTP received.
+sig_num = 21, sig_name:SIGTTIN received.
+sig_num = 22, sig_name:SIGTTOU received.
+sig_num = 23, sig_name:SIGURG received.
+sig_num = 24, sig_name:SIGXCPU received.
+sig_num = 25, sig_name:SIGXFSZ received.
+sig_num = 26, sig_name:SIGVTALRM received.
+sig_num = 27, sig_name:SIGPROF received.
+sig_num = 28, sig_name:SIGWINCH received.
+sig_num = 29, sig_name:SIGIO / SIGPOLL received.
+sig_num = 29, sig_name:SIGIO / SIGPOLL received.
+sig_num = 30, sig_name:SIGPWR received.
+sig_num = 31, sig_name:SIGSYS / SIGUNUSED received.
+sig_num = 31, sig_name:SIGSYS / SIGUNUSED received.
+end of user program.
+sig_num = 4 received.
+end of user program.
+## lv14 ##
+Run test00.
+mmap-0[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+success
+Run test01.
+mmap-0[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x5a
+success
+Run test02.
+mmap-0[0x2aaaab000000-0x2aaabb000000] 0x2aaabafffff8=0x0
+success
+Run test03.
+mmap-0[0x2aaaab000000-0x2aaaeb000000] 0x2aaaeafffff8=0x0
+success
+Run test04.
+mmap-0[0x2aaaab000000-0x2aaaeb000000] 0x2aaaeafffff8=0x0
+mmap-1[0x2aaaeb000000-0x2aab2b000000] 0x2aab2afffff8=0x0
+success
+Run test05.
+mmap-0[0x2aaaab000000-0x2aaaeb000000] 0x2aaaeafffff8=0x0
+mmap-1[0x2aaaeb000000-0x2aab2b000000] 0x2aab2afffff8=0x0
+mmap-2[0x2aab2b000000-0x2aab6b000000] 0x2aab6afffff8=0x0
+mmap-3[0x2aab6b000000-0x2aabab000000] 0x2aabaafffff8=0x0
+mmap-4[0x2aabab000000-0x2aabeb000000] 0x2aabeafffff8=0x0
+success
+## lv15 ##
+signal function set failed. sig_num = 9, sig_name:SIGKILL
+signal function set failed. sig_num = 19, sig_name:SIGSTOP
+sig_num = 7, sig_name:SIGBUS received.
+end of user program.
+signal function set failed. sig_num = 9, sig_name:SIGKILL
+signal function set failed. sig_num = 19, sig_name:SIGSTOP
+sig_num = 7, sig_name:SIGBUS received.
+end of user program.
+signal function set failed. sig_num = 9, sig_name:SIGKILL
+signal function set failed. sig_num = 19, sig_name:SIGSTOP
+sig_num = 7, sig_name:SIGBUS received.
+end of user program.
+signal function set failed. sig_num = 9, sig_name:SIGKILL
+signal function set failed. sig_num = 19, sig_name:SIGSTOP
+sig_num = 7, sig_name:SIGBUS received.
+end of user program.
+signal function set failed. sig_num = 9, sig_name:SIGKILL
+signal function set failed. sig_num = 19, sig_name:SIGSTOP
+sig_num = 7, sig_name:SIGBUS received.
+end of user program.
+signal function set failed. sig_num = 9, sig_name:SIGKILL
+signal function set failed. sig_num = 19, sig_name:SIGSTOP
+sig_num = 7, sig_name:SIGBUS received.
+end of user program.
+signal function set failed. sig_num = 9, sig_name:SIGKILL
+signal function set failed. sig_num = 19, sig_name:SIGSTOP
+sig_num = 7, sig_name:SIGBUS received.
+end of user program.
+signal function set failed. sig_num = 9, sig_name:SIGKILL
+signal function set failed. sig_num = 19, sig_name:SIGSTOP
+sig_num = 7, sig_name:SIGBUS received.
+end of user program.
+signal function set failed. sig_num = 9, sig_name:SIGKILL
+signal function set failed. sig_num = 19, sig_name:SIGSTOP
+sig_num = 7, sig_name:SIGBUS received.
+end of user program.
+signal function set failed. sig_num = 9, sig_name:SIGKILL
+signal function set failed. sig_num = 19, sig_name:SIGSTOP
+sig_num = 7, sig_name:SIGBUS received.
+end of user program.
+signal function set failed. sig_num = 9, sig_name:SIGKILL
+signal function set failed. sig_num = 19, sig_name:SIGSTOP
+sig_num = 7, sig_name:SIGBUS received.
+end of user program.
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+mmap[0x2aaaab000000-0x2aaaab400000] 0x2aaaab3ffff8=0x0
+## siginfo ##
+TEST_SUITE: siginfo
+TEST_NUMBER: 0
+ARGS: 
+=== raise signal #1 ===
+Catch signal #1
+  siginfo->si_signo = 1
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #2 ===
+Catch signal #2
+  siginfo->si_signo = 2
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #3 ===
+Catch signal #3
+  siginfo->si_signo = 3
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #4 ===
+Catch signal #4
+  siginfo->si_signo = 4
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #5 ===
+Catch signal #5
+  siginfo->si_signo = 5
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #6 ===
+Catch signal #6
+  siginfo->si_signo = 6
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #7 ===
+Catch signal #7
+  siginfo->si_signo = 7
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #8 ===
+Catch signal #8
+  siginfo->si_signo = 8
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #10 ===
+Catch signal #10
+  siginfo->si_signo = 10
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #11 ===
+Catch signal #11
+  siginfo->si_signo = 11
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #12 ===
+Catch signal #12
+  siginfo->si_signo = 12
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #13 ===
+Catch signal #13
+  siginfo->si_signo = 13
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #14 ===
+Catch signal #14
+  siginfo->si_signo = 14
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #15 ===
+Catch signal #15
+  siginfo->si_signo = 15
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #16 ===
+Catch signal #16
+  siginfo->si_signo = 16
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #17 ===
+Catch signal #17
+  siginfo->si_signo = 17
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #18 ===
+Catch signal #18
+  siginfo->si_signo = 18
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #20 ===
+Catch signal #20
+  siginfo->si_signo = 20
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #21 ===
+Catch signal #21
+  siginfo->si_signo = 21
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #22 ===
+Catch signal #22
+  siginfo->si_signo = 22
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #23 ===
+Catch signal #23
+  siginfo->si_signo = 23
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #24 ===
+Catch signal #24
+  siginfo->si_signo = 24
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #25 ===
+Catch signal #25
+  siginfo->si_signo = 25
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #26 ===
+Catch signal #26
+  siginfo->si_signo = 26
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #27 ===
+Catch signal #27
+  siginfo->si_signo = 27
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #28 ===
+Catch signal #28
+  siginfo->si_signo = 28
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #29 ===
+Catch signal #29
+  siginfo->si_signo = 29
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #30 ===
+Catch signal #30
+  siginfo->si_signo = 30
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+=== raise signal #31 ===
+Catch signal #31
+  siginfo->si_signo = 31
+  siginfo->si_errno = 0
+  siginfo->si_code  = 0xfffffffa
+RESULT: ok
+## wait4 ##
+TEST_SUITE: wait4
+TEST_NUMBER: 0
+ARGS: 
+wait4()=3114, errno=0
+RESULT: ok
+TEST_SUITE: wait4
+TEST_NUMBER: 1
+ARGS: -f /root/test_set/util/pid_max 
+wait4()=-1, errno=10
+RESULT: ok
+TEST_SUITE: wait4
+TEST_NUMBER: 2
+ARGS: 
+(sig_handler)sig_num=17
+wait4()=3141, errno=0
+RESULT: ok
+TEST_SUITE: wait4
+TEST_NUMBER: 3
+ARGS: 
+[child]pid=3159
+[child]send signal success.
+(sig_handler)sig_num=12, pid=3150
+wait()=3159, errno=0
+RESULT: ok
+## rt_sigsuspend ##
+TEST_SUITE: rt_sigsuspend
+TEST_NUMBER: 0
+ARGS: 
+(sig_handler)sig_num=14
+sys_rt_sigsuspend()=-1, errno=4
+RESULT: ok
+## cpu_thread_limits ##
+TEST_SUITE: cpu_thread_limits
+TEST_NUMBER: 0
+ARGS: -t 6 
+[tid=3184] from child thread.(local_id=6)
+[tid=3179] from child thread.(local_id=1)
+[tid=3180] from child thread.(local_id=2)
+[tid=3183] from child thread.(local_id=5)
+[tid=3181] from child thread.(local_id=3)
+[tid=3182] from child thread.(local_id=4)
+RESULT: ok
+TEST_SUITE: cpu_thread_limits
+TEST_NUMBER: 1
+ARGS: -t 6 
+PI = 3.14159265358996
+RESULT: ok
+## gettid ##
+TEST_SUITE: gettid
+TEST_NUMBER: 0
+ARGS: 
+PID=3195, TID=3195
+RESULT: ok
+TEST_SUITE: gettid
+TEST_NUMBER: 1
+ARGS: 
+[parent] pid=3204, tid=3204
+[child ] pid=3204, tid=3206
+RESULT: ok
+## mprotect ##
+TEST_SUITE: mprotect
+TEST_NUMBER: 0
+ARGS: 
+mapped=0x2aaaab20e000
+RESULT: ok
+TEST_SUITE: mprotect
+TEST_NUMBER: 1
+ARGS: 
+mapped=0x2aaaab20e000
+RESULT: ok
+TEST_SUITE: mprotect
+TEST_NUMBER: 2
+ARGS: 
+mapped=0x2aaaab20e000
+RESULT: ok
+TEST_SUITE: mprotect
+TEST_NUMBER: 3
+ARGS: 
+mapped=0x2aaaab20e000
+RESULT: ok
+TEST_SUITE: mprotect
+TEST_NUMBER: 4
+ARGS: 
+mapped=0x2aaaab20e000
+RESULT: ok
+TEST_SUITE: mprotect
+TEST_NUMBER: 5
+ARGS: 
+mapped=0x2aaaab20e000
+RESULT: ok
+TEST_SUITE: mprotect
+TEST_NUMBER: 6
+ARGS: 
+mapped=0x2aaaab20e000
+RESULT: ok
+TEST_SUITE: mprotect
+TEST_NUMBER: 7
+ARGS: 
+mapped=0x2aaaab20e000
+RESULT: ok
+## mem_stack_limits ##
+ulimit -s 10MiB (10240 KiB)
+TEST_SUITE: mem_stack_limits
+TEST_NUMBER: 0
+ARGS: -s 9961472 
+call: 0 GiB + 9 MiB + 512 KiB
+used_stack size: 9986480 (0 GiB + 9 MiB + 536 KiB)
+RESULT: ok
+## mem_stack_limits 2GiB SKIP ##
+ulimit -s unlimited
+TEST_SUITE: mem_stack_limits
+TEST_NUMBER: 0
+ARGS: -s 1769157412 
+call: 1 GiB + 663 MiB + 204 KiB
+used_stack size: 1769198272 (1 GiB + 663 MiB + 244 KiB)
+RESULT: ok
+ulimit -s [initial: (8192)]
+## munlock ##
+TEST_SUITE: munlock
+TEST_NUMBER: 0
+ARGS: 
+RESULT: ok
+## rt_sigaction ##
+TEST_SUITE: rt_sigaction
+TEST_NUMBER: 0
+ARGS: 
+RESULT: ok
+TEST_SUITE: rt_sigaction
+TEST_NUMBER: 1
+ARGS: 
+RESULT: ok
+TEST_SUITE: rt_sigaction
+TEST_NUMBER: 2
+ARGS: 
+RESULT: ok
+TEST_SUITE: rt_sigaction
+TEST_NUMBER: 3
+ARGS: 
+RESULT: ok
+TEST_SUITE: rt_sigaction
+TEST_NUMBER: 5
+ARGS: 
+sigaction(-1) = -1 (errno=22)
+sigaction(65) = -1 (errno=22)
+sigaction(9) = -1 (errno=22)
+sigaction(19) = -1 (errno=22)
+RESULT: ok
+## fork ##
+TEST_SUITE: fork
+TEST_NUMBER: 0
+ARGS: 
+[parent]pid=3359, tid=3359
+RESULT: ok
+[child]pid=3368, tid=3368
+## pause ##
+TEST_SUITE: pause
+TEST_NUMBER: 0
+ARGS: 
+(pause000_sig_handle)sig_num=14
+pause()=-1, errno=4
+RESULT: ok
+## sigaltstack ##
+TEST_SUITE: sigaltstack
+TEST_NUMBER: 0
+ARGS: 
+RESULT: ok
+TEST_SUITE: sigaltstack
+TEST_NUMBER: 1
+ARGS: 
+alternate stack settings = {
+  ss_sp   = 0x650010
+  ss_size = 0x2000
+};
+Actual altternalte stack = 0x651e2c
+Actual main stack        = 0x7efffffff97c
+RESULT: ok
+## ptrace ##
+TEST_SUITE: ptrace
+TEST_NUMBER: 0
+ARGS: 
+ptrace()=0, errno=0
+RESULT: ok
+TEST_SUITE: ptrace
+TEST_NUMBER: 1
+ARGS: 
+child is stopped.
+RESULT: ok
+TEST_SUITE: ptrace
+TEST_NUMBER: 2
+ARGS: 
+PTRACE_PEEKDATA read_val(0x1234567890abcdef) == 0x1234567890abcdef
+RESULT: ok
+TEST_SUITE: ptrace
+TEST_NUMBER: 5
+ARGS: 
+before PTRACE_POKEDATA buf(0x1234567890abcdef)
+after PTRACE_POKEDATA buf(0xffaaffaaffaaffaa) == 0xffaaffaaffaaffaa
+RESULT: ok
+TEST_SUITE: ptrace
+TEST_NUMBER: 9
+ARGS: 
+si_signo = 0x13
+si_errno = 0x0
+si_code  = 0x0
+RESULT: ok
+TEST_SUITE: ptrace
+TEST_NUMBER: 13
+ARGS: 
+siginfo change value check OK.
+RESULT: ok
+TEST_SUITE: ptrace
+TEST_NUMBER: 14
+ARGS: 
+set supported options, OK.
+set illigal option, errno == EINVAL.
+RESULT: ok
+TEST_SUITE: ptrace
+TEST_NUMBER: 15
+ARGS: 
+eventpid = 0xddd
+eventmsg value OK.
+RESULT: ok
+TEST_SUITE: ptrace
+TEST_NUMBER: 18
+ARGS: 
+child terminated by SIGKILL
+RESULT: ok
+TEST_SUITE: ptrace
+TEST_NUMBER: 19
+ARGS: 
+child is stopped.
+RESULT: ok
+TEST_SUITE: ptrace
+TEST_NUMBER: 20
+ARGS: 
+child detach OK.
+RESULT: ok
+## mmap_dev ##
+TEST_SUITE: mmap_dev
+TEST_NUMBER: 0
+ARGS: -d /dev/test_mck/mmap_dev -s 8192 
+open(/dev/test_mck/mmap_dev)=6
+ioctl()=0
+mmap()=0x2aaaab20e000
+munmap()=0
+RESULT: ok
+## tgkill ##
+TEST_SUITE: tgkill
+TEST_NUMBER: 0
+ARGS: 
+RESULT: ok
+TEST_SUITE: tgkill
+TEST_NUMBER: 1
+ARGS: 
+RESULT: ok
+TEST_SUITE: tgkill
+TEST_NUMBER: 2
+ARGS: 
+[parent]sleep a few sec...
+[child]pid=3639, tid=3641
+[parent]wake up
+Terminate by signal 10
+/root/test_set/util/run_testset_x86.sh: line 364:  3639 User defined signal 1   ${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s tgkill -n 2
+## rt_sigpending ##
+TEST_SUITE: rt_sigpending
+TEST_NUMBER: 0
+ARGS: 
+RESULT: ok
+## rt_sigqueueinfo ##
+TEST_SUITE: rt_sigqueueinfo
+TEST_NUMBER: 0
+ARGS: 
+RESULT: ok
+## rt_sigprocmask ##
+TEST_SUITE: rt_sigprocmask
+TEST_NUMBER: 0
+ARGS: 
+RESULT: ok
+## mmap_populate ##
+TEST_SUITE: mmap_populate
+TEST_NUMBER: 0
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: ok
+## tls ##
+TEST_SUITE: tls
+TEST_NUMBER: 0
+ARGS: 
+[0] tls=1, notls=1
+[1] tls=1, notls=2
+RESULT: ok
+## mmap_file ##
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 0
+ARGS: -f /root/test_set/util/mmapfile 
+a
+RESULT: ok
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 2
+ARGS: -f /root/test_set/util/mmapfile 
+a
+RESULT: ok
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 4
+ARGS: -f /root/test_set/util/mmapfile 
+a
+RESULT: ok
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 6
+ARGS: -f /root/test_set/util/mmapfile 
+a
+RESULT: ok
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 8
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: mmap error.
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 9
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: mmap error.
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 10
+ARGS: -f /root/test_set/util/mmapfile 
+a
+RESULT: ok
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 11
+ARGS: -f /root/test_set/util/mmapfile 
+Z
+RESULT: ok
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 16
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: mmap error.
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 17
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: mmap error.
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 18
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: mmap error.
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 19
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: mmap error.
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 20
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: mmap error.
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 21
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: mmap error.
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 22
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: mmap error.
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 23
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: mmap error.
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 24
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: mmap error.
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 25
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: mmap error.
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 26
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: mmap error.
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 27
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: mmap error.
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 28
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: mmap error.
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 29
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: mmap error.
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 30
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: mmap error.
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 31
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: mmap error.
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 32
+ARGS: -f /root/test_set/util/mmapfile 
+a
+RESULT: ok
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 34
+ARGS: -f /root/test_set/util/mmapfile 
+a
+RESULT: ok
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 36
+ARGS: -f /root/test_set/util/mmapfile 
+a
+RESULT: ok
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 38
+ARGS: -f /root/test_set/util/mmapfile 
+a
+RESULT: ok
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 40
+ARGS: -f /root/test_set/util/mmapfile 
+a
+RESULT: ok
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 41
+ARGS: -f /root/test_set/util/mmapfile 
+Z
+RESULT: ok
+Z
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 42
+ARGS: -f /root/test_set/util/mmapfile 
+a
+RESULT: ok
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 43
+ARGS: -f /root/test_set/util/mmapfile 
+Z
+RESULT: ok
+a
+a
+TEST_SUITE: mmap_file
+TEST_NUMBER: 48
+ARGS: -f /root/test_set/util/mmapfile 
+a
+Z
+RESULT: ok
+Z
+## execve ##
+TEST_SUITE: execve
+TEST_NUMBER: 2
+ARGS: 
+lookup_exec_path(): error stat
+[execve2] ret=-1, errno=2
+RESULT: ok
+## madvise ##
+TEST_SUITE: madvise
+TEST_NUMBER: 0
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: ok
+TEST_SUITE: madvise
+TEST_NUMBER: 1
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: ok
+TEST_SUITE: madvise
+TEST_NUMBER: 2
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: ok
+TEST_SUITE: madvise
+TEST_NUMBER: 3
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: ok
+TEST_SUITE: madvise
+TEST_NUMBER: 4
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: ok
+TEST_SUITE: madvise
+TEST_NUMBER: 5
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: ok
+TEST_SUITE: madvise
+TEST_NUMBER: 6
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: ok
+TEST_SUITE: madvise
+TEST_NUMBER: 7
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: ok
+TEST_SUITE: madvise
+TEST_NUMBER: 8
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: ok
+TEST_SUITE: madvise
+TEST_NUMBER: 9
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: ok
+TEST_SUITE: madvise
+TEST_NUMBER: 10
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: ok
+TEST_SUITE: madvise
+TEST_NUMBER: 11
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: ok
+TEST_SUITE: madvise
+TEST_NUMBER: 12
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: ok
+TEST_SUITE: madvise
+TEST_NUMBER: 13
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: ok
+TEST_SUITE: madvise
+TEST_NUMBER: 14
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: ok
+TEST_SUITE: madvise
+TEST_NUMBER: 15
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: ok
+## cpu_proc_limits ##
+TEST_SUITE: cpu_proc_limits
+TEST_NUMBER: 0
+ARGS: -p 1 
+Wait children's process will be finished. (about 3sec...)
+RESULT: ok
+TEST_SUITE: cpu_proc_limits
+TEST_NUMBER: 0
+ARGS: -p 2 
+Wait children's process will be finished. (about 3sec...)
+RESULT: ok
+TEST_SUITE: cpu_proc_limits
+TEST_NUMBER: 0
+ARGS: -p 3 
+Wait children's process will be finished. (about 3sec...)
+RESULT: ok
+TEST_SUITE: cpu_proc_limits
+TEST_NUMBER: 0
+ARGS: -p 4 
+Wait children's process will be finished. (about 3sec...)
+RESULT: ok
+TEST_SUITE: cpu_proc_limits
+TEST_NUMBER: 0
+ARGS: -p 5 
+Wait children's process will be finished. (about 3sec...)
+RESULT: ok
+TEST_SUITE: cpu_proc_limits
+TEST_NUMBER: 0
+ARGS: -p 6 
+Wait children's process will be finished. (about 3sec...)
+RESULT: ok
+## nfo ##
+TEST_SUITE: nfo
+TEST_NUMBER: 0
+ARGS: 
+buf[0]=0x2aaaab20e000
+buf[1]=0x2aaaab20f000
+RESULT: ok
+TEST_SUITE: nfo
+TEST_NUMBER: 1
+ARGS: 
+mmap:buf[0]=0x2aaaab20e000
+mmap:buf[1]=0x2aaaab20f000
+mmap:buf[0]=0x2aaaabc01000
+mmap:buf[1]=0x2aaaabc02000
+RESULT: ok
+TEST_SUITE: nfo
+TEST_NUMBER: 2
+ARGS: 
+mmap:buf[0]=0x2aaaabc01000
+mmap:buf[1]=0x2aaaabc02000
+mmap:buf[0]=0x2aaaabc03000
+mmap:buf[1]=0x2aaaabc04000
+RESULT: ok
+## getrlimit ##
+TEST_SUITE: getrlimit
+TEST_NUMBER: 1
+ARGS: 
+getrlimit(RLIMIT_FSIZE)=0
+RESULT: ok
+TEST_SUITE: getrlimit
+TEST_NUMBER: 3
+ARGS: 
+getrlimit(RLIMIT_STACK)=0
+RESULT: ok
+TEST_SUITE: getrlimit
+TEST_NUMBER: 6
+ARGS: 
+getrlimit(RLIMIT_NOFILE)=0
+RESULT: ok
+TEST_SUITE: getrlimit
+TEST_NUMBER: 10
+ARGS: 
+getrlimit(RLIMIT_LOCKS)=0
+RESULT: ok
+TEST_SUITE: getrlimit
+TEST_NUMBER: 16
+ARGS: 
+getrlimit(RLIMIT_NPROC)=0
+RESULT: ok
+TEST_SUITE: getrlimit
+TEST_NUMBER: 17
+ARGS: 
+getrlimit(RLIMIT_AS)=0
+  rlim_cur = ffffffffffffffff
+  rlim_max = ffffffffffffffff
+getrlimit(RLIMIT_CORE)=0
+  rlim_cur = 0
+  rlim_max = ffffffffffffffff
+getrlimit(RLIMIT_CPU)=0
+  rlim_cur = ffffffffffffffff
+  rlim_max = ffffffffffffffff
+getrlimit(RLIMIT_DATA)=0
+  rlim_cur = ffffffffffffffff
+  rlim_max = ffffffffffffffff
+getrlimit(RLIMIT_FSIZE)=0
+  rlim_cur = ffffffffffffffff
+  rlim_max = ffffffffffffffff
+getrlimit(RLIMIT_LOCKS)=0
+  rlim_cur = ffffffffffffffff
+  rlim_max = ffffffffffffffff
+getrlimit(RLIMIT_MEMLOCK)=0
+  rlim_cur = 10000
+  rlim_max = 10000
+getrlimit(RLIMIT_MSGQUEUE)=0
+  rlim_cur = c8000
+  rlim_max = c8000
+getrlimit(RLIMIT_NICE)=0
+  rlim_cur = 0
+  rlim_max = 0
+getrlimit(RLIMIT_NOFILE)=0
+  rlim_cur = 400
+  rlim_max = 1000
+getrlimit(RLIMIT_NPROC)=0
+  rlim_cur = 3d76
+  rlim_max = 3d76
+getrlimit(RLIMIT_RSS)=0
+  rlim_cur = ffffffffffffffff
+  rlim_max = ffffffffffffffff
+getrlimit(RLIMIT_RTPRIO)=0
+  rlim_cur = 0
+  rlim_max = 0
+getrlimit(RLIMIT_SIGPENDING)=0
+  rlim_cur = 3d76
+  rlim_max = 3d76
+getrlimit(RLIMIT_STACK)=0
+  rlim_cur = 800000
+  rlim_max = 800000
+RESULT: ok
+TEST_SUITE: getrlimit
+TEST_NUMBER: 18
+ARGS: 
+getrlimit(RLIMIT_NLIMITS)=-1
+errno=22 (McK may return EINVAL(=22))
+RESULT: ok
+## rt_sigtimedwait ##
+TEST_SUITE: rt_sigtimedwait
+TEST_NUMBER: 0
+ARGS: 
+RESULT: ok
+## mlock ##
+TEST_SUITE: mlock
+TEST_NUMBER: 0
+ARGS: 
+RESULT: ok
+## mmap_locked ##
+TEST_SUITE: mmap_locked
+TEST_NUMBER: 0
+ARGS: -f /root/test_set/util/mmapfile 
+RESULT: ok
+## remap_file_pages ##
+TEST_SUITE: remap_file_pages
+TEST_NUMBER: 0
+ARGS: -s 16384 
+test file path=./remap_file_pages_tp-aRoMnc
+mmap[0x2aaaab20e000-0x2aaaab212000)
+delete test file=./remap_file_pages_tp-aRoMnc
+RESULT: ok
+TEST_SUITE: remap_file_pages
+TEST_NUMBER: 0
+ARGS: -s 268435456 
+test file path=./remap_file_pages_tp-5oSfMh
+mmap[0x2aaaab20e000-0x2aaabb20e000)
+delete test file=./remap_file_pages_tp-5oSfMh
+RESULT: ok
+## mem_limits ##
+TEST_SUITE: mem_limits
+TEST_NUMBER: 0
+ARGS: -f mmap -s 1048576 -c 1 
+alloc#0: p=0x2aaaab20e000
+RESULT: ok
+TEST_SUITE: mem_limits
+TEST_NUMBER: 0
+ARGS: -f mmap -s 1769157412 -c 1 
+alloc#0: p=0x2aaaab400000
+RESULT: ok
+TEST_SUITE: mem_limits
+TEST_NUMBER: 0
+ARGS: -f mmap -S mmap -c 1 
+alloc#0: p=0xffffffffffffffff
+RESULT: out of memory.(mmap)
+TEST_SUITE: mem_limits
+TEST_NUMBER: 0
+ARGS: -f brk -s 1048576 -c 1 
+alloc#0: old=0x650000, new=0x750000
+RESULT: ok
+TEST_SUITE: mem_limits
+TEST_NUMBER: 0
+ARGS: -f brk -s 1769157412 -c 1 
+alloc#0: old=0x650000, new=0x69d83324
+RESULT: ok
+TEST_SUITE: mem_limits
+TEST_NUMBER: 0
+ARGS: -f brk -s 1862270976 -c 1 
+alloc#0: old=0x650000, RESULT: out of memory.(brk)
+## large_bss SKIP ##
+## system ##
+TEST_SUITE: system
+TEST_NUMBER: 0
+ARGS: 
+Hello World
+cmd exit successed by status 0
+RESULT: ok
+## vfork ##
+TEST_SUITE: vfork
+TEST_NUMBER: 1
+ARGS: 
+[parent]pid=4668, tid=4668
+[child]pid=4677, tid=4677
+RESULT: ok
+TEST_SUITE: vfork
+TEST_NUMBER: 2
+ARGS: -f /root/test_set/util/../bin/execve_app 
+execve sample application done.
+RESULT: ok
+## popen ##
+TEST_SUITE: popen
+TEST_NUMBER: 0
+ARGS: 
+Hello World
+RESULT: ok
+## procfs ##
+TEST_SUITE: procfs
+TEST_NUMBER: 0
+ARGS: 
+dump /proc/4731/auxv:
+  0x00000000000021 0x002aaaaac24000 (AT_SYSINFO_EHDR)
+  0x00000000000019 0x007effffffffe8 (AT_RANDOM)
+  0x00000000000011 0x00000000000064 (AT_CLKTCK)
+  0x00000000000006 0x00000000001000 (AT_PAGESZ)
+  0x00000000000003 0x00000000400040 (AT_PHDR)
+  0x00000000000004 0x00000000000038 (AT_PHENT)
+  0x00000000000005 0x0000000000000a (AT_PHNUM)
+  0x00000000000009 0x00000000403360 (AT_ENTRY)
+  0000000000000000 0000000000000000 (AT_NULL)
+RESULT: you need check AUXV value
+TEST_SUITE: procfs
+TEST_NUMBER: 1
+ARGS: 
+allocated: 0x00000000650010
+dump /proc/4740/mem(offset:0x00000000650010):
+  0x00000000650010: 0000000000000000 0000000000000001 0000000000000002 0000000000000003
+  0x00000000650030: 0000000000000004 0000000000000005 0000000000000006 0000000000000007
+  0x00000000650050: 0000000000000008 0000000000000009 000000000000000a 000000000000000b
+  0x00000000650070: 000000000000000c 000000000000000d 000000000000000e 000000000000000f
+  0x00000000650090: 0000000000000010 0000000000000011 0000000000000012 0000000000000013
+  0x000000006500b0: 0000000000000014 0000000000000015 0000000000000016 0000000000000017
+  0x000000006500d0: 0000000000000018 0000000000000019 000000000000001a 000000000000001b
+  0x000000006500f0: 000000000000001c 000000000000001d 000000000000001e 000000000000001f
+RESULT: you need check MEM value
+TEST_SUITE: procfs
+TEST_NUMBER: 4
+ARGS: 
+mmaped buf: 0x002aaaab20e000
+mmaped buf(RW-): 0x002aaaab20e000
+mmaped buf(RWX): 0x002aaaab20f000
+dump /proc/4749/mem(offset:0x002aaaab20e000):
+  0x002aaaab20e000: 0000000000000000 0000000000000001 0000000000000002 0000000000000003
+  0x002aaaab20e020: 0000000000000004 0000000000000005 0000000000000006 0000000000000007
+  0x002aaaab20e040: 0000000000000008 0000000000000009 000000000000000a 000000000000000b
+  0x002aaaab20e060: 000000000000000c 000000000000000d 000000000000000e 000000000000000f
+  0x002aaaab20e080: 0000000000000010 0000000000000011 0000000000000012 0000000000000013
+  0x002aaaab20e0a0: 0000000000000014 0000000000000015 0000000000000016 0000000000000017
+  0x002aaaab20e0c0: 0000000000000018 0000000000000019 000000000000001a 000000000000001b
+  0x002aaaab20e0e0: 000000000000001c 000000000000001d 000000000000001e 000000000000001f
+  *
+  0x002aaaab20ef80: 00000000000001f0 00000000000001f1 00000000000001f2 00000000000001f3
+  0x002aaaab20efa0: 00000000000001f4 00000000000001f5 00000000000001f6 00000000000001f7
+  0x002aaaab20efc0: 00000000000001f8 00000000000001f9 00000000000001fa 00000000000001fb
+  0x002aaaab20efe0: 00000000000001fc 00000000000001fd 00000000000001fe 00000000000001ff
+  0x002aaaab20f000: ffffffffffffffff fffffffffffffffe fffffffffffffffd fffffffffffffffc
+  0x002aaaab20f020: fffffffffffffffb fffffffffffffffa fffffffffffffff9 fffffffffffffff8
+  0x002aaaab20f040: fffffffffffffff7 fffffffffffffff6 fffffffffffffff5 fffffffffffffff4
+  0x002aaaab20f060: fffffffffffffff3 fffffffffffffff2 fffffffffffffff1 fffffffffffffff0
+  *
+  0x002aaaab20ff00: fffffffffffffe1f fffffffffffffe1e fffffffffffffe1d fffffffffffffe1c
+  0x002aaaab20ff20: fffffffffffffe1b fffffffffffffe1a fffffffffffffe19 fffffffffffffe18
+  0x002aaaab20ff40: fffffffffffffe17 fffffffffffffe16 fffffffffffffe15 fffffffffffffe14
+  0x002aaaab20ff60: fffffffffffffe13 fffffffffffffe12 fffffffffffffe11 fffffffffffffe10
+  0x002aaaab20ff80: fffffffffffffe0f fffffffffffffe0e fffffffffffffe0d fffffffffffffe0c
+  0x002aaaab20ffa0: fffffffffffffe0b fffffffffffffe0a fffffffffffffe09 fffffffffffffe08
+  0x002aaaab20ffc0: fffffffffffffe07 fffffffffffffe06 fffffffffffffe05 fffffffffffffe04
+  0x002aaaab20ffe0: fffffffffffffe03 fffffffffffffe02 fffffffffffffe01 fffffffffffffe00
+RESULT: you need check MEM value
+TEST_SUITE: procfs
+TEST_NUMBER: 6
+ARGS: 
+output: /proc/cpuinfo
+processor	: 0
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 26
+model name	: Intel(R) Xeon(R) CPU           E5520  @ 2.27GHz
+stepping	: 5
+microcode	: 0x616
+cpu MHz		: 2266.746
+cache size	: 8192 KB
+physical id	: 0
+siblings	: 1
+core id		: 0
+cpu cores	: 1
+apicid		: 0
+initial apicid	: 0
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 11
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc pni ssse3 sse4_1 sse4_2 hypervisor lahf_lm
+bogomips	: 4533.49
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 40 bits physical, 48 bits virtual
+power management:
+
+RESULT: you need check CPUINFO
+TEST_SUITE: procfs
+TEST_NUMBER: 7
+ARGS: 
+output: /proc/4767/maps
+400000-44e000 r-xs 0 0:0 0 
+64d000-64e000 r--s 0 0:0 0 
+64e000-650000 rw-s 0 0:0 0 
+650000-671000 rw-s 0 0:0 0 
+2aaaaa9f8000-2aaaaaa00000 rw-s 0 0:0 0 
+2aaaaaa00000-2aaaaaa21000 r-xs 0 0:0 0 
+2aaaaac21000-2aaaaac22000 r--s 0 0:0 0 
+2aaaaac22000-2aaaaac24000 rw-s 0 0:0 0 
+2aaaaac24000-2aaaaac26000 r-xs 0 0:0 0 
+2aaaaac26000-2aaaaac27000 rw-p 0 0:0 0 
+2aaaaac2d000-2aaaaac43000 r-xp 0 0:0 0 
+2aaaaac43000-2aaaaae43000 ---p 0 0:0 0 
+2aaaaae43000-2aaaaae44000 r--p 0 0:0 0 
+2aaaaae44000-2aaaaae45000 rw-p 0 0:0 0 
+2aaaaae45000-2aaaaae49000 rw-p 0 0:0 0 
+2aaaaae49000-2aaaaafff000 r-xp 0 0:0 0 
+2aaaaafff000-2aaaab1ff000 ---p 0 0:0 0 
+2aaaab1ff000-2aaaab203000 r--p 0 0:0 0 
+2aaaab203000-2aaaab205000 rw-p 0 0:0 0 
+2aaaab205000-2aaaab20a000 rw-p 0 0:0 0 
+2aaaab20a000-2aaaab20b000 rw-p 0 0:0 0 
+2aaaab20b000-2aaaab20d000 rw-p 0 0:0 0 
+2aaaab20d000-2aaaab20e000 rw-p 0 0:0 0 
+2aaaab20e000-2aaaab20f000 rw-p 0 0:0 0 
+7e7fff800000-7e8000000000 rw-s 0 0:0 0 
+RESULT: you need check McKernel Log & Dump MAPS.
+TEST_SUITE: procfs
+TEST_NUMBER: 8
+ARGS: 
+allocated: 0x00000000650010
+dump /proc/4776/pagemap(offset:0x00000000003280):0x8600000000064100
+RESULT: you need check McKernel Log & Dump PAGEMAP.
+TEST_SUITE: procfs
+TEST_NUMBER: 9
+ARGS: 
+output: /proc/stat
+cpu0
+cpu1
+cpu2
+cpu3
+cpu4
+cpu5
+cpu6
+RESULT: you need check Dump STAT.
+TEST_SUITE: procfs
+TEST_NUMBER: 10
+ARGS: 
+output: /proc/4794/status
+Uid:	0	0	0	0
+Gid:	0	0	0	0
+VmLck:	        0 kB
+RESULT: you need check Dump STATUS.
+TEST_SUITE: procfs
+TEST_NUMBER: 11
+ARGS: 
+output: /proc/4803/cmdline
+/root/test_set/util/../bin/test_mck
+RESULT: you need check Dump CMDLINE.
+## fork_execve ##
+TEST_SUITE: fork_execve
+TEST_NUMBER: 0
+ARGS: -f /root/test_set/util/../bin/execve_app 
+execve sample application done.
+RESULT: ok
+## shellscript ##
+## echo command ##
+Hello World
+## pwd command ##
+/root/test_set
+## outside command(execve_app) ##
+execve sample application done.
+## for, seq, if-elif-else ##
+$temp == 0
+$temp != 5 && $temp != 0
+$temp != 5 && $temp != 0
+$temp != 5 && $temp != 0
+$temp != 5 && $temp != 0
+$temp == 5
+## echo, cat, rm command ##
+cat, rm command.
+## shellfunction ##
+## ls command ##
+bin  core  install  list  log  src  util
+shell end.(shellfunc called.)
+## mremap_mmap_anon ##
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 0
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 2
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 3
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 4
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 5
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 6
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 7
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 8
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 9
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 10
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 11
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 12
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 13
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 100
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 102
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 104
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 106
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 107
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 108
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 109
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 110
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 111
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 112
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 113
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 200
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 202
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 203
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 204
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 205
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 206
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 208
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 209
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 210
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 211
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 212
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 213
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 300
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 302
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 304
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 306
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 307
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 308
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 309
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 310
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 311
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 312
+ARGS: 
+RESULT: ok
+TEST_SUITE: mremap_mmap_anon
+TEST_NUMBER: 313
+ARGS: 
+RESULT: ok
+## get_cpu_id ##
+TEST_SUITE: get_cpu_id
+TEST_NUMBER: 0
+ARGS: 
+[pid=5320, tid=5320] process running on cpu=0
+RESULT: ok
+## setpgid ##
+TEST_SUITE: setpgid
+TEST_NUMBER: 0
+ARGS: 
+[child] pid=5338, pgid=2350
+[parent] now rewrite child pgid
+[child] pid=5338, pgid=5338
+RESULT: ok
+TEST_SUITE: setpgid
+TEST_NUMBER: 1
+ARGS: 
+setpgid result:-1, errno:22 (expect error is "EINVAL"=22)
+RESULT: ok
+TEST_SUITE: setpgid
+TEST_NUMBER: 2
+ARGS: 
+setpgid result:-1, errno:3 (expect error is "ESRCH"=3)
+RESULT: ok
+TEST_SUITE: setpgid
+TEST_NUMBER: 3
+ARGS: 
+setpgid result:-1, errno:1 (expect error is "EPERM"=1)
+RESULT: ok
+TEST_SUITE: setpgid
+TEST_NUMBER: 4
+ARGS: -f /root/test_set/util/../bin/execve_app 
+setpgid result:-1, errno:13 (expect error is "EACCES"=13)
+execve sample application done.
+RESULT: ok
+## kill ##
+TEST_SUITE: kill
+TEST_NUMBER: 0
+ARGS: -p 6 
+Generate child process pid:5401, pgid:2350
+Generate child process pid:5410, pgid:2350
+Generate child process pid:5419, pgid:2350
+Generate child process pid:5428, pgid:2350
+Generate child process pid:5437, pgid:2350
+Generate child process pid:5446, pgid:2350
+wait for a few sec...
+send signal to same pgids
+[pid:5410, pgid:2350] Get signal.
+[pid:5419, pgid:2350] Get signal.
+[pid:5428, pgid:2350] Get signal.
+[pid:5437, pgid:2350] Get signal.
+[pid:5401, pgid:2350] Get signal.
+[pid:5392, pgid:2350] Get signal.
+[pid:5446, pgid:2350] Get signal.
+RESULT: ok
+TEST_SUITE: kill
+TEST_NUMBER: 1
+ARGS: -p 6 
+Generate child process pid:5464, pgid:2350
+Generate child process pid:5473, pgid:2350
+Generate child process pid:5482, pgid:2350
+Generate child process pid:5491, pgid:2350
+Generate child process pid:5500, pgid:2350
+Generate child process pid:5509, pgid:2350
+wait for a few sec...
+Send to all processes that have permission to send a signal.
+[pid:5482, pgid:2350] Get signal.
+[pid:5491, pgid:2350] Get signal.
+[pid:5500, pgid:2350] Get signal.
+[pid:5464, pgid:2350] Get signal.
+[pid:5473, pgid:2350] Get signal.
+[pid:5455, pgid:2350] Get signal.
+[pid:5509, pgid:2350] Get signal.
+RESULT: ok
+TEST_SUITE: kill
+TEST_NUMBER: 2
+ARGS: -p 6 
+Generate child process pid:5527, pgid:2350
+Generate child process pid:5536, pgid:2350
+Generate child process pid:5545, pgid:2350
+Generate child process pid:5554, pgid:2350
+Generate child process pid:5563, pgid:2350
+Generate child process pid:5572, pgid:2350
+wait for a few sec...
+Set child process(pid:5527) pgid:2350 => 5527
+Set child process(pid:5536) pgid:2350 => 5527
+Set child process(pid:5545) pgid:2350 => 5527
+Set child process(pid:5554) pgid:2350 => 5527
+Set child process(pid:5563) pgid:2350 => 5527
+Set child process(pid:5572) pgid:2350 => 5527
+send signal to target pgid(=5527)s
+[pid:5554, pgid:5527] Get signal.
+[pid:5563, pgid:5527] Get signal.
+[pid:5527, pgid:5527] Get signal.
+[pid:5536, pgid:5527] Get signal.
+[pid:5545, pgid:5527] Get signal.
+[pid:5572, pgid:5527] Get signal.
+RESULT: ok
+## sched_setaffinity ##
+TEST_SUITE: sched_setaffinity
+TEST_NUMBER: 0
+ARGS: -p 7 
+RESULT: ok
+TEST_SUITE: sched_setaffinity
+TEST_NUMBER: 1
+ARGS: -p 7 
+RESULT: ok
+TEST_SUITE: sched_setaffinity
+TEST_NUMBER: 3
+ARGS: -p 7 
+sched_setaffinity result:-1, errno:14 (expect error is "EFAULT"=14)
+RESULT: ok
+TEST_SUITE: sched_setaffinity
+TEST_NUMBER: 4
+ARGS: -p 7 
+sched_setaffinity result:-1, errno:22 (expect error is "EINVAL"=22)
+RESULT: ok
+TEST_SUITE: sched_setaffinity
+TEST_NUMBER: 5
+ARGS: 
+sched_setaffinity result:-1, errno:22 (expect error is "EINVAL"=22)
+RESULT: ok
+TEST_SUITE: sched_setaffinity
+TEST_NUMBER: 6
+ARGS: -p 7 
+sched_setaffinity result:-1, errno:3 (expect error is "ESRCH"=3)
+RESULT: ok
+## sched_getaffinity ##
+TEST_SUITE: sched_getaffinity
+TEST_NUMBER: 0
+ARGS: -p 7 
+RESULT: ok
+TEST_SUITE: sched_getaffinity
+TEST_NUMBER: 1
+ARGS: 
+sched_getaffinity result:-1, errno:14 (expect error is "EFAULT"=14)
+RESULT: ok
+TEST_SUITE: sched_getaffinity
+TEST_NUMBER: 2
+ARGS: -p 7 
+sched_getaffinity result:-1, errno:22 (expect error is "EINVAL"=22)
+RESULT: ok
+TEST_SUITE: sched_getaffinity
+TEST_NUMBER: 3
+ARGS: -p 7 
+sched_getaffinity result:-1, errno:3 (expect error is "ESRCH"=3)
+RESULT: ok
+TEST_SUITE: sched_getaffinity
+TEST_NUMBER: 5
+ARGS: -p 7 
+RESULT: ok
+TEST_SUITE: sched_getaffinity
+TEST_NUMBER: 6
+ARGS: -p 12 -f /root/test_set/util/../bin/show_affinity -- -p 12 
+==waiting for child process finish..==
+========CHILD  PROCESS========
+CPU_ISSET(0)=TRUE
+CPU_ISSET(1)=TRUE
+CPU_ISSET(2)=TRUE
+CPU_ISSET(3)=TRUE
+CPU_ISSET(4)=TRUE
+CPU_ISSET(5)=TRUE
+CPU_ISSET(6)=TRUE
+CPU_ISSET(7)=FALSE
+CPU_ISSET(8)=FALSE
+CPU_ISSET(9)=FALSE
+CPU_ISSET(10)=FALSE
+CPU_ISSET(11)=FALSE
+========CHILD  PROCESS========
+========EXECED PROCESS========
+CPU_ISSET(0)=TRUE
+CPU_ISSET(1)=TRUE
+CPU_ISSET(2)=TRUE
+CPU_ISSET(3)=TRUE
+CPU_ISSET(4)=TRUE
+CPU_ISSET(5)=TRUE
+CPU_ISSET(6)=TRUE
+CPU_ISSET(7)=FALSE
+CPU_ISSET(8)=FALSE
+CPU_ISSET(9)=FALSE
+CPU_ISSET(10)=FALSE
+CPU_ISSET(11)=FALSE
+========EXECED PROCESS========
+==Please check affinity is taken over after execve==
+RESULT: ok
+## enosys ##
+TEST_SUITE: enosys
+TEST_NUMBER: 0
+ARGS: 
+RESULT: ok
+## getcpu ##
+TEST_SUITE: getcpu
+TEST_NUMBER: 0
+ARGS: 
+exp_cpu = 0, getcpu()cpu = 0
+RESULT: ok
+## getegid ##
+TEST_SUITE: getegid
+TEST_NUMBER: 0
+ARGS: -e 1001 
+getegid() = 0
+setregid(1001, 1001) = 0, errno = 0
+getegid() = 1001
+RESULT: ok
+## geteuid ##
+TEST_SUITE: geteuid
+TEST_NUMBER: 0
+ARGS: -e 1001 
+geteuid() = 0
+setreuid(1001, 1001) = 0, errno = 0
+geteuid() = 1001
+RESULT: ok
+## getgid ##
+TEST_SUITE: getgid
+TEST_NUMBER: 0
+ARGS: -g 1001 
+getgid() = 0
+setgid(1001) = 0, errno = 0
+getgid() = 1001
+RESULT: ok
+## getppid ##
+TEST_SUITE: getppid
+TEST_NUMBER: 0
+ARGS: 
+[child] ppid=5753
+[parent] pid=5753
+RESULT: ok
+## getresgid ##
+TEST_SUITE: getresgid
+TEST_NUMBER: 0
+ARGS: -r 1001 -e 1001 -s 1001 
+getresgid(0, 0, 0) = 0, errno = 0
+setresgid(1001, 1001, 1001) = 0, errno = 0
+getresgid(1001, 1001, 1001) = 0, errno = 0
+RESULT: ok
+## getresuid ##
+TEST_SUITE: getresuid
+TEST_NUMBER: 0
+ARGS: -r 1001 -e 1001 -s 1001 
+getresuid(0, 0, 0) = 0, errno = 0
+setresuid(1001, 1001, 1001) = 0, errno = 0
+getresuid(1001, 1001, 1001) = 0, errno = 0
+RESULT: ok
+## getuid ##
+TEST_SUITE: getuid
+TEST_NUMBER: 0
+ARGS: -u 1001 
+getuid() = 0
+setuid(1001) = 0, errno = 0
+getuid() = 1001
+RESULT: ok
+## ipc ##
+TEST_SUITE: ipc
+TEST_NUMBER: 0
+ARGS: 
+curdir = /root/test_set
+ftok => shm_key = 112964
+shmget => shm_id = 131
+shmat => shm_addr = 0x2aaaab20e000
+shmdt => result = 0
+shmctl => result = 0
+RESULT: ok
+## mincore ##
+TEST_SUITE: mincore
+TEST_NUMBER: 0
+ARGS: 
+RESULT: ok
+TEST_SUITE: mincore
+TEST_NUMBER: 1
+ARGS: 
+RESULT: ok
+TEST_SUITE: mincore
+TEST_NUMBER: 2
+ARGS: 
+RESULT: ok
+TEST_SUITE: mincore
+TEST_NUMBER: 3
+ARGS: 
+RESULT: ok
+## mlockall ##
+TEST_SUITE: mlockall
+TEST_NUMBER: 0
+ARGS: 
+RESULT: ok
+## msync ##
+TEST_SUITE: msync
+TEST_NUMBER: 0
+ARGS: 
+RESULT: ok
+## munlockall ##
+TEST_SUITE: munlockall
+TEST_NUMBER: 0
+ARGS: 
+RESULT: ok
+## page_fault_forwording ##
+TEST_SUITE: page_fault_forwording
+TEST_NUMBER: 0
+ARGS: 
+hello world
+RESULT: ok
+TEST_SUITE: page_fault_forwording
+TEST_NUMBER: 1
+ARGS: 
+hello world
+RESULT: ok
+TEST_SUITE: page_fault_forwording
+TEST_NUMBER: 2
+ARGS: 
+hello world
+RESULT: ok
+## sched_get_priority_max ##
+TEST_SUITE: sched_get_priority_max
+TEST_NUMBER: 0
+ARGS: 
+sched_get_priority_max(SCHED_RR) = 99, errno = 0
+RESULT: ok
+TEST_SUITE: sched_get_priority_max
+TEST_NUMBER: 1
+ARGS: 
+sched_get_priority_max(SCHED_FIFO) = 99, errno = 0
+RESULT: ok
+TEST_SUITE: sched_get_priority_max
+TEST_NUMBER: 2
+ARGS: 
+sched_get_priority_max(SCHED_OTHER) = 0, errno = 0
+RESULT: ok
+TEST_SUITE: sched_get_priority_max
+TEST_NUMBER: 3
+ARGS: 
+sched_get_priority_max(SCHED_BATCH) = 0, errno = 0
+RESULT: ok
+## sched_get_priority_min ##
+TEST_SUITE: sched_get_priority_min
+TEST_NUMBER: 0
+ARGS: 
+sched_get_priority_min(SCHED_RR) = 1, errno = 0
+RESULT: ok
+TEST_SUITE: sched_get_priority_min
+TEST_NUMBER: 1
+ARGS: 
+sched_get_priority_min(SCHED_FIFO) = 1, errno = 0
+RESULT: ok
+TEST_SUITE: sched_get_priority_min
+TEST_NUMBER: 2
+ARGS: 
+sched_get_priority_min(SCHED_OTHER) = 0, errno = 0
+RESULT: ok
+TEST_SUITE: sched_get_priority_min
+TEST_NUMBER: 3
+ARGS: 
+sched_get_priority_min(SCHED_BATCH) = 0, errno = 0
+RESULT: ok
+## sched_getparam ##
+TEST_SUITE: sched_getparam
+TEST_NUMBER: 0
+ARGS: 
+sched_getparam(5969, 0x7efffffffcd0) = 0, errno = 0
+sched_setscheduler(5969, SCHED_RR, 0x7efffffffcf0) = 0, errno = 0
+sched_getparam(5969, 0x7efffffffcd0) = 0, errno = 0
+sched_setparam(5969, 0x7efffffffce0) = 0, errno = 0
+sched_getparam(5969, 0x7efffffffcd0) = 0, errno = 0
+RESULT: ok
+TEST_SUITE: sched_getparam
+TEST_NUMBER: 1
+ARGS: 
+sched_getparam(0, 0x7e7ffffffcd0) = 0, errno = 0
+sched_setscheduler(5978, SCHED_RR, 0x7e7ffffffcf0) = 0, errno = 0
+sched_getparam(0, 0x7e7ffffffcd0) = 0, errno = 0
+sched_setparam(5978, 0x7e7ffffffce0) = 0, errno = 0
+sched_getparam(0, 0x7e7ffffffcd0) = 0, errno = 0
+RESULT: ok
+TEST_SUITE: sched_getparam
+TEST_NUMBER: 2
+ARGS: 
+sched_getparam(5987, 0x7e7ffffffcd0) = 0, errno = 0
+sched_setscheduler(5987, SCHED_FIFO, 0x7e7ffffffcf0) = 0, errno = 0
+sched_getparam(5987, 0x7e7ffffffcd0) = 0, errno = 0
+sched_setparam(5987, 0x7e7ffffffce0) = 0, errno = 0
+sched_getparam(5987, 0x7e7ffffffcd0) = 0, errno = 0
+RESULT: ok
+## sched_getscheduler ##
+TEST_SUITE: sched_getscheduler
+TEST_NUMBER: 0
+ARGS: 
+sched_getscheduler(5996) = 0, errno = 0
+sched_setscheduler(5996, SCHED_RR, 0x7e7ffffffce0) = 0, errno = 0
+sched_getscheduler(5996) = 2, errno = 0
+RESULT: ok
+TEST_SUITE: sched_getscheduler
+TEST_NUMBER: 1
+ARGS: 
+sched_getscheduler(0) = 0, errno = 0
+sched_setscheduler(6005, SCHED_RR, 0x7e7ffffffce0) = 0, errno = 0
+sched_getscheduler(0) = 2, errno = 0
+RESULT: ok
+## sched_rr_get_interval ##
+TEST_SUITE: sched_rr_get_interval
+TEST_NUMBER: 0
+ARGS: 
+sched_setscheduler(6014, SCHED_RR, 0x7e7ffffffcf0) = 0, errno = 0
+sched_rr_get_interval(6014, 0x7e7ffffffce0) = 0, errno = 0
+  time.tv_sec = 0, time.tv_nsec = 10000
+RESULT: ok
+TEST_SUITE: sched_rr_get_interval
+TEST_NUMBER: 1
+ARGS: 
+sched_setscheduler(6023, SCHED_RR, 0x7e7ffffffcf0) = 0, errno = 0
+sched_rr_get_interval(0, 0x7e7ffffffce0) = 0, errno = 0
+  time.tv_sec = 0, time.tv_nsec = 10000
+RESULT: ok
+TEST_SUITE: sched_rr_get_interval
+TEST_NUMBER: 2
+ARGS: 
+sched_setscheduler(6032, SCHED_FIFO, 0x7e7ffffffcf0) = 0, errno = 0
+sched_rr_get_interval(6032, 0x7e7ffffffce0) = 0, errno = 0
+  time.tv_sec = 0, time.tv_nsec = 0
+RESULT: ok
+TEST_SUITE: sched_rr_get_interval
+TEST_NUMBER: 3
+ARGS: 
+sched_setscheduler(6041, SCHED_OTHER, 0x7efffffffcf0) = 0, errno = 0
+sched_rr_get_interval(6041, 0x7efffffffce0) = 0, errno = 0
+  time.tv_sec = 0, time.tv_nsec = 0
+RESULT: ok
+TEST_SUITE: sched_rr_get_interval
+TEST_NUMBER: 4
+ARGS: 
+sched_setscheduler(6050, SCHED_BATCH, 0x7efffffffcf0) = 0, errno = 0
+sched_rr_get_interval(6050, 0x7efffffffce0) = 0, errno = 0
+  time.tv_sec = 0, time.tv_nsec = 0
+RESULT: ok
+## sched_setparam ##
+TEST_SUITE: sched_setparam
+TEST_NUMBER: 0
+ARGS: 
+sched_setscheduler(6059, SCHED_RR, 0x7efffffffcf0) = 0, errno = 0
+sched_setparam(6059, 0x7efffffffce0) = 0, errno = 0
+sched_getparam(6059, 0x7efffffffcd0) = 0, errno = 0
+RESULT: ok
+TEST_SUITE: sched_setparam
+TEST_NUMBER: 1
+ARGS: 
+sched_setscheduler(6068, SCHED_RR, 0x7e7ffffffcf0) = 0, errno = 0
+sched_setparam(0, 0x7e7ffffffce0) = 0, errno = 0
+sched_getparam(6068, 0x7e7ffffffcd0) = 0, errno = 0
+RESULT: ok
+TEST_SUITE: sched_setparam
+TEST_NUMBER: 2
+ARGS: 
+sched_setscheduler(6077, SCHED_FIFO, 0x7efffffffcf0) = 0, errno = 0
+sched_setparam(6077, 0x7efffffffce0) = 0, errno = 0
+sched_getparam(6077, 0x7efffffffcd0) = 0, errno = 0
+RESULT: ok
+## sched_setscheduler ##
+TEST_SUITE: sched_setscheduler
+TEST_NUMBER: 0
+ARGS: 
+sched_setscheduler(6086, SCHED_RR, 0x7efffffffcf0) = 0, errno = 0
+sched_getscheduler(6086) = 2, errno = 0
+sched_getparam(6086, 0x7efffffffce0) = 0, errno = 0
+RESULT: ok
+TEST_SUITE: sched_setscheduler
+TEST_NUMBER: 1
+ARGS: 
+sched_setscheduler(0, SCHED_RR, 0x7e7ffffffcf0) = 0, errno = 0
+sched_getscheduler(6095) = 2, errno = 0
+sched_getparam(6095, 0x7e7ffffffce0) = 0, errno = 0
+RESULT: ok
+TEST_SUITE: sched_setscheduler
+TEST_NUMBER: 2
+ARGS: 
+sched_setscheduler(6104, SCHED_FIFO, 0x7efffffffcf0) = 0, errno = 0
+sched_getscheduler(6104) = 1, errno = 0
+sched_getparam(6104, 0x7efffffffce0) = 0, errno = 0
+RESULT: ok
+TEST_SUITE: sched_setscheduler
+TEST_NUMBER: 3
+ARGS: 
+sched_setscheduler(6113, SCHED_OTHER, 0x7e7ffffffcf0) = 0, errno = 0
+sched_getscheduler(6113) = 0, errno = 0
+sched_getparam(6113, 0x7e7ffffffce0) = 0, errno = 0
+RESULT: ok
+TEST_SUITE: sched_setscheduler
+TEST_NUMBER: 4
+ARGS: 
+sched_setscheduler(6122, SCHED_BATCH, 0x7e7ffffffcf0) = 0, errno = 0
+sched_getscheduler(6122) = 3, errno = 0
+sched_getparam(6122, 0x7e7ffffffce0) = 0, errno = 0
+RESULT: ok
+## setfsuid ##
+TEST_SUITE: setfsuid
+TEST_NUMBER: 0
+ARGS: -f 1001 
+setfsuid(1001) = 0, errno = 0
+Uid:	0	0	0	1001
+cmp 1001 == 1001 ? 
+RESULT: ok
+## setgid ##
+TEST_SUITE: setgid
+TEST_NUMBER: 0
+ARGS: -g 1001 
+setgid(1001) = 0, errno = 0
+getgid() = 1001
+RESULT: ok
+## setregid ##
+TEST_SUITE: setregid
+TEST_NUMBER: 0
+ARGS: -r 1001 -e 1001 
+setregid(1001, 1001) = 0, errno = 0
+getgid() = 1001
+getegid() = 1001
+RESULT: ok
+## setresgid ##
+TEST_SUITE: setresgid
+TEST_NUMBER: 0
+ARGS: -r 1001 -e 1001 -s 1001 
+setresgid(1001, 1001, 1001) = 0, errno = 0
+getresgid(1001, 1001, 1001) = 0, errno = 0
+RESULT: ok
+## setresuid ##
+TEST_SUITE: setresuid
+TEST_NUMBER: 0
+ARGS: -r 1001 -e 1001 -s 1001 
+setresuid(1001, 1001, 1001) = 0, errno = 0
+getresuid(1001, 1001, 1001) = 0, errno = 0
+RESULT: ok
+## setreuid ##
+TEST_SUITE: setreuid
+TEST_NUMBER: 0
+ARGS: -r 1001 -e 1001 
+setreuid(1001, 1001) = 0, errno = 0
+getuid() = 1001
+geteuid() = 1001
+RESULT: ok
+## setrlimit ##
+TEST_SUITE: setrlimit
+TEST_NUMBER: 0
+ARGS: 
+  getrlimit(RLIMIT_AS, ffffffffffffffff, ffffffffffffffff)
+  setrlimit(RLIMIT_AS, 80000000, ffffffffffffffff)
+  getrlimit(RLIMIT_AS, 80000000, ffffffffffffffff)
+RESULT: ok
+TEST_SUITE: setrlimit
+TEST_NUMBER: 1
+ARGS: 
+  getrlimit(RLIMIT_CORE, 0, ffffffffffffffff)
+  setrlimit(RLIMIT_CORE, 90000000, ffffffffffffffff)
+  getrlimit(RLIMIT_CORE, 90000000, ffffffffffffffff)
+RESULT: ok
+TEST_SUITE: setrlimit
+TEST_NUMBER: 2
+ARGS: 
+  getrlimit(RLIMIT_CPU, ffffffffffffffff, ffffffffffffffff)
+  setrlimit(RLIMIT_CPU, a0000000, ffffffffffffffff)
+  getrlimit(RLIMIT_CPU, a0000000, ffffffffffffffff)
+RESULT: ok
+TEST_SUITE: setrlimit
+TEST_NUMBER: 3
+ARGS: 
+  getrlimit(RLIMIT_DATA, ffffffffffffffff, ffffffffffffffff)
+  setrlimit(RLIMIT_DATA, b0000000, ffffffffffffffff)
+  getrlimit(RLIMIT_DATA, b0000000, ffffffffffffffff)
+RESULT: ok
+TEST_SUITE: setrlimit
+TEST_NUMBER: 4
+ARGS: 
+  getrlimit(RLIMIT_FSIZE, ffffffffffffffff, ffffffffffffffff)
+  setrlimit(RLIMIT_FSIZE, c0000000, ffffffffffffffff)
+  getrlimit(RLIMIT_FSIZE, c0000000, ffffffffffffffff)
+RESULT: ok
+TEST_SUITE: setrlimit
+TEST_NUMBER: 5
+ARGS: 
+  getrlimit(RLIMIT_LOCKS, ffffffffffffffff, ffffffffffffffff)
+  setrlimit(RLIMIT_LOCKS, d0000000, ffffffffffffffff)
+  getrlimit(RLIMIT_LOCKS, d0000000, ffffffffffffffff)
+RESULT: ok
+TEST_SUITE: setrlimit
+TEST_NUMBER: 6
+ARGS: 
+  getrlimit(RLIMIT_MEMLOCK, 10000, 10000)
+  setrlimit(RLIMIT_MEMLOCK, a000, 10000)
+  getrlimit(RLIMIT_MEMLOCK, a000, 10000)
+RESULT: ok
+TEST_SUITE: setrlimit
+TEST_NUMBER: 7
+ARGS: 
+  getrlimit(RLIMIT_MSGQUEUE, c8000, c8000)
+  setrlimit(RLIMIT_MSGQUEUE, b000, c8000)
+  getrlimit(RLIMIT_MSGQUEUE, b000, c8000)
+RESULT: ok
+TEST_SUITE: setrlimit
+TEST_NUMBER: 8
+ARGS: 
+  getrlimit(RLIMIT_NICE, 0, 0)
+  setrlimit(RLIMIT_NICE, 0, 0)
+  getrlimit(RLIMIT_NICE, 0, 0)
+RESULT: ok
+TEST_SUITE: setrlimit
+TEST_NUMBER: 9
+ARGS: 
+  getrlimit(RLIMIT_NOFILE, 400, 1000)
+  setrlimit(RLIMIT_NOFILE, 600, 1000)
+  getrlimit(RLIMIT_NOFILE, 600, 1000)
+RESULT: ok
+TEST_SUITE: setrlimit
+TEST_NUMBER: 10
+ARGS: 
+  getrlimit(RLIMIT_NPROC, 3d76, 3d76)
+  setrlimit(RLIMIT_NPROC, 700, 3d76)
+  getrlimit(RLIMIT_NPROC, 700, 3d76)
+RESULT: ok
+TEST_SUITE: setrlimit
+TEST_NUMBER: 11
+ARGS: 
+  getrlimit(RLIMIT_RSS, ffffffffffffffff, ffffffffffffffff)
+  setrlimit(RLIMIT_RSS, e0000000, ffffffffffffffff)
+  getrlimit(RLIMIT_RSS, e0000000, ffffffffffffffff)
+RESULT: ok
+TEST_SUITE: setrlimit
+TEST_NUMBER: 12
+ARGS: 
+  getrlimit(RLIMIT_RTPRIO, 0, 0)
+  setrlimit(RLIMIT_RTPRIO, 0, 0)
+  getrlimit(RLIMIT_RTPRIO, 0, 0)
+RESULT: ok
+TEST_SUITE: setrlimit
+TEST_NUMBER: 13
+ARGS: 
+  getrlimit(RLIMIT_SIGPENDING, 3d76, 3d76)
+  setrlimit(RLIMIT_SIGPENDING, 100, 3d76)
+  getrlimit(RLIMIT_SIGPENDING, 100, 3d76)
+RESULT: ok
+TEST_SUITE: setrlimit
+TEST_NUMBER: 14
+ARGS: 
+  getrlimit(RLIMIT_STACK, 800000, 800000)
+  setrlimit(RLIMIT_STACK, 800000, 800000)
+  getrlimit(RLIMIT_STACK, 800000, 800000)
+RESULT: ok
+## setuid ##
+TEST_SUITE: setuid
+TEST_NUMBER: 0
+ARGS: -u 1001 
+setuid(1001) = 0, errno = 0
+getuid() = 1001
+RESULT: ok
+## waitid ##
+TEST_SUITE: waitid
+TEST_NUMBER: 0
+ARGS: 
+waitid()=0, errno=0
+RESULT: ok
+TEST_SUITE: waitid
+TEST_NUMBER: 1
+ARGS: -p 6 
+[child: 6356] setpgid(6356, 6356) = 0
+[child: 6365] setpgid(6365, 6365) = 0
+[child: 6374] setpgid(6374, 6374) = 0
+[parent: 6347] waitid(P_PGID, 2350) called.
+[child: 6356,  6356] sleep 3sec done.
+[child: 6365,  6365] sleep 4sec done.
+[child: 6374,  6374] sleep 5sec done.
+[child: 6383,  2350] sleep 6sec done.
+[parent: 6347] waitid(P_PGID, 2350) returned. EXTED pid = 6383
+[parent: 6347] waitid()=0, errno=0
+[parent: 6347] waitid(P_PGID, 2350) called.
+[child: 6392,  2350] sleep 7sec done.
+[parent: 6347] waitid(P_PGID, 2350) returned. EXTED pid = 6392
+[parent: 6347] waitid()=0, errno=0
+[parent: 6347] waitid(P_PGID, 2350) called.
+[child: 6401,  2350] sleep 8sec done.
+[parent: 6347] waitid(P_PGID, 2350) returned. EXTED pid = 6401
+[parent: 6347] waitid()=0, errno=0
+RESULT: ok
+TEST_SUITE: waitid
+TEST_NUMBER: 2
+ARGS: -p 6 
+[parent: 6410] waitid(P_ALL) called.
+[child: 6419] sleep 1sec done.
+[parent: 6410] waitid(P_ALL) returned. EXTED pid = 6419
+[parent: 6410] waitid()=0, errno=0
+[parent: 6410] waitid(P_ALL) called.
+[child: 6428] sleep 2sec done.
+[parent: 6410] waitid(P_ALL) returned. EXTED pid = 6428
+[parent: 6410] waitid()=0, errno=0
+[parent: 6410] waitid(P_ALL) called.
+[child: 6437] sleep 3sec done.
+[parent: 6410] waitid(P_ALL) returned. EXTED pid = 6437
+[parent: 6410] waitid()=0, errno=0
+[parent: 6410] waitid(P_ALL) called.
+[child: 6446] sleep 4sec done.
+[parent: 6410] waitid(P_ALL) returned. EXTED pid = 6446
+[parent: 6410] waitid()=0, errno=0
+[parent: 6410] waitid(P_ALL) called.
+[child: 6455] sleep 5sec done.
+[parent: 6410] waitid(P_ALL) returned. EXTED pid = 6455
+[parent: 6410] waitid()=0, errno=0
+[parent: 6410] waitid(P_ALL) called.
+[child: 6464] sleep 6sec done.
+[parent: 6410] waitid(P_ALL) returned. EXTED pid = 6464
+[parent: 6410] waitid()=0, errno=0
+RESULT: ok
+## signalfd4 ##
+TEST_SUITE: signalfd4
+TEST_NUMBER: 0
+ARGS: 
+RESULT: ok
+TEST_SUITE: signalfd4
+TEST_NUMBER: 1
+ARGS: 
+RESULT: ok
+TEST_SUITE: signalfd4
+TEST_NUMBER: 2
+ARGS: 
+RESULT: ok
+## gettimeofday ##
+TEST_SUITE: gettimeofday
+TEST_NUMBER: 0
+ARGS: 
+set = {tv_sec = 6, tv_usec = 6}
+get = {tv_sec = 6. tv_usec = 25}
+RESULT: ok
+## set_tid_address ##
+TEST_SUITE: set_tid_address
+TEST_NUMBER: 0
+ARGS: 
+RESULT: ok
+## getrusage ##
+TEST_SUITE: getrusage
+TEST_NUMBER: 0
+ARGS: 
+------------------------------
+show_rusage():
+  ru_utime=0s + 276us
+  ru_stime=0s + 12209us
+  ru_maxrss=464
+------------------------------
+allocation memory 16777216 byte(16384 KiB)
+alarm 2 seconds wait.
+sleep 2 seconds wait.
+------------------------------
+show_rusage():
+  ru_utime=2s + 7456us
+  ru_stime=2s + 18947us
+  ru_maxrss=16892
+------------------------------
+free memory 16777216 byte(16384 KiB)
+------------------------------
+show_rusage():
+  ru_utime=2s + 7480us
+  ru_stime=2s + 20553us
+  ru_maxrss=16892
+------------------------------
+RESULT: you need check rusage value
+TEST_SUITE: getrusage
+TEST_NUMBER: 1
+ARGS: 
+------------------------------
+show_rusage():
+  ru_utime=0s + 0us
+  ru_stime=0s + 0us
+  ru_maxrss=0
+------------------------------
+allocation memory 16777216 byte(16384 KiB)
+alarm 2 seconds wait.
+sleep 2 seconds wait.
+free memory 16777216 byte(16384 KiB)
+------------------------------
+show_rusage():
+  ru_utime=2s + 9114us
+  ru_stime=2s + 7057us
+  ru_maxrss=17092
+------------------------------
+RESULT: you need check rusage value
+TEST_SUITE: getrusage
+TEST_NUMBER: 3
+ARGS: 
+RESULT: ok
+TEST_SUITE: getrusage
+TEST_NUMBER: 4
+ARGS: 
+RESULT: ok
+## tkill ##
+TEST_SUITE: tkill
+TEST_NUMBER: 0
+ARGS: 
+RESULT: ok
+## times ##
+TEST_SUITE: times
+TEST_NUMBER: 0
+ARGS: 
+RESULT: ok
+## nanosleep ##
+TEST_SUITE: nanosleep
+TEST_NUMBER: 0
+ARGS: 
+It has passed for      3.0 sec.
+RESULT: ok
+TEST_SUITE: nanosleep
+TEST_NUMBER: 1
+ARGS: 
+Remaining sleep time is 7.999447579
+RESULT: ok
+TEST_SUITE: nanosleep
+TEST_NUMBER: 2
+ARGS: 
+RESULT: ok
+TEST_SUITE: nanosleep
+TEST_NUMBER: 3
+ARGS: 
+RESULT: ok
+## getitimer ##
+TEST_SUITE: getitimer
+TEST_NUMBER: 0
+ARGS: 
+RESULT: ok
+TEST_SUITE: getitimer
+TEST_NUMBER: 1
+ARGS: 
+RESULT: ok
+TEST_SUITE: getitimer
+TEST_NUMBER: 2
+ARGS: 
+RESULT: ok
+## setitimer ##
+TEST_SUITE: setitimer
+TEST_NUMBER: 0
+ARGS: 
+testing ITIMER_REAL, please wait...
+testing ITIMER_VIRTUAL, please wait...
+testing ITIMER_PROF, please wait...
+RESULT: ok
+TEST_SUITE: setitimer
+TEST_NUMBER: 1
+ARGS: 
+RESULT: ok
+TEST_SUITE: setitimer
+TEST_NUMBER: 2
+ARGS: 
+RESULT: ok
+## clock_gettime ##
+TEST_SUITE: clock_gettime
+TEST_NUMBER: 2
+ARGS: 
+RESULT: ok
+## clock_getres ##
+TEST_SUITE: clock_getres
+TEST_NUMBER: 2
+ARGS: 
+RESULT: ok
+## readlinkat ##
+TEST_SUITE: readlinkat
+TEST_NUMBER: 0
+ARGS: -f /root/test_set/util/tempfile -l /tmp/templink 
+[INFO]readlinkat test
+ target file:/root/test_set/util/tempfile
+ link file:/tmp/templink
+ buffer data:/root/test_set/util/tempfile
+RESULT: ok
+## force_exit ##
+TEST_SUITE: force_exit
+TEST_NUMBER: 0
+ARGS: -f /root/test_set/util/mmapfile -d /dev/test_mck/mmap_dev 
+read 1 byte (a(97))
+mmap(0x2aaaab20f000)
+send SIGKILL for mcexec.
+rmmod test_drv
+remove /dev/test_mck
+rmmod /root/test_set/util/../bin/test_mck.ko
+/root/test_set/util/run_testset_x86.sh: line 844:  6707 Killed                  ${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s force_exit -n 0 -- -f $mmapfile_name -d /dev/test_mck/mmap_dev
+shutdown_mck...
+restore core => /proc/sys/kernel/core_pattern
+restore 7	4	1	7 => /proc/sys/kernel/printk

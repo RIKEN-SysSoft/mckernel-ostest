@@ -1,0 +1,1127 @@
+-------------------------------------------------------------------------------------
+NG項目の詳細と再現手順
+                                                                           2016/08/23
+-------------------------------------------------------------------------------------
+■はじめに
+  本テキストは、McKernel向けテストセットをx86環境上で実行した際に検出した
+  NG項目について記載する。
+
+
+-------------------------------------------------------------------------------------
+■再現確認時の環境
+□IHK/McKernel版数
+- IHK
+  commit 9d7e31d20c274d3b5dcd14336ad13d3fd79f8723
+  Author: Masamichi Takagi <masamichi.takagi@riken.jp>
+  Date:   Thu Jun 9 19:07:19 2016 +0900
+
+      Modify README
+
+- McKernel
+  commit e12997e6a906de509866545623b5d3cae6c1720d
+  Author: Balazs Gerofi <bgerofi@riken.jp>
+  Date:   Tue Jun 21 08:49:33 2016 -0700
+
+      mcreboot: support for CPU cores (-c) and memory (-m) arguments
+
+※mcreboot.shの外部からCPUコア数、メモリ量を明示的に指定する必要が
+  あったため、上記版数を使用。
+
+  また、最新版ではmcreboot.shでmcctrl.koのinsmodに失敗するため、
+  insmodに成功し、かつ引数の追加がされている版を使用。
+
+□実行環境
+- HOST-OS
+  CentOS 7.1 (3.10.0-229.el7.x86_64)
+  x86マシン上にVirtualBOX仮想環境として起動。
+
+- CPUコア
+  Intel(R) Xeon(R) CPU E5520 @ 2.27GHz
+
+- CPUコア数
+  8、うち7つをMcKernelに使用。
+  # mcreboot.sh -c 1,2,3,4,5,6,7
+
+- メモリ量
+  4GiB、うち1779MiBをMcKernelに使用。
+  # mcreboot.sh -m 1779M@0
+
+-------------------------------------------------------------------------------------
+■NG項目
+□ハングする項目
+- lv11 #0
+  - TP内容
+    PROT_READのファイルマッピング領域に対して書き込みを行い、
+    SIGSEGVで終了することを確認する。
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ echo abcdefghijklmnopqrstuvwxyz > temp
+    $ ./install/bin/mcexec ./bin/lv11 w rp temp
+
+--------------------
+- lv11 #2
+  - TP内容
+    PROT_READ | PROT_EXECのファイルマッピング領域に対して書き込みを行い、
+    SIGSEGVで終了することを確認する。
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ echo abcdefghijklmnopqrstuvwxyz > temp
+    $ ./install/bin/mcexec ./bin/lv11 w rep temp
+
+--------------------
+- lv11 #6
+  - TP内容
+    PROT_EXECのファイルマッピング領域に対して書き込みを行い、
+    SIGSEGVで終了することを確認する。
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ echo abcdefghijklmnopqrstuvwxyz > temp
+    $ ./install/bin/mcexec ./bin/lv11 w ep temp
+
+--------------------
+- lv12 #2
+  - TP内容
+    NULLアクセスを行い、SIGSEGVでユーザプログラムが終了することを確認する。
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/lv12-segv
+
+--------------------
+- socket #0
+  - TP内容
+    1ノードでソケット通信を行い、0番～9番までの「This is a test」の
+    メッセージが出力されていることを確認する。
+
+  - 期待動作
+    0番～9番までの「This is a test」が出力されること。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/single_node
+
+  - 備考
+    タイミング依存問題らしく、ハングしないこともある。
+
+--------------------
+- mem_stack_limits #3
+  - TP内容
+    ulimit -sにてunlimitedの設定を行い、McKernel割り当てメモリ量を超過するサイズを
+    ユーザスタックに使用してSIGSEGVで終了することを確認する。
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ ulimit -s unlimited
+    $ ./install/bin/mcexec ./bin/test_mck -s mem_stack_limits -n 0 -- -s 2048498056
+
+--------------------
+- mmap_dev #1
+  - TP内容
+    MAP_PRIVATEでデバイスをマップして書き込みを行い、
+    その領域の合否確認をユーザ空間で行って期待通りであるか確認する。
+
+  - 期待動作
+    「RESULT:ok」と表示されること。
+
+  - 再現手順
+    $ ./util/insmod_test_drv.sh
+    $ ./install/bin/mcexec ./bin/test_mck -s mmap_dev -n 1 -- -d /dev/test_mck/mmap_dev2 -s 8192
+
+--------------------
+- mmap_dev #2
+  - TP内容
+    MAP_SHAREDでデバイスをマップして書き込みを行い、
+    その領域の合否確認をユーザ空間で行って期待通りであるか確認する。
+    このときの合否確認では、mmapをもう一度発行することで、
+    別のVAから領域を覗き込んで共有できているかも確認する。
+
+  - 期待動作
+    「RESULT:ok」と表示されること。
+
+  - 再現手順
+    $ ./util/insmod_test_drv.sh
+    $ ./install/bin/mcexec ./bin/test_mck -s mmap_dev -n 2 -- -d /dev/test_mck/mmap_dev2 -s 8192
+
+--------------------
+- tls #1
+  - TP内容
+    McKernelのコア数分スレッドを生成し、__threadを付与した変数がスレッドごとに
+    独立であることを確認する。
+
+  - 期待動作
+    全スレッドで__threadを付与した変数が独立した値を持っている。
+    TEST_SUITE: tls
+    TEST_NUMBER: 1
+    ARGS: -t 6
+    [4] wait
+    [5] wait
+    [0] wait
+    [1] wait
+    [2] wait
+    [3] wait
+    [3] start
+    [3] tls=10000, notls=10000	★左の番号はスレッド番号、各スレッドでtlsの値は独立し、
+    [2] start					  notlsの値はスレッド間で共有していること。
+    [2] tls=10000, notls=20000
+    [1] start
+    [1] tls=10000, notls=30000
+    [5] start
+    [5] tls=10000, notls=40000
+    [0] start
+    [0] tls=10000, notls=50000
+    [4] start
+    [4] tls=10000, notls=60000
+    RESULT: ok
+
+    コンソールへの出力順番は順不同。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s tls -n 1 -- -t 6
+
+  - 備考
+    タイミング依存問題らしく、ハングしないこともある。
+
+--------------------
+- mmap_file #1
+  - TP内容
+    (r-|--x|share) でマップしたファイルへの Write が期待通りに動作すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ echo abcdefghijklmnopqrstuvwxyz > temp
+    $ ./install/bin/mcexec ./bin/test_mck -s mmap_file -n 1 -- -f temp
+
+--------------------
+- mmap_file #3
+  - TP内容
+    (r-|--x|priv ) でマップしたファイルへの Write が期待通りに動作すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ echo abcdefghijklmnopqrstuvwxyz > temp
+    $ ./install/bin/mcexec ./bin/test_mck -s mmap_file -n 3 -- -f temp
+
+--------------------
+- mmap_file #5
+  - TP内容
+    (r-|r--|share) でマップしたファイルへの Write が期待通りに動作すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ echo abcdefghijklmnopqrstuvwxyz > temp
+    $ ./install/bin/mcexec ./bin/test_mck -s mmap_file -n 5 -- -f temp
+
+--------------------
+- mmap_file #7
+  - TP内容
+    (r-|r--|priv ) でマップしたファイルへの Write が期待通りに動作すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ echo abcdefghijklmnopqrstuvwxyz > temp
+    $ ./install/bin/mcexec ./bin/test_mck -s mmap_file -n 7 -- -f temp
+
+--------------------
+- mmap_file #12
+  - TP内容
+    (r-|---|share) でマップしたファイルへの Read  が期待通りに動作すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ echo abcdefghijklmnopqrstuvwxyz > temp
+    $ ./install/bin/mcexec ./bin/test_mck -s mmap_file -n 12 -- -f temp
+
+--------------------
+- mmap_file #13
+  - TP内容
+    (r-|---|share) でマップしたファイルへの Write が期待通りに動作すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ echo abcdefghijklmnopqrstuvwxyz > temp
+    $ ./install/bin/mcexec ./bin/test_mck -s mmap_file -n 13 -- -f temp
+
+--------------------
+- mmap_file #14
+  - TP内容
+    (r-|---|priv ) でマップしたファイルへの Read  が期待通りに動作すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ echo abcdefghijklmnopqrstuvwxyz > temp
+    $ ./install/bin/mcexec ./bin/test_mck -s mmap_file -n 14 -- -f temp
+
+--------------------
+- mmap_file #15
+  - TP内容
+    (r-|---|priv ) でマップしたファイルへの Write が期待通りに動作すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ echo abcdefghijklmnopqrstuvwxyz > temp
+    $ ./install/bin/mcexec ./bin/test_mck -s mmap_file -n 15 -- -f temp
+
+--------------------
+- mmap_file #33
+  - TP内容
+    (rw|--x|share) でマップしたファイルへの Write が期待通りに動作すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ echo abcdefghijklmnopqrstuvwxyz > temp
+    $ ./install/bin/mcexec ./bin/test_mck -s mmap_file -n 33 -- -f temp
+
+--------------------
+- mmap_file #35
+  - TP内容
+    (rw|--x|priv ) でマップしたファイルへの Write が期待通りに動作すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ echo abcdefghijklmnopqrstuvwxyz > temp
+    $ ./install/bin/mcexec ./bin/test_mck -s mmap_file -n 35 -- -f temp
+
+--------------------
+- mmap_file #37
+  - TP内容
+    (rw|r--|share) でマップしたファイルへの Write が期待通りに動作すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ echo abcdefghijklmnopqrstuvwxyz > temp
+    $ ./install/bin/mcexec ./bin/test_mck -s mmap_file -n 37 -- -f temp
+
+--------------------
+- mmap_file #39
+  - TP内容
+    (rw|r--|priv ) でマップしたファイルへの Write が期待通りに動作すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ echo abcdefghijklmnopqrstuvwxyz > temp
+    $ ./install/bin/mcexec ./bin/test_mck -s mmap_file -n 39 -- -f temp
+
+--------------------
+- mmap_file #44
+  - TP内容
+    (rw|---|share) でマップしたファイルへの Read  が期待通りに動作すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ echo abcdefghijklmnopqrstuvwxyz > temp
+    $ ./install/bin/mcexec ./bin/test_mck -s mmap_file -n 44 -- -f temp
+
+--------------------
+- mmap_file #45
+  - TP内容
+    (rw|---|share) でマップしたファイルへの Write が期待通りに動作すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ echo abcdefghijklmnopqrstuvwxyz > temp
+    $ ./install/bin/mcexec ./bin/test_mck -s mmap_file -n 45 -- -f temp
+
+--------------------
+- mmap_file #46
+  - TP内容
+    (rw|---|priv ) でマップしたファイルへの Read  が期待通りに動作すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ echo abcdefghijklmnopqrstuvwxyz > temp
+    $ ./install/bin/mcexec ./bin/test_mck -s mmap_file -n 46 -- -f temp
+
+--------------------
+- mmap_file #47
+  - TP内容
+    (rw|---|priv ) でマップしたファイルへの Write が期待通りに動作すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ echo abcdefghijklmnopqrstuvwxyz > temp
+    $ ./install/bin/mcexec ./bin/test_mck -s mmap_file -n 47 -- -f temp
+
+--------------------
+- execve #1
+  - TP内容
+    execve関数によるユーザアプリ実行に成功すること
+
+  - 期待動作
+    引数に指定したユーザアプリの実行が成功すること
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s execve -n 1 -- -f ./bin/execve_app
+
+--------------------
+- nfo #3
+  - TP内容
+    Non-fault load のページへのstoreではSIGSEGVが発生すること
+
+    ※当該TPはsparc向けのNFOテストケースのため、
+      ポスト京アーキテクチャおよびx86ではNFOは発生せず、
+      mmap領域へのload/storeと同等の処理となる。
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s nfo -n 3
+
+--------------------
+- mem_limits #2
+  - TP内容
+    mmap関数で、McK割当てメモリ100% の領域が確保できるが、アクセス時にシグナルが発生すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+    TEST_SUITE: mem_limits
+    TEST_NUMBER: 0
+    ARGS: -f mmap -s 1858076672 -c 1 
+    Terminate by signal 11
+    Segmentation fault
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s mem_limits -n 0 -- -f mmap -s 1858076672 -c 1
+
+--------------------
+- procfs #2
+  - TP内容
+    /proc/[pid]/task/[tid]/memへのopen, lseek, readが実行でき、ダンプ内容が期待と一致すること
+
+  - 期待動作
+    TEST_SUITE: procfs
+    TEST_NUMBER: 2
+    ARGS:
+    allocated: 0x002aaaac0008c0
+    dump /proc/2967/task/2969/mem(offset:0x002aaaac0008c0):
+      0x002aaaac0008c0: ffffffffffffffff fffffffffffffffe fffffffffffffffd fffffffffffffffc
+      0x002aaaac0008e0: fffffffffffffffb fffffffffffffffa fffffffffffffff9 fffffffffffffff8
+      0x002aaaac000900: fffffffffffffff7 fffffffffffffff6 fffffffffffffff5 fffffffffffffff4
+      0x002aaaac000920: fffffffffffffff3 fffffffffffffff2 fffffffffffffff1 fffffffffffffff0
+      0x002aaaac000940: ffffffffffffffef ffffffffffffffee ffffffffffffffed ffffffffffffffec
+      0x002aaaac000960: ffffffffffffffeb ffffffffffffffea ffffffffffffffe9 ffffffffffffffe8
+      0x002aaaac000980: ffffffffffffffe7 ffffffffffffffe6 ffffffffffffffe5 ffffffffffffffe4
+      0x002aaaac0009a0: ffffffffffffffe3 ffffffffffffffe2 ffffffffffffffe1 ffffffffffffffe0
+    RESULT: you need check MEM value
+
+    allocated: <address> の値、プロセスID、スレッドIDは実行環境 or 実行毎に異なる。
+
+  - 再現手順
+    $ ./util/run_test_x86.sh -n
+
+    ※util/run_testset_x86.shを編集し、485行目のtest_mck -s procfs -n 2の実行を
+      有効化した上で実行する。
+
+  - 備考
+    このTPを単体でMcKernelに投入しても発生せず、テストシェルに組み込んで
+    他TPに続けて実行すると発生する事がある。
+
+--------------------
+- procfs #3
+  - TP内容
+    /proc/[pid]/task/[tid]/statへのopen, readが実行でき、ダンプ内容が期待と一致すること
+
+  - 期待動作
+    TEST_SUITE: procfs
+    TEST_NUMBER: 3
+    ARGS:
+    output /proc/14832/task/14834/stat
+    0 (exe) R 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+    
+    RESULT: you need check STAT value
+
+    上記では1になっている箇所はコア番号のため、実行毎に異なる
+
+  - 再現手順
+    $ ./util/run_test_x86.sh -n
+
+    ※util/run_testset_x86.shを編集し、486行目のtest_mck -s procfs -n 3の実行を
+      有効化した上で実行する。
+
+  - 備考
+    このTPを単体でMcKernelに投入しても発生せず、テストシェルに組み込んで
+    他TPに続けて実行すると発生する事がある。
+
+--------------------
+- procfs#5
+  - TP内容
+    /proc/[pid]/task/[tid]/memへのopen, lseekが実行でき、vm_rangeを跨ぐ領域へのreadを行ってダンプ内容が期待と一致すること
+
+  - 期待動作
+    TEST_SUITE: procfs
+    TEST_NUMBER: 5
+    ARGS:
+    mmaped buf: 0x002aaaabc01000
+    mmaped buf(RW-): 0x002aaaabc01000
+    mmaped buf(RWX): 0x002aaaabc02000
+    dump /proc/14844/task/14846/mem(offset:0x002aaaabc01000):
+      0x002aaaabc01000: ffffffffffffffff fffffffffffffffe fffffffffffffffd fffffffffffffffc
+      0x002aaaabc01020: fffffffffffffffb fffffffffffffffa fffffffffffffff9 fffffffffffffff8
+      0x002aaaabc01040: fffffffffffffff7 fffffffffffffff6 fffffffffffffff5 fffffffffffffff4
+      0x002aaaabc01060: fffffffffffffff3 fffffffffffffff2 fffffffffffffff1 fffffffffffffff0
+      0x002aaaabc01080: ffffffffffffffef ffffffffffffffee ffffffffffffffed ffffffffffffffec
+      0x002aaaabc010a0: ffffffffffffffeb ffffffffffffffea ffffffffffffffe9 ffffffffffffffe8
+      0x002aaaabc010c0: ffffffffffffffe7 ffffffffffffffe6 ffffffffffffffe5 ffffffffffffffe4
+      0x002aaaabc010e0: ffffffffffffffe3 ffffffffffffffe2 ffffffffffffffe1 ffffffffffffffe0
+      *
+      0x002aaaabc01f80: fffffffffffffe0f fffffffffffffe0e fffffffffffffe0d fffffffffffffe0c
+      0x002aaaabc01fa0: fffffffffffffe0b fffffffffffffe0a fffffffffffffe09 fffffffffffffe08
+      0x002aaaabc01fc0: fffffffffffffe07 fffffffffffffe06 fffffffffffffe05 fffffffffffffe04
+      0x002aaaabc01fe0: fffffffffffffe03 fffffffffffffe02 fffffffffffffe01 fffffffffffffe00
+      0x002aaaabc02000: 0000000000000000 0000000000000001 0000000000000002 0000000000000003
+      0x002aaaabc02020: 0000000000000004 0000000000000005 0000000000000006 0000000000000007
+      0x002aaaabc02040: 0000000000000008 0000000000000009 000000000000000a 000000000000000b
+      0x002aaaabc02060: 000000000000000c 000000000000000d 000000000000000e 000000000000000f
+      *
+      0x002aaaabc02f00: 00000000000001e0 00000000000001e1 00000000000001e2 00000000000001e3
+      0x002aaaabc02f20: 00000000000001e4 00000000000001e5 00000000000001e6 00000000000001e7
+      0x002aaaabc02f40: 00000000000001e8 00000000000001e9 00000000000001ea 00000000000001eb
+      0x002aaaabc02f60: 00000000000001ec 00000000000001ed 00000000000001ee 00000000000001ef
+      0x002aaaabc02f80: 00000000000001f0 00000000000001f1 00000000000001f2 00000000000001f3
+      0x002aaaabc02fa0: 00000000000001f4 00000000000001f5 00000000000001f6 00000000000001f7
+      0x002aaaabc02fc0: 00000000000001f8 00000000000001f9 00000000000001fa 00000000000001fb
+      0x002aaaabc02fe0: 00000000000001fc 00000000000001fd 00000000000001fe 00000000000001ff
+    RESULT: you need check MEM value
+
+    mmaped buf: <address> の値、プロセスID、スレッドIDは実行環境 or 実行毎に異なる。
+
+  - 再現手順
+    $ ./util/run_test_x86.sh -n
+
+    ※util/run_testset_x86.shを編集し、488行目のtest_mck -s procfs -n 5の実行を
+      有効化した上で実行する。
+
+  - 備考
+    このTPを単体でMcKernelに投入しても発生せず、テストシェルに組み込んで
+    他TPに続けて実行すると発生する事がある。
+
+--------------------
+- mremap_mmap_anon #14
+  - TP内容
+    MAP_PRIVATE＋ノーマルページ
+    サイズを縮小した場合に、縮小した範囲にアクセスするとSIGSEGVが発生すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s mremap_mmap_anon -n 14
+
+--------------------
+- mremap_mmap_anon #15
+  - TP内容
+    MAP_PRIVATE＋ノーマルページ
+    MREMAP_MAYMOVEで領域を移動した場合、旧領域にアクセスするとSIGSEGVが発生すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s mremap_mmap_anon -n 15
+
+--------------------
+- mremap_mmap_anon #16
+  - TP内容
+    MAP_PRIVATE＋ノーマルページ
+    MREMAP_FIXEDで領域を移動した場合、旧領域にアクセスするとSIGSEGVが発生すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s mremap_mmap_anon -n 16
+
+--------------------
+- mremap_mmap_anon #103
+  - TP内容
+    MAP_SHARED＋ノーマルページ
+    上位空間が未使用のときに、サイズ拡張を行い拡張範囲にアクセスするとバスエラーになること
+
+  - 期待動作
+    SIGBUSによる終了。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s mremap_mmap_anon -n 103
+
+--------------------
+- mremap_mmap_anon #105
+  - TP内容
+    MAP_SHARED＋ノーマルページ
+    上位空間が使用中のときに、サイズ拡張を行い拡張範囲にアクセスするとバスエラーになること
+
+  - 期待動作
+    SIBGUSによる終了。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s mremap_mmap_anon -n 105
+
+--------------------
+- mremap_mmap_anon #114
+  - TP内容
+    MAP_SHARED＋ノーマルページ
+    サイズを縮小した場合に、縮小した範囲にアクセスするとSIGSEGVが発生すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s mremap_mmap_anon -n 114
+
+--------------------
+- mremap_mmap_anon #115
+  - TP内容
+    MAP_SHARED＋ノーマルページ
+    MREMAP_MAYMOVEで領域を移動した場合、旧領域にアクセスするとSIGSEGVが発生すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s mremap_mmap_anon -n 115
+
+--------------------
+- mremap_mmap_anon #116
+  - TP内容
+    MAP_SHARED＋ノーマルページ
+    MREMAP_FIXEDで領域を移動した場合、旧領域にアクセスするとSIGSEGVが発生すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s mremap_mmap_anon -n 116
+
+--------------------
+- mremap_mmap_anon #207
+  - TP内容
+    MAP_PRIVATE＋ラージページ
+    新空間が使用中のときに、移動できること
+
+  - 期待動作
+    「RESULT: ok」が出力されること
+
+  - 再現手順
+    $ ./util/run_test_x86.sh -n
+
+    ※util/run_testset_x86.shを編集し、522-524行目のtest_mck -s mremap_mmap_anon -n 207の
+      実行抑止処理を削除し、有効化した上で実行する。
+
+  - 備考
+    このTPを単体でMcKernelに投入しても発生せず、テストシェルに組み込んで
+    他TPに続けて実行すると発生する事がある。
+
+--------------------
+- mremap_mmap_anon #214
+  - TP内容
+    MAP_PRIVATE＋ラージページ
+    サイズを縮小した場合に、縮小した範囲にアクセスするとSIGSEGVが発生すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s mremap_mmap_anon -n 214
+
+--------------------
+- mremap_mmap_anon #215
+  - TP内容
+    MAP_PRIVATE＋ラージページ
+    MREMAP_MAYMOVEで領域を移動した場合、旧領域にアクセスするとSIGSEGVが発生すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s mremap_mmap_anon -n 215
+
+--------------------
+- mremap_mmap_anon #216
+  - TP内容
+    MAP_PRIVATE＋ラージページ
+    MREMAP_FIXEDで領域を移動した場合、旧領域にアクセスするとSIGSEGVが発生すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s mremap_mmap_anon -n 216
+
+--------------------
+- mremap_mmap_anon #303
+  - TP内容
+    MAP_SHARED＋ラージページ
+    上位空間が未使用のときに、サイズ拡張を行い拡張範囲にアクセスするとバスエラーになること
+
+  - 期待動作
+    SIGBUSによる終了。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s mremap_mmap_anon -n 303
+
+--------------------
+- mremap_mmap_anon #305
+  - TP内容
+    MAP_SHARED＋ラージページ
+    上位空間が使用中のときに、サイズ拡張を行い拡張範囲にアクセスするとバスエラーになること
+
+  - 期待動作
+    SIGBUSによる終了。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s mremap_mmap_anon -n 305
+
+--------------------
+- mremap_mmap_anon #314
+  - TP内容
+    MAP_SHARED＋ラージページ
+    サイズを縮小した場合に、縮小した範囲にアクセスするとSIGSEGVが発生すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s mremap_mmap_anon -n 314
+
+--------------------
+- mremap_mmap_anon #315
+  - TP内容
+    MAP_SHARED＋ラージページ
+    MREMAP_MAYMOVEで領域を移動した場合、旧領域にアクセスするとSIGSEGVが発生すること
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s mremap_mmap_anon -n 315
+
+--------------------
+- sched_setaffinity#8
+  - TP内容
+    fork後、子プロセスに設定されているCPUアフィニティを取得し、取得したアフィニティとは
+    異なるアフィニティを設定し、setaffinity前後で動作しているコアが変更されていることを確認する
+
+  - 期待動作
+    マイグレート前後で実行しているコアが変更されること。
+    TEST_SUITE: sched_setaffinity
+    TEST_NUMBER: 8
+    ARGS: -p 7 
+    [child] before migrate cpuid=5	★前は5番コア
+    [child] after migrate cpuid=6	★後は6番コア
+    RESULT: ok
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s sched_setaffinity -n 8 -- -p 7
+
+--------------------
+- pthread_setaffinity#0
+  - TP内容
+    子スレッドが自身のaffinity設定ができることを確認する
+
+  - 期待動作
+    「RESULT: ok」が出力されること。
+
+  - 再現手順
+    $ ./util/run_test_x86.sh -n
+
+    ※util/run_testset_x86.shを編集し、577行目のtest_mck -s pthread_setaffinity -n 0を
+      有効化した上で実行する。
+
+  - 備考
+    このTPを単体でMcKernelに投入しても発生せず、テストシェルに組み込んで
+    他TPに続けて実行すると発生する事がある。
+
+--------------------
+- pthread_getaffinity#0
+  - TP内容
+    子スレッドが自身のaffinity取得ができることを確認する
+
+  - 期待動作
+    「RESULT: ok」が出力されること。
+
+  - 再現手順
+    $ ./util/run_test_x86.sh -n
+
+    ※util/run_testset_x86.shを編集し、580行目のtest_mck -s pthread_getaffinity -n 0を
+      有効化した上で実行する。
+
+  - 備考
+    このTPを単体でMcKernelに投入しても発生せず、テストシェルに組み込んで
+    他TPに続けて実行すると発生する事がある。
+
+--------------------
+- msync#1
+  - TP内容
+    MS_INVALIDATEの指定で、他のマッピングに通知ができること
+
+  - 期待動作
+    「RESULT: ok」が出力されること。
+
+  - 再現手順
+    $ ./util/run_test_x86.sh -n
+
+    ※util/run_testset_x86.shを編集し、623行目のtest_mck -s msync -n 1を
+      有効化した上で実行する。
+
+  - 備考
+    このTPを単体でMcKernelに投入しても発生せず、テストシェルに組み込んで
+    他TPに続けて実行すると発生する事がある。
+
+--------------------
+- getrusage#2
+  - TP内容
+    RUSAGE_THREADを指定し、子スレッドと親スレッドの資源使用量を取得する。
+    子スレッドで16MiBのメモリ確保、alarm、sleepによる2秒間待ち合わせ前後で資源量が増加、
+    メモリ解放しても資源量が減少しないことを確認する。
+    子スレッドのメモリ取得量は親スレッドと共有のため同期して増減し、処理時間は別々であること。
+
+  - 期待動作
+    TEST_SUITE: getrusage
+    TEST_NUMBER: 2
+    ARGS: 
+    [parent before]
+    ------------------------------
+    show_rusage():
+      ru_utime=0s + 45467us							④
+      ru_stime=0s + 103065us						⑤
+      ru_maxrss=500
+    ------------------------------
+    [child before]
+    ------------------------------
+    show_rusage():
+      ru_utime=0s + 529us							①
+      ru_stime=0s + 1674us							②
+      ru_maxrss=8748								③
+    ------------------------------
+    allocation memory 16777216 byte(16384 KiB)
+    alarm 2 seconds wait.
+    sleep 2 seconds wait.
+    free memory 16777216 byte(16384 KiB)
+    [child after]
+    ------------------------------
+    show_rusage():
+      ru_utime=2s + 24995us							★①から2秒程度増加していること
+      ru_stime=2s + 63712us							★②から2秒程度増加していること
+      ru_maxrss=25164								★③から16384程度増加していること
+    ------------------------------
+    [parent after]
+    ------------------------------
+    show_rusage():
+      ru_utime=0s + 55006us							★④から子スレッドの2秒が加算されていないこと
+      ru_stime=0s + 144637us						★⑤から子スレッドの2秒が加算されていないこと
+      ru_maxrss=25172								★③から16384程度増加していること
+    ------------------------------
+    RESULT: you need check rusage value
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s getrusage -n 2
+
+--------------------
+- tkill#1
+  - TP内容
+    マルチスレッド動作中に子スレッドに対し、アプリが終了(Term)するシグナルを送信して
+    ユーザアプリが終了しても、問題がないことを確認する。
+
+  - 期待動作
+    SIGUSR1によっる終了。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s tkill -n 1
+
+--------------------
+- times#1
+  - TP内容
+    引数に無効なアドレスを指定し、Segmentation faultで終了することを確認する
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s times -n 1
+
+--------------------
+- clock_gettime#1
+  - TP内容
+    引数に無効なアドレスを指定し、Segmentation faultで終了することを確認する
+
+  - 期待動作
+    SIGSEGVによる終了。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s clock_gettime -n 1
+
+-------------------------------------------------------------------------------------
+□実行結果が期待と異なる項目
+- siginfo #1
+  - TP内容
+    ターミナルからTPに向けてkillコマンドを発行し、シグナルハンドラで期待するsiginfoを取得できていることを確認する。
+    （SIGKILL, SIGSTOPを除く標準シグナルを全て配送するか、同じシグナルを２度発行することでTPを終了させることが可能）
+
+  - NG内容
+    TPに対して、「kill ${pid}」を2回実行しても終了せず、2回ともシグナルハンドラが
+    受け取ってしまう。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s siginfo -n 1 &
+    TEST_NUMBER: 1
+    ARGS:
+    ==================================================
+    Please send signal to mcexec(pid=${pid}) from console.	★${pid}の部分がTPのPID
+    Exit Once you throw twice the same signal.
+    ==================================================
+
+    $ kill ${pid}	★上記のPIDを指定する
+    Catch signal #15
+      siginfo->si_signo = 15
+      siginfo->si_errno = 0
+      siginfo->si_code  = 0x0
+
+    $ kill ${pid}	★再度killを実行する
+    Catch signal #15
+      siginfo->si_signo = 15
+      siginfo->si_errno = 0
+      siginfo->si_code  = 0x0	★TPが終了せず、再度ハンドラが受け取ってしまう
+
+  - 備考
+    SA_RESETHANDのフラグ指定によるHOSTとの挙動の違いによるものと考えられる。
+
+--------------------
+- rt_sigaction #4
+  - TP内容
+    SA_RESETHANDフラグを指定することで、シグナル発生後ハンドラが初期化されていること
+
+  - 期待動作
+    TEST_SUITE: rt_sigaction
+    TEST_NUMBER: 4
+    ARGS: 
+    /-------- Signal handler will activate -------/
+    sig#10 is handled.										★SIGUSR1のハンドラが実行
+    /------ Process will terminate by signal -----/
+    Terminate by signal 10
+    User defined signal 1									★2回目はSIGUSR1で終了すること
+
+  - NG内容
+    結果で「RESULT: signal handler called again?」が出力され、2回目のSIGUSR1で
+    シグナルハンドラが実行されている。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s rt_sigaction -n 4
+
+  - 備考
+    SA_RESETHANDのフラグ指定によるHOSTとの挙動の違いによるものと考えられる。
+--------------------
+- mremap_mmap_anon #1
+  - TP内容
+    MAP_PRIVATE＋ノーマルページ
+    異常な old_size, new_size をサイズ変更なしで指定したときに、エラーなくmremapから返ること
+
+  - 期待動作
+    「RESULT: ok」と表示されること。
+
+  - NG内容
+    結果で「RESULT: mremap error.」が出力され、mremapがエラーとなってしまう。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s mremap_mmap_anon -n 1
+
+--------------------
+- mremap_mmap_anon #101
+  - TP内容
+    MAP_SHARED＋ノーマルページ
+    異常な old_size, new_size をサイズ変更なしで指定したときに、エラーなくmremapから返ること
+
+  - 期待動作
+    「RESULT: ok」と表示されること。
+
+  - NG内容
+    結果で「RESULT: mremap error.」が出力され、mremapがエラーとなってしまう。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s mremap_mmap_anon -n 101
+
+--------------------
+- mremap_mmap_anon #201
+  - TP内容
+    MAP_PRIVATE＋ラージページ
+    異常な old_size, new_size をサイズ変更なしで指定したときに、エラーなくmremapから返ること
+
+  - 期待動作
+    「RESULT: ok」と表示されること。
+
+  - NG内容
+    結果で「RESULT: mremap error.」が出力され、mremapがエラーとなってしまう。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s mremap_mmap_anon -n 201
+
+--------------------
+- mremap_mmap_anon #301
+  - TP内容
+    MAP_SHARED＋ラージページ
+    異常な old_size, new_size をサイズ変更なしで指定したときに、エラーなくmremapから返ること
+
+  - 期待動作
+    「RESULT: ok」と表示されること。
+
+  - NG内容
+    結果で「RESULT: mremap error.」が出力され、mremapがエラーとなってしまう。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s mremap_mmap_anon -n 301
+
+--------------------
+- sched_setaffinity #7
+  - TP内容
+    第2引数(size_t cpusetsize)に8バイトアラインされていない値を指定し、EINVALでエラーとなることを確認する
+
+  - 期待動作
+    「RESULT: ok」と表示されること。
+
+  - NG内容
+    結果で「RESULT: sched_getaffinity returns unexpected error.」が出力され、
+    EINVAL(22)とは異なるエラー番号で終了している。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s sched_setaffinity -n 7 -- -p 7
+
+--------------------
+- sched_getaffinity #4
+  - TP内容
+    第2引数(size_t cpusetsize)に8バイトアラインされていない値を指定し、EINVALでエラーとなることを確認する
+
+  - 期待動作
+    TEST_SUITE: sched_getaffinity
+    TEST_NUMBER: 4
+    ARGS: -p 7
+    [size=1] sched_getaffinity result:-1, errno:22	★EINVAL(22)でエラーすること
+    RESULT: ok
+
+  - NG内容
+    結果で「RESULT: sched_getaffinity returns unexpected error.」が出力され、
+    EINVAL(22)とは異なるエラー番号で終了している。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s sched_getaffinity -n 4 -- -p 7
+
+--------------------
+- setfsgid #0
+  - TP内容
+    setfsgid()によって引数に指定されたfsgidを設定し、
+    /proc/PID/statusを確認して正しく設定されていることを確認する。
+
+  - 期待動作
+    TEST_SUITE: setfsgid
+    TEST_NUMBER: 0
+    ARGS: -f 1050 
+    setfsgid(1050) = 0, errno = 0
+    Gid:	0	0	0	1050
+    cmp 1050 == 1050 ? 					★/proc/PID/statusと引数を比較
+    RESULT: ok
+
+  - NG内容
+    結果で「RESULT: setfsgid() failed.」が出力され、
+    /proc/PID/statusには反映されず、0のままとなっている。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s setfsgid -n 0 -- -f 1050
+
+  - 備考
+    コミット「46c37fc8f3dae7219fa49e4ce2f4e15bd48b91ca」で対応済みの問題。
+    報告済み共通部不具合のTEMP_FIX_17に該当。
+
+--------------------
+- setrlimit #15
+  - TP内容
+    rlim_maxを超えるrlim_curを設定してエラーとなることを確認する。
+
+  - 期待動作
+    setrlimitがEINVALでエラーとなり、「RESULT: ok」が出力されること。
+
+  - NG内容
+    結果で「RESULT: setrlimit why successed ?」が出力され、
+    setrlimitがエラーではなく成功してしまっている。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s setrlimit -n 15
+
+  - 備考
+    報告済み共通部不具合のTEMP_FIX_19に該当。
+
+--------------------
+- sched_yield #0
+  - TP内容
+    forkにより生成した子プロセスを親プロセスのコアにマイグレートし、
+    親プロセスがsched_yieldを発行することで子プロセスに切り替わることを確認する。
+
+  - 期待動作
+    TEST_SUITE: sched_yield
+    TEST_NUMBER: 0
+    ARGS:
+    [child] running core 6
+    [parent] running core 5
+    [parent] child process migrate/bind to core 5		★子プロセスを親プロセスのコアにバインドする
+    [parent] parent process bind to core 5
+    [parent] send sched_yield.							★親プロセスがsched_yieldを発行する
+    [child] before migrate prevcore 6, nowcore 5		★子プロセスが親プロセスと同じコアで動く
+    [child] End process.
+    [parent] End process.								★子→親の順で終了する
+    RESULT: check end order, [end child] -> [end parent]
+
+    各プロセスの動作コアは実行毎に異なる。
+
+  - NG内容
+    結果で「RESULT: TP failed, child migrate fail.」が出力され、
+    親プロセスのコアに子プロセスをバインドすることに失敗しており、
+    子プロセスがマイグレートされていない。
+
+  - 再現手順
+    $ ./install/bin/mcexec ./bin/test_mck -s sched_yield -n 0
+
+
+以上。
+
+-------------------------------------------------------------------------------------
+                                                       COPYRIGHT FUJITSU LIMITED 2016

@@ -1,0 +1,72 @@
+/* README COPYRIGHT FUJITSU LIMITED 2015-2016 */
+
+●テスト追加方法
+
+０）ファイルの説明
+
+    ts.tmpl
+      テストスイートテンプレート
+
+    ts.tmpl/000.c
+      テストケーステンプレート
+
+
+１）テストスイート定義
+
+   $ cp -r ts.tmpl/ src/${test-suite-name}                     ★テストスイート名でコピー
+   $ cd src/${test-suite-name}
+
+     ※${test-suite-name}がテストスイート名を示す
+
+
+２）テストケース定義
+
+   $ emacs 000.c   ★テストケーステンプレートに実装
+                     ファイル名は <テスト番号>.c とする。
+                     テスト番号は３ケタ数値でゼロパディングする。
+                     ※Cソース中のテスト番号は、先頭ゼロだと
+                       ８進数になってしまうのでゼロサプレスでいい。
+
+   ○テストケースには 初期化(setup), 実行(run), 終了(teardown) の３つの関数が必要
+     大まかな実装方針
+          初期化：引数解析
+          実行：テスト処理、合否判定に関わる処理はすべて含める
+          終了：後処理
+
+   ○test_mck.h に定義補助マクロがあるのでそれを使って関数定義する。
+
+     ・関数を定義する
+
+          xxx_FUNC(tset_suite, tset_number)
+          {
+           ここに実装する
+          }
+
+     ・処理が必要ない場合は空関数を定義する
+
+          xxx_EMPTY(tset_suite, tset_number)
+              参考）tls/000.c で setup, teardown を空定義している
+
+     ・他のテストケース関数を丸々流用する場合はaliasを付けられる
+
+          xxx_ALIAS(test_suite, alias_test_number, test_number)
+              参考）mmap_file/001.c で mmap_file/000.c をalias指定している
+
+     ・他のテストケース関数を呼出す
+
+          xxx_DELEGATION(tset_suite, tset_number, /*マクロごとの引数*/);
+              参考）xxx_ALIASマクロが内部で使用している
+
+Ⅹ）補足
+　　実行(run)関数で使用するアサートマクロがあるので使ってください。
+　　条件式が偽の場合には実行関数から直ちに return します。
+
+　　　　tp_assert(期待する条件式、 偽だった場合のメッセージ)
+
+
+●ビルド方法
+  make を叩くとビルド環境向けのバイナリを生成
+　make.sh を叩くとターゲット環境向けのバイナリを生成
+
+--
+以上

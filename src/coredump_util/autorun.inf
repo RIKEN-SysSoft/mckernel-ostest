@@ -1,0 +1,37 @@
+# autorun.inf COPYRIGHT FUJITSU LIMITED 2016
+# disable the "Type <return> to continue, or q <return> to quit"  
+set height 0
+
+######################################################
+
+# delimiter
+echo \n=== buf_1 =========================================================\n
+
+# show buf_1
+x/32xg buf_1
+
+# delimiter
+echo \n=== buf_2 =========================================================\n
+
+# show buf_2
+p/x buf_2
+
+# delimiter
+echo \n=== backtrace =====================================================\n
+
+# show backtrace
+bt
+
+# delimiter
+echo \n=== registers =====================================================\n
+
+# show registers
+info registers
+
+######################################################
+
+# disable logging
+set logging off
+
+# exit gdb
+quit
