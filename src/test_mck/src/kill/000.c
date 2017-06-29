@@ -24,6 +24,8 @@ RUN_FUNC(TEST_SUITE, TEST_NUMBER)
 
 	child_pids = (int *)malloc(sizeof(int) * args->proc_num);
 
+	setpgid(0, 0);
+
 	for(cnt = 0; cnt < args->proc_num; cnt++)
 	{
 		child = fork();
