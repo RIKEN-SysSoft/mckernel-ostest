@@ -64,11 +64,12 @@ siginfo_send_signal() {
 # parse parameter
 usage()
 {
-  echo "$0 [-N] [-H] [-e] [-h]"
+  echo "$0 [-N] [-H] [-e] [-d] [-h]"
   echo "  options:"
   echo "    -N  NG/HANG item including run. (default off)"
   echo "    -H  run on host. (default off)"
   echo "    -e  use execve test. (default off)"
+  echo "    -d  dryrun including NG/HANG items"
   echo "    -h  show usage."
 }
 
@@ -84,7 +85,10 @@ NG=":"
 incNH=
 runHOST=
 pidofcomm="pidof mcexec"
-while getopts NHeh OPT
+do_initialize="yes"
+DRYRUN=
+DRYRUNECHO=":"
+while getopts NHedh OPT
 do
   case $OPT in
     N)
@@ -103,6 +107,31 @@ do
       execve_comm="${app_prefix}/test_mck -s execve -n 1 -- -f"
       execve_arg_end="--"
       ;;
+    d)
+      do_initialize="No"
+      DRYRUN=":"
+      DRYRUNECHO="echo"
+      mcexec='echo ${mcexec} '
+      runHOST="yes"
+      pidofcomm="pidof test_mck"
+      mck_max_cpus=`expr $mck_max_cpus + 1`
+      trap ":" USR1
+      HANG=""
+      NG=""
+      incNH="yes"
+      app_dir='${app_dir}'
+      app_prefix=$app_dir
+
+      # test file
+      this_dir='${this_dir}'
+      temp=$this_dir/tempfile
+      link=/tmp/templink
+      mmapfile_name=$this_dir/mmapfile
+      ostype_name=$this_dir/ostype
+      org_pid_max=/proc/sys/kernel/pid_max
+      pid_max_name=$this_dir/pid_max
+
+      ;;
     h)
       usage
       exit 0
@@ -115,13 +144,14 @@ shift `expr $OPTIND - 1`
 mck_ap_num=`expr $mck_max_cpus - 1`
 mck_ap_num_even=$mck_ap_num
 
-if [ `expr $mck_ap_num_even % 2` != 0 ]; then
+if [ `expr $mck_ap_num_even % 2` -ne 0 ]; then
   mck_ap_num_even=`expr $mck_ap_num_even - 1`
 fi
 
 # run regression
 #while :
 #do
+if [ $do_initialize = "yes" ]; then
 	#### initialize ####
 	addusr=0
 	id $test_user_name > /dev/null 2>&1
@@ -129,7 +159,7 @@ fi
 		uid=`id -u $test_user_name`
 		gid=`id -g $test_user_name`
 	else
-		useradd $test_user_name
+	        useradd $test_user_name
 		if [ "$?" -eq 0 ]; then
 			uid=`id -u $test_user_name`
 			gid=`id -g $test_user_name`
@@ -139,6 +169,7 @@ fi
 			gid=1050
 		fi
 	fi
+	echo "use uid:$uid gid:$gid"
 	echo "use uid:$uid gid:$gid"
 
 	echo a > $mmapfile_name
@@ -157,29 +188,34 @@ fi
 	orig_core_pattern=`cat /proc/sys/kernel/core_pattern`
 	echo "set core.host.%p => /proc/sys/kernel/core_pattern"
 	echo "core.host.%p" > /proc/sys/kernel/core_pattern
+fi
 
 	if [ "${runHOST}" != "yes" ]; then
 		#### boot McKernel ####
+   	        if [ $do_initialize = "yes" ]; then
 		echo "boot McKernel, processor id 0 core is HOST assigned, other core assigned McKernel."
 		sh $mcreboot -c 1-${mck_max_cpus} -m ${boot_mem}
 		sleep 1
+	        fi
 
 		#### get McKernel memory size ####
 		echo "get McKernel memory size."
 		mck_max_mem_size=`"$ihkosctl" 0 query mem | head -c-3`
 	else
-		echo "calc test use memory size."
+		${DRYRUN} echo "calc test use memory size."
 		mck_max_mem_size=`expr $mem_size_def \* 1024 \* 1024`
 	fi
 
 	mck_max_mem_size_95p=`expr $mck_max_mem_size / 20`
 	mck_max_mem_size_110p=`expr $mck_max_mem_size_95p \* 22`
 	mck_max_mem_size_95p=`expr $mck_max_mem_size_95p \* 19`
-	echo "mck_max_mem_size:$mck_max_mem_size"
+	${DRYRUN} echo "mck_max_mem_size:$mck_max_mem_size"
 
+if [ $do_initialize = "yes" ]; then
 	#### insmod test driver ####
 	echo "insmod test_drv"
 	sh "$insmod_test_drv_sh"
+fi
 
 	#### other than test_mck tp case ####
 	echo "## hello_world ##"
@@ -258,18 +294,18 @@ ${HANG}	${mcexec} $execve_comm "$app_prefix/lv12-segv"
 		count=`expr $count + 1`
 	done
 
-#	echo "## socket ##"
+	echo "## socket ##"
 ${HANG}	${mcexec} $execve_comm "$app_prefix/single_node"
 #MANUAL	${mcexec} $execve_comm "$app_prefix/2node_recv"
 #MANUAL	${mcexec} $execve_comm "$app_prefix/2node_send" $execve_arg_end $ipaddress
 
 	#### test_mck case ####
-	echo "## siginfo ##"
-	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s siginfo -n 0
-${NG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s siginfo -n 1 &
-${NG}	sleep 3
-${NG}	siginfo_send_signal `${pidofcomm}`
-${NG}	sleep 1
+${DRYRUN}	echo "## siginfo ##"
+${DRYRUN}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s siginfo -n 0
+${DRYRUN} ${NG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s siginfo -n 1 &
+${DRYRUN} ${NG}	sleep 3
+${DRYRUN} ${NG}	siginfo_send_signal `${pidofcomm}`
+${DRYRUN} ${NG}	sleep 1
 
 	echo "## wait4 ##"
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s wait4 -n 0 
@@ -299,26 +335,26 @@ ${NG}	sleep 1
 	done
 
 	echo "## mem_stack_limits ##"
-	initial_ulimit_orig=`ulimit -s`
-	echo "ulimit -s 10MiB (10240 KiB)"
-	ulimit -s 10240
+	${DRYRUN} initial_ulimit_orig=`ulimit -s`
+	${DRYRUN} echo "ulimit -s 10MiB (10240 KiB)"
+	${DRYRUN} ulimit -s 10240
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mem_stack_limits -n 0 -- -s 9961472
 
 	if [ $mck_max_mem_size -ge 2244120412 ]; then
-		echo "ulimit -s 2GiB (2097152 KiB)"
-		ulimit -s 2097152
+		${DRYRUN} echo "ulimit -s 2GiB (2097152 KiB)"
+		${DRYRUN} ulimit -s 2097152
 		${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mem_stack_limits -n 0 -- -s 2040109466
 	else
 		echo "## mem_stack_limits 2GiB SKIP ##"
 	fi
 
-	echo "ulimit -s unlimited"
-	ulimit -s unlimited
+	${DRYRUN} echo "ulimit -s unlimited"
+	${DRYRUN} ulimit -s unlimited
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mem_stack_limits -n 0 -- -s $mck_max_mem_size_95p
 ${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mem_stack_limits -n 0 -- -s $mck_max_mem_size_110p
 
-	echo "ulimit -s [initial: (${initial_ulimit_orig})]"
-	ulimit -s ${initial_ulimit_orig}
+	${DRYRUN} echo "ulimit -s [initial: (${initial_ulimit_orig})]"
+	${DRYRUN} ulimit -s ${initial_ulimit_orig}
 
 	echo "## munlock ##"
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s munlock -n 0
@@ -373,7 +409,9 @@ ${NG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mmap_dev 
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s rt_sigprocmask -n 0
 
 	echo "## mmap_populate ##"
+if [ x${DRYRUN} != "x:" ]; then
 	echo a > $mmapfile_name
+fi
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mmap_populate -n 0 -- -f $mmapfile_name
 
 #	echo "## mem_large_page ##"
@@ -407,10 +445,12 @@ ${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s tls -n 
 				continue
 			fi
 		fi
-		echo a > $mmapfile_name
-		cat $mmapfile_name
+if [ x${DRYRUN} != "x:" ]; then
+	echo a > $mmapfile_name
+fi
+#		cat $mmapfile_name
 		${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mmap_file -n $tp_num -- -f $mmapfile_name
-		cat $mmapfile_name
+#		cat $mmapfile_name
 	done
 
 	echo "## execve ##"
@@ -835,13 +875,13 @@ ${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s clock_g
 #SKIP	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s fpregs -n 4
 #SKIP	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s fpregs -n 5 -- -p $mck_max_cpus
 
-	echo "## force_exit ##"
-	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s force_exit -n 0 -- -f $mmapfile_name -d /dev/test_mck/mmap_dev &
-	sleep 3
-	echo "send SIGKILL for mcexec."
-	kill -9 `${pidofcomm}`
-	echo "rmmod test_drv"
-	sh "$rmmod_test_drv_sh"
+${DRYRUN}	echo "## force_exit ##"
+${DRYRUN}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s force_exit -n 0 -- -f $mmapfile_name -d /dev/test_mck/mmap_dev &
+${DRYRUN}	sleep 3
+${DRYRUN}	echo "send SIGKILL for mcexec."
+${DRYRUN}	kill -9 `${pidofcomm}`
+${DRYRUN}	echo "rmmod test_drv"
+${DRYRUN}	sh "$rmmod_test_drv_sh"
 
 	if [ "${runHOST}" != "yes" ]; then
 		echo "shutdown_mck..."
@@ -850,6 +890,8 @@ ${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s clock_g
 	fi
 
 	#### finalize ####
+
+if [ $do_initialize = "yes" ]; then
 	#### host output corefile-name setting restore ####
 	echo "restore $orig_core_pattern => /proc/sys/kernel/core_pattern"
 	echo $orig_core_pattern > /proc/sys/kernel/core_pattern
@@ -857,6 +899,7 @@ ${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s clock_g
 	#### console output setting restore ####
 	echo "restore $orig_printk_setting => /proc/sys/kernel/printk"
 	echo $orig_printk_setting > /proc/sys/kernel/printk
+
 
 	rm $ostype_name
 	rm $pid_max_name
@@ -866,6 +909,7 @@ ${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s clock_g
 	if [ "$addusr" -eq 1 ]; then
 		userdel $test_user_name --remove
 	fi
+fi
 
 #	if [ -e ${sh_base}/continue_end ]; then
 #		echo "find continue_end file."
