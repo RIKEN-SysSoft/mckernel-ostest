@@ -300,9 +300,9 @@ ${HANG}	${mcexec} $execve_comm "$app_prefix/single_node"
 #MANUAL	${mcexec} $execve_comm "$app_prefix/2node_send" $execve_arg_end $ipaddress
 
 	#### test_mck case ####
-${DRYRUN}	echo "## siginfo ##"
-${DRYRUN}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s siginfo -n 0
-${DRYRUN} ${NG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s siginfo -n 1 &
+	echo "## siginfo ##"
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s siginfo -n 0
+${NG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s siginfo -n 1 &
 ${DRYRUN} ${NG}	sleep 3
 ${DRYRUN} ${NG}	siginfo_send_signal `${pidofcomm}`
 ${DRYRUN} ${NG}	sleep 1
