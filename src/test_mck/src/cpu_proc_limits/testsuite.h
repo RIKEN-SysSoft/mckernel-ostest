@@ -6,6 +6,7 @@
 
 struct cpu_proc_limits_args {
 	int proc_num;
+	int cpu_num;
 };
 
 #endif /*__TEST_SUITE_H__*/
