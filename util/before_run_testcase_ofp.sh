@@ -135,44 +135,12 @@ mck_ap_num_even=$mck_ap_num
 if [ `expr $mck_ap_num_even % 2` -ne 0 ]; then
   mck_ap_num_even=`expr $mck_ap_num_even - 1`
 fi
-
-	#### initialize ####
-	addusr=0
-	id $test_user_name > /dev/null 2>&1
-	if [ "$?" -eq 0 ]; then
-		uid=`id -u $test_user_name`
-		gid=`id -g $test_user_name`
-	else
-	        useradd $test_user_name
-		if [ "$?" -eq 0 ]; then
-			uid=`id -u $test_user_name`
-			gid=`id -g $test_user_name`
-			addusr=1
-		else
-			uid=1000
-			gid=1050
-		fi
-	fi
-	echo "use uid:$uid gid:$gid"
-	echo "use uid:$uid gid:$gid"
-
 	echo a > $mmapfile_name
 	dd if=/dev/zero of=${temp} bs=1M count=10
 	ln -s ${temp} ${link}
 
 	echo "Linux" > $ostype_name
 	cat $org_pid_max > $pid_max_name
-
-	#### console output setting ####
-	orig_printk_setting=`cat /proc/sys/kernel/printk`
-	echo "set 4 4 1 7 => /proc/sys/kernel/printk"
-	echo "4 4 1 7" > /proc/sys/kernel/printk
-
-	#### host output corefile-name setting ####
-	orig_core_pattern=`cat /proc/sys/kernel/core_pattern`
-	echo "set core.host.%p => /proc/sys/kernel/core_pattern"
-	echo "core.host.%p" > /proc/sys/kernel/core_pattern
-
 
 	if [ "${runHOST}" != "yes" ]; then
 #		sh $mcreboot -c 1-${mck_max_cpus} -m ${boot_mem}
@@ -185,8 +153,4 @@ fi
 	mck_max_mem_size_110p=`expr $mck_max_mem_size_95p \* 22`
 	mck_max_mem_size_95p=`expr $mck_max_mem_size_95p \* 19`
 	${DRYRUN} echo "mck_max_mem_size:$mck_max_mem_size"
-
-	#### insmod test driver ####
-	echo "insmod test_drv"
-	sh "$insmod_test_drv_sh"
 
