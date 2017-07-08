@@ -1,5 +1,7 @@
 /* 001.c COPYRIGHT FUJITSU LIMITED 2015-2016 */
 
+#include <sys/time.h>
+#include <sys/resource.h>
 #include <pthread.h>
 #include <stdlib.h>
 
@@ -58,9 +60,18 @@ RUN_FUNC(TEST_SUITE, TEST_NUMBER)
 	double pi = 0.0;
 	struct cpu_thread_limits_args *args = (struct cpu_thread_limits_args*)tc_arg;
 	child_thread_t *child = NULL;
+	struct rlimit rlimit_nproc;
+	int ret;
 
 	tp_assert(args != NULL, "internal error.");
 	tp_assert(0 < args->thread_num, "-t <child thread num> invalid argument.");
+	tp_assert(0 < args->cpu_num, "-c <num cpus> invalid argument.");
+
+	getrlimit(RLIMIT_NPROC, &rlimit_nproc);
+	tp_assert(rlimit_nproc.rlim_max >= args->cpu_num, "-c <num cpus> is larger than hard limit");
+	rlimit_nproc.rlim_cur = args->cpu_num;
+	ret = setrlimit(RLIMIT_NPROC, &rlimit_nproc);
+	tp_assert(ret == 0, "setrlimit error");
 
 	child = calloc(args->thread_num, sizeof(child_thread_t));
 	tp_assert(child != NULL, "calloc error.");

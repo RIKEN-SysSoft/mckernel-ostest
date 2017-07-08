@@ -6,6 +6,7 @@
 
 struct cpu_thread_limits_args {
 	int thread_num;
+	int cpu_num;
 };
 extern struct cpu_thread_limits_args *cpu_thread_limits_get_param(int argc, char *argv[]);
 

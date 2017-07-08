@@ -14,10 +14,13 @@ struct cpu_thread_limits_args *cpu_thread_limits_get_param(int argc, char *argv[
 
 	memset(&args, 0 ,sizeof(args));
 
-	while ((opt = getopt(argc, argv, "t:")) != -1) {
+	while ((opt = getopt(argc, argv, "t:c:")) != -1) {
 		switch (opt) {
 		case 't':
 			args.thread_num = atoi(optarg);
+			break;
+		case 'c':
+			args.cpu_num = atoi(optarg);
 			break;
 		default:
 			break;
