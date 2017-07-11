@@ -251,15 +251,15 @@ fi
 
 	echo "## lv07 ##"
 	${mcexec} $execve_comm "$app_prefix/lv07-st" $execve_arg_end $ostype_name
-	${mcexec} $execve_comm "$app_prefix/lv07-pth" $execve_arg_end $ostype_name
+#	${mcexec} $execve_comm "$app_prefix/lv07-pth" $execve_arg_end $ostype_name
 
-	count=1
-	while [ $count -le $mck_max_cpus ]
-	do
-		${mcexec} $execve_comm "$app_prefix/lv07-pth" $execve_arg_end $ostype_name $count
-		count=`expr $count + 1`
-	done
-	count=0
+#	count=1
+#	while [ $count -le $mck_max_cpus ]
+#	do
+#		${mcexec} $execve_comm "$app_prefix/lv07-pth" $execve_arg_end $ostype_name $count
+#		count=`expr $count + 1`
+#	done
+#	count=0
 
 	echo "## lv09 ##"
 	${mcexec} $execve_comm "$app_prefix/lv09-pgf" $execve_arg_end w $temp aaabbbcccdddeeefffggghhh\\n
@@ -420,10 +420,10 @@ ${NG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s rt_sigact
 		${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s ptrace -n $tp_num
 	done
 
-	echo "## mmap_dev ##"
-	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mmap_dev -n 0 -- -d /dev/test_mck/mmap_dev -s 8192
-${NG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mmap_dev -n 1 -- -d /dev/test_mck/mmap_dev2 -s 8192
-${NG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mmap_dev -n 2 -- -d /dev/test_mck/mmap_dev2 -s 8192
+${DRYRUN}	echo "## mmap_dev ##"
+${DRYRUN}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mmap_dev -n 0 -- -d /dev/test_mck/mmap_dev -s 8192
+${DRYRUN}${NG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mmap_dev -n 1 -- -d /dev/test_mck/mmap_dev2 -s 8192
+${DRYRUN}${NG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mmap_dev -n 2 -- -d /dev/test_mck/mmap_dev2 -s 8192
 
 	echo "## tgkill ##"
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s tgkill -n 0
@@ -666,39 +666,39 @@ ${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s procfs 
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s setpgid -n 4 -- -f "$app_dir/execve_app"
 
 	echo "## kill ##"
-	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s kill -n 0 -- -p $mck_ap_num
-	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s kill -n 1 -- -p $mck_ap_num
-	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s kill -n 2 -- -p $mck_ap_num
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s kill -n 0 -- -p $num_cpus_m1
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s kill -n 1 -- -p $num_cpus_m1
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s kill -n 2 -- -p $num_cpus_m1
 
 	echo "## sched_setaffinity ##"
-	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 0 -- -p $mck_max_cpus
-	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 1 -- -p $mck_max_cpus
-#SKIP	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 2 -- -p $mck_max_cpus
-	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 3 -- -p $mck_max_cpus
-	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 4 -- -p $mck_max_cpus
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 0 -- -p $num_cpus
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 1 -- -p $num_cpus
+#SKIP	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 2 -- -p $num_cpus
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 3 -- -p $num_cpus
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 4 -- -p $num_cpus
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 5
-	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 6 -- -p $mck_max_cpus
-${NG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 7 -- -p $mck_max_cpus
-${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 8 -- -p $mck_max_cpus
-#SKIP	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 9 -- -p $mck_max_cpus
-#SKIP	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 10 -- -p $mck_max_cpus
-#SKIP	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 11 -- -p $mck_max_cpus
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 6 -- -p $num_cpus
+${NG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 7 -- -p $num_cpus
+${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 8 -- -p $num_cpus
+#SKIP	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 9 -- -p $num_cpus
+#SKIP	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 10 -- -p $num_cpus
+#SKIP	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 11 -- -p $num_cpus
 
-	getaff_cpus=`expr $mck_max_cpus + 5`
+	getaff_cpus=`expr $num_cpus + 5`
 	echo "## sched_getaffinity ##"
-	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_getaffinity -n 0 -- -p $mck_max_cpus
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_getaffinity -n 0 -- -p $num_cpus
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_getaffinity -n 1
-	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_getaffinity -n 2 -- -p $mck_max_cpus
-	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_getaffinity -n 3 -- -p $mck_max_cpus
-${NG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_getaffinity -n 4 -- -p $mck_max_cpus
-	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_getaffinity -n 5 -- -p $mck_max_cpus
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_getaffinity -n 2 -- -p $num_cpus
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_getaffinity -n 3 -- -p $num_cpus
+${NG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_getaffinity -n 4 -- -p $num_cpus
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_getaffinity -n 5 -- -p $num_cpus
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_getaffinity -n 6 -- -p $getaff_cpus -f "$app_dir/show_affinity" -- -p $getaff_cpus
 
 ${HANG}	echo "## pthread_setaffinity ##"
-${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s pthread_setaffinity -n 0 -- -p $mck_max_cpus
+${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s pthread_setaffinity -n 0 -- -p $num_cpus
 
 ${HANG}	echo "## pthread_getaffinity ##"
-${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s pthread_getaffinity -n 0 -- -p $mck_max_cpus
+${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s pthread_getaffinity -n 0 -- -p $num_cpus
 
 	echo "## enosys ##"
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s enosys -n 0
