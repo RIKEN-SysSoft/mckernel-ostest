@@ -137,8 +137,8 @@ do
       num_other_procs='${num_other_procs}'
       rlimit_nproc='${rlimit_nproc}'
       mck_max_mem_size='${mck_max_mem_size}'
-      mck_max_mem_size_95p='${mck_max_memsize_95p}'
-      mck_max_mem_size_110p='${mck_max_memsize_110p}'
+      mck_max_mem_size_95p='${mck_max_mem_size_95p}'
+      mck_max_mem_size_110p='${mck_max_mem_size_110p}'
       mck_ap_num='${mck_ap_num}'
       mck_ap_num_even='${mck_ap_num_even}'
 
