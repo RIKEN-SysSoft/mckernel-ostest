@@ -297,13 +297,13 @@ ${HANG}	${mcexec} $execve_comm "$app_prefix/lv12-segv"
 	${mcexec} $execve_comm "$app_prefix/lv14" $execve_arg_end 1
 	${mcexec} $execve_comm "$app_prefix/lv14" $execve_arg_end 2
 
-	if [ $mck_max_mem_size -ge 1181116006 ]; then
+#	if [ $mck_max_mem_size -ge 1181116006 ]; then
 		${mcexec} $execve_comm "$app_prefix/lv14" $execve_arg_end 3
 		${mcexec} $execve_comm "$app_prefix/lv14" $execve_arg_end 4
 		${mcexec} $execve_comm "$app_prefix/lv14" $execve_arg_end 5
-	else
-		echo "## lv14 03-05 SKIP ##"
-	fi
+#	else
+#		echo "## lv14 03-05 SKIP ##"
+#	fi
 
 	echo "## lv15 ##"
 	count=0
@@ -377,13 +377,13 @@ ${DRYRUN} ${NG}	sleep 1
 	${DRYRUN} ulimit -s 10240
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mem_stack_limits -n 0 -- -s 9961472
 
-	if [ $mck_max_mem_size -ge 2244120412 ]; then
+#	if [ $mck_max_mem_size -ge 2244120412 ]; then
 		${DRYRUN} echo "ulimit -s 2GiB (2097152 KiB)"
 		${DRYRUN} ulimit -s 2097152
 		${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mem_stack_limits -n 0 -- -s 2040109466
-	else
-		echo "## mem_stack_limits 2GiB SKIP ##"
-	fi
+#	else
+#		echo "## mem_stack_limits 2GiB SKIP ##"
+#	fi
 
 	${DRYRUN} echo "ulimit -s unlimited"
 	${DRYRUN} ulimit -s unlimited
@@ -566,12 +566,12 @@ ${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mem_lim
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mem_limits -n 0 -- -f brk -s $mck_max_mem_size_95p -c 1
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mem_limits -n 0 -- -f brk -s $mck_max_mem_size -c 1
 
-	if [ $mck_max_mem_size -ge 2244120412 ]; then
+#	if [ $mck_max_mem_size -ge 2244120412 ]; then
 		echo "## large_bss ##"
 		${mcexec} $execve_comm "$app_prefix/large_bss"
-	else
-		echo "## large_bss SKIP ##"
-	fi
+#	else
+#		echo "## large_bss SKIP ##"
+#	fi
 
 	echo "## system ##"
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s system -n 0
@@ -690,7 +690,7 @@ ${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_s
 #SKIP	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 10 -- -p $num_cpus
 #SKIP	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 11 -- -p $num_cpus
 
-	getaff_cpus=`expr $num_cpus + 5`
+${DRYRUN} getaff_cpus=`expr $num_cpus + 5`
 	echo "## sched_getaffinity ##"
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_getaffinity -n 0 -- -p $num_cpus
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_getaffinity -n 1

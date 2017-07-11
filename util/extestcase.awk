@@ -28,7 +28,8 @@ BEGIN {
     if (testname == "siginfo" ||
 	testname == "mem_stack_limits" ||
 	testname == "mmap_populate"  ||
-	testname == "mmap_file" ) {
+	testname == "mmap_file" ||
+	testname == "sched_getaffinity" ) {
 	existScript = 1;
     } else {
 	existScript = 0;
