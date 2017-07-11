@@ -144,12 +144,12 @@ do
 
       # test file
       this_dir='${this_dir}'
-      temp=$this_dir/tempfile
-      link=/tmp/templink
-      mmapfile_name=$this_dir/mmapfile
-      ostype_name=$this_dir/ostype
-      org_pid_max=/proc/sys/kernel/pid_max
-      pid_max_name=$this_dir/pid_max
+      temp='${temp}'
+      link='${link}'
+      mmapfile_name='${mmapfile_name}'
+      ostype_name='${ostype_name}'
+      org_pid_max='${org_pid_max}'
+      pid_max_name='${pid_max_name}'
 
       ;;
     h)

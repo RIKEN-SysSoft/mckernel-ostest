@@ -141,12 +141,12 @@ do
 
       # test file
       this_dir='${this_dir}'
-      temp=$this_dir/tempfile
-      link=/tmp/templink
-      mmapfile_name=$this_dir/mmapfile
-      ostype_name=$this_dir/ostype
-      org_pid_max=/proc/sys/kernel/pid_max
-      pid_max_name=$this_dir/pid_max
+      temp='${temp}'
+      link='${link}'
+      mmapfile_name='${mmapfile_name}'
+      ostype_name='${ostype_name}'
+      org_pid_max='${org_pid_max}'
+      pid_max_name='${pid_max_name}'
 
       ;;
     h)
@@ -166,24 +166,24 @@ shift `expr $OPTIND - 1`
 #fi
 
 	#### initialize ####
-	addusr=0
-	id $test_user_name > /dev/null 2>&1
-	if [ "$?" -eq 0 ]; then
-		uid=`id -u $test_user_name`
-		gid=`id -g $test_user_name`
-	else
-	        useradd $test_user_name
-		if [ "$?" -eq 0 ]; then
-			uid=`id -u $test_user_name`
-			gid=`id -g $test_user_name`
-			addusr=1
-		else
-			uid=1000
-			gid=1050
-		fi
-	fi
-	echo "use uid:$uid gid:$gid"
-	echo "use uid:$uid gid:$gid"
+#	addusr=0
+#	id $test_user_name > /dev/null 2>&1
+#	if [ "$?" -eq 0 ]; then
+#		uid=`id -u $test_user_name`
+#		gid=`id -g $test_user_name`
+#	else
+#	        useradd $test_user_name
+#		if [ "$?" -eq 0 ]; then
+#			uid=`id -u $test_user_name`
+#			gid=`id -g $test_user_name`
+#			addusr=1
+#		else
+#			uid=1000
+#			gid=1050
+#		fi
+#	fi
+#	echo "use uid:$uid gid:$gid"
+#	echo "use uid:$uid gid:$gid"
 
 	echo a > $mmapfile_name
 	dd if=/dev/zero of=${temp} bs=1M count=10
@@ -214,11 +214,11 @@ if [ $do_initialize = "yes" ]; then
 
 	if [ "${runHOST}" != "yes" ]; then
 		#### boot McKernel ####
-   	        if [ $do_initialize = "yes" ]; then
+#   	        if [ $do_initialize = "yes" ]; then
 #		echo "boot McKernel, processor id 0 core is HOST assigned, other core assigned McKernel."
 #		sh $mcreboot -c 1-${mck_max_cpus} -m ${boot_mem}
 #		sleep 1
-	        fi
+#	        fi
 
 		#### get McKernel memory size ####
 		echo "get McKernel memory size."
@@ -234,8 +234,8 @@ if [ $do_initialize = "yes" ]; then
 	${DRYRUN} echo "mck_max_mem_size:$mck_max_mem_size"
 fi
 
-if [ $do_initialize = "yes" ]; then
+#if [ $do_initialize = "yes" ]; then
 	#### insmod test driver ####
 #	echo "insmod test_drv"
 #	sh "$insmod_test_drv_sh"
-fi
+#fi

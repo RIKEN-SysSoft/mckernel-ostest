@@ -3,5 +3,5 @@
 while read line
 do
     sudo sh $line -H
-done < testlist_linux
+done < testlist_ofp
 
