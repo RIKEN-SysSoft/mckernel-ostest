@@ -21,3 +21,5 @@
 	if [ "$addusr" -eq 1 ]; then
 		userdel $test_user_name --remove
 	fi
+
+cd $cwd

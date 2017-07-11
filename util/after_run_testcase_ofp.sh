@@ -5,3 +5,5 @@
 #	rm $link
 #	rm $temp
 #	rm $mmapfile_name
+
+cd $cwd

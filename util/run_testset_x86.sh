@@ -140,7 +140,9 @@ do
       rlimit_nproc='${rlimit_nproc}'
       mck_max_mem_size='${mck_max_mem_size}'
       mck_max_mem_size_95p='${mck_max_memsize_95p}'
-      mck_max_mem_size_95p='${mck_max_memsize_110p}'
+      mck_max_mem_size_110p='${mck_max_memsize_110p}'
+      mck_ap_num='${mck_ap_num}'
+      mck_ap_num_even='${mck_ap_num_even}'
 
       # test file
       this_dir='${this_dir}'
@@ -160,13 +162,15 @@ do
 done
 shift `expr $OPTIND - 1`
 
-# get mck ap num
-#mck_ap_num=`expr $mck_max_cpus - 1`
-#mck_ap_num_even=$mck_ap_num
+if [ $do_initialize = "yes" ]; then
+    # get mck ap num
+    mck_ap_num=$num_cpus_m1
+    mck_ap_num_even=$mck_ap_num
 
-#if [ `expr $mck_ap_num_even % 2` -ne 0 ]; then
-#  mck_ap_num_even=`expr $mck_ap_num_even - 1`
-#fi
+    if [ `expr $mck_ap_num_even % 2` -ne 0 ]; then
+	mck_ap_num_even=`expr $mck_ap_num_even - 1`
+    fi
+fi
 
 # run regression
 #while :
@@ -466,7 +470,7 @@ fi
 
 	echo "## tls ##"
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s tls -n 0
-${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s tls -n 1 -- -t $mck_ap_num
+${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s tls -n 1 -- -t $num_cpus_m1
 
 	echo "## mmap_file ##"
 	rm -f $mmapfile_name

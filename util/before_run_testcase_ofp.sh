@@ -7,6 +7,7 @@
 #PJM -j
 #PJM -S
 
+cwd=`pwd`
 this_dir="$(cd $(dirname $0); pwd)/.."
 
 # memsize
