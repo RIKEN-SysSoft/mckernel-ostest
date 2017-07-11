@@ -13,11 +13,11 @@
 	echo $orig_printk_setting > /proc/sys/kernel/printk
 
 
-	rm $ostype_name
-	rm $pid_max_name
-	rm $link
-	rm $temp
-	rm $mmapfile_name
+#	rm $ostype_name
+#	rm $pid_max_name
+#	rm $link
+#	rm $temp
+#	rm $mmapfile_name
 	if [ "$addusr" -eq 1 ]; then
 		userdel $test_user_name --remove
 	fi

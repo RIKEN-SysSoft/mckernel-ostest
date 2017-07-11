@@ -1,2 +1,2 @@
-rm /tmp/ostest
+rm -rf /tmp/ostest
 

@@ -30,7 +30,16 @@ BEGIN {
 	testname == "mem_stack_limits" ||
 	testname == "mmap_populate"  ||
 	testname == "mmap_file" ||
-	testname == "sched_getaffinity" ) {
+	testname == "sched_getaffinity" ||
+	testname == "mmap_locked" ||
+	testname == "madvise" ||
+	testname == "wait4" ||
+	testname == "lv07" ||
+	testname == "lv09" ||
+	testname == "lv11" ||
+	testname == "lv15" ||
+	testname == "readlinkat" ||
+	testname == "force_exit") {
 	existScript = 1;
     } else {
 	existScript = 0;
@@ -63,12 +72,12 @@ BEGIN {
     outputfile = sprintf("%s/%s.%03d", outputdir, testname, count);
     print "#!/bin/sh"  > testscript;
     append_testscript("before_run_testcase_ofp.sh");
-    if (existScript) {
-	append_testscript("before_" testname ".sh");
-    }
     printf("\necho \"## %s ##\"\n\n", testname) >> testscript;
     printf("testcase=%s.%03d\n", testname, count) >> testscript;
     printf("testno=%d\n", count) >> testscript;
+    if (existScript) {
+	append_testscript("before_" testname ".sh");
+    }
     if ((testname == "siginfo" || testname == "force_exit") && count == 1) {
 	printf("%s > %s &\n", $0, outputfile)  >> testscript;
     } else {

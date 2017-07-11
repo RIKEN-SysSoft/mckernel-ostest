@@ -29,7 +29,16 @@ BEGIN {
 	testname == "mem_stack_limits" ||
 	testname == "mmap_populate"  ||
 	testname == "mmap_file" ||
-	testname == "sched_getaffinity" ) {
+	testname == "sched_getaffinity" ||
+	testname == "mmap_locked" ||
+	testname == "madvise" ||
+	testname == "wait4" ||
+	testname == "lv07" ||
+	testname == "lv09" ||
+	testname == "lv11" ||
+	testname == "lv15" ||
+	testname == "readlinkat" ||
+	testname == "force_exit") {
 	existScript = 1;
     } else {
 	existScript = 0;

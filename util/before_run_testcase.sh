@@ -137,7 +137,9 @@ do
       rlimit_nproc='${rlimit_nproc}'
       mck_max_mem_size='${mck_max_mem_size}'
       mck_max_mem_size_95p='${mck_max_memsize_95p}'
-      mck_max_mem_size_95p='${mck_max_memsize_110p}'
+      mck_max_mem_size_110p='${mck_max_memsize_110p}'
+      mck_ap_num='${mck_ap_num}'
+      mck_ap_num_even='${mck_ap_num_even}'
 
       # test file
       this_dir='${this_dir}'
@@ -157,13 +159,15 @@ do
 done
 shift `expr $OPTIND - 1`
 
-# get mck ap num
-#mck_ap_num=`expr $mck_max_cpus - 1`
-#mck_ap_num_even=$mck_ap_num
+if [ $do_initialize = "yes" ]; then
+    # get mck ap num
+    mck_ap_num=$num_cpus_m1
+    mck_ap_num_even=$mck_ap_num
 
-#if [ `expr $mck_ap_num_even % 2` -ne 0 ]; then
-#  mck_ap_num_even=`expr $mck_ap_num_even - 1`
-#fi
+    if [ `expr $mck_ap_num_even % 2` -ne 0 ]; then
+	mck_ap_num_even=`expr $mck_ap_num_even - 1`
+    fi
+fi
 
 	#### initialize ####
 	addusr=0
@@ -185,12 +189,12 @@ shift `expr $OPTIND - 1`
 	echo "use uid:$uid gid:$gid"
 	echo "use uid:$uid gid:$gid"
 
-	echo a > $mmapfile_name
-	dd if=/dev/zero of=${temp} bs=1M count=10
-	ln -s ${temp} ${link}
+#	echo a > $mmapfile_name
+#	dd if=/dev/zero of=${temp} bs=1M count=10
+#	ln -s ${temp} ${link}
 
-	echo "Linux" > $ostype_name
-	cat $org_pid_max > $pid_max_name
+#	echo "Linux" > $ostype_name
+#	cat $org_pid_max > $pid_max_name
 
 	#### console output setting ####
 	orig_printk_setting=`cat /proc/sys/kernel/printk`
