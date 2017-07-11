@@ -79,8 +79,8 @@ execve_comm=
 execve_arg_end=
 app_prefix=$app_dir
 mck_max_mem_size=
-mck_max_cpus=`cat /proc/cpuinfo | grep -c "processor"`
-mck_max_cpus=`expr $mck_max_cpus - 1`
+#mck_max_cpus=`cat /proc/cpuinfo | grep -c "processor"`
+#mck_max_cpus=`expr $mck_max_cpus - 1`
 num_cpus=`numactl -H | awk '$3=="cpus:"{ncpu += NF - 3} END{print ncpu}'`
 num_cpus_p1=`expr $num_cpus + 1`
 num_cpus_m1=`expr $num_cpus - 1`
@@ -108,7 +108,7 @@ do
       mcexec=""
       runHOST="yes"
       pidofcomm="pidof test_mck"
-      mck_max_cpus=`expr $mck_max_cpus + 1`
+#      mck_max_cpus=`expr $mck_max_cpus + 1`
       trap ":" USR1
       ;;
     e)
@@ -122,7 +122,7 @@ do
       mcexec='echo ${mcexec} '
       runHOST="yes"
       pidofcomm="pidof test_mck"
-      mck_max_cpus=`expr $mck_max_cpus + 1`
+#      mck_max_cpus=`expr $mck_max_cpus + 1`
       trap ":" USR1
       HANG=""
       NG=""
@@ -161,12 +161,12 @@ done
 shift `expr $OPTIND - 1`
 
 # get mck ap num
-mck_ap_num=`expr $mck_max_cpus - 1`
-mck_ap_num_even=$mck_ap_num
+#mck_ap_num=`expr $mck_max_cpus - 1`
+#mck_ap_num_even=$mck_ap_num
 
-if [ `expr $mck_ap_num_even % 2` -ne 0 ]; then
-  mck_ap_num_even=`expr $mck_ap_num_even - 1`
-fi
+#if [ `expr $mck_ap_num_even % 2` -ne 0 ]; then
+#  mck_ap_num_even=`expr $mck_ap_num_even - 1`
+#fi
 
 # run regression
 #while :
@@ -690,7 +690,9 @@ ${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_s
 #SKIP	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 10 -- -p $num_cpus
 #SKIP	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_setaffinity -n 11 -- -p $num_cpus
 
-${DRYRUN} getaff_cpus=`expr $num_cpus + 5`
+if [ x${DRYRUN} != "x:" ]; then
+	getaff_cpus=`expr $num_cpus + 5`
+fi
 	echo "## sched_getaffinity ##"
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_getaffinity -n 0 -- -p $num_cpus
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s sched_getaffinity -n 1
