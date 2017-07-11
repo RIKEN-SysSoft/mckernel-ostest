@@ -5,7 +5,7 @@ this_dir="$(cd $(dirname $0); pwd)"
 # memsize
 total_mem=`free -m | grep Mem: | awk '{print $2}'`
 #mem_size_def=$(( $total_mem - ($total_mem * (100 - 45) / 100)))
-mem_size_def=2048
+mem_size_def=4096
 boot_mem="${mem_size_def}M@0"
 
 # path
@@ -244,8 +244,8 @@ fi
 
 if [ $do_initialize = "yes" ]; then
 	#### insmod test driver ####
-#SKIP	echo "insmod test_drv"
-#SKIP	sh "$insmod_test_drv_sh"
+	echo "insmod test_drv"
+	sh "$insmod_test_drv_sh"
 fi
 
 	#### other than test_mck tp case ####
