@@ -80,6 +80,13 @@ app_prefix=$app_dir
 mck_max_mem_size=
 mck_max_cpus=`cat /proc/cpuinfo | grep -c "processor"`
 mck_max_cpus=`expr $mck_max_cpus - 1`
+num_cpus=`numactl -H | awk '$3=="cpus:"{ncpu += NF - 3} END{print ncpu}'`
+num_cpus_p1=`expr $num_cpus + 1`
+num_cpus_m1=`expr $num_cpus - 1`
+num_cpus_m2=`expr $num_cpus - 2`
+num_cpus_m3=`expr $num_cpus - 3`
+num_cpus_m4=`expr $num_cpus - 4`
+num_cpus_m5=`expr $num_cpus - 5`
 HANG=":"
 NG=":"
 incNH=
@@ -121,6 +128,15 @@ do
       incNH="yes"
       app_dir='${app_dir}'
       app_prefix=$app_dir
+      num_cpus='${num_cpus}'
+      num_cpus_p1='${num_cpus_p1}'
+      num_cpus_m1='${num_cpus_m1}'
+      num_cpus_m2='${num_cpus_m2}'
+      num_cpus_m3='${num_cpus_m3}'
+      num_cpus_m4='${num_cpus_m4}'
+      num_cpus_m5='${num_cpus_m5}'
+      num_other_procs='${num_other_procs}'
+      rlimit_nproc='${rlimit_nproc}'
 
       # test file
       this_dir='${this_dir}'
@@ -189,6 +205,15 @@ if [ $do_initialize = "yes" ]; then
 	echo "set core.host.%p => /proc/sys/kernel/core_pattern"
 	echo "core.host.%p" > /proc/sys/kernel/core_pattern
 fi
+
+	if [ "${runHOST}" != "yes" ]; then
+	        num_other_procs=0
+		rlimit_nproc=`expr $num_other_procs + $num_cpus`
+	else
+	        num_other_procs=`ps ux | wc -l`
+		num_other_procs=`expr $num_other_procs - 3`
+		rlimit_nproc=`expr $num_other_procs + $num_cpus + 1`
+	fi
 
 	if [ "${runHOST}" != "yes" ]; then
 		#### boot McKernel ####
@@ -321,8 +346,14 @@ ${DRYRUN} ${NG}	sleep 1
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s rt_sigsuspend -n 0
 
 	echo "## cpu_thread_limits ##"
-	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s cpu_thread_limits -n 0 -- -t $mck_ap_num
-	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s cpu_thread_limits -n 1 -- -t $mck_ap_num
+#	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s cpu_thread_limits -n 0 -- -t $mck_ap_num
+#	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s cpu_thread_limits -n 1 -- -t $mck_ap_num
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s cpu_thread_limits -n 0 -- -t $num_cpus_m2 -c $rlimit_nproc
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s cpu_thread_limits -n 0 -- -t $num_cpus_m1 -c $rlimit_nproc
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s cpu_thread_limits -n 0 -- -t $num_cpus -c $rlimit_nproc
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s cpu_thread_limits -n 1 -- -t $num_cpus_m2 -c $rlimit_nproc
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s cpu_thread_limits -n 1 -- -t $num_cpus_m1 -c $rlimit_nproc
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s cpu_thread_limits -n 1 -- -t $num_cpus -c $rlimit_nproc
 
 	echo "## gettid ##"
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s gettid -n 0
@@ -467,13 +498,18 @@ ${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s execve 
 	done
 
 	echo "## cpu_proc_limits ##"
-	count=1
-	while [ $count -lt $mck_max_cpus ]
-	do
-		${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s cpu_proc_limits -n 0 -- -p $count
-		count=`expr $count + 1`
-	done
-	count=0
+#	count=1
+#	while [ $count -lt $mck_max_cpus ]
+#	do
+#		${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s cpu_proc_limits -n 0 -- -p $count
+#		count=`expr $count + 1`
+#	done
+#	count=0
+
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s cpu_proc_limits -n 0 -- -p $num_cpus_m2 -c $rlimit_nproc
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s cpu_proc_limits -n 0 -- -p $num_cpus_m1 -c $rlimit_nproc
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s cpu_proc_limits -n 0 -- -p $num_cpus -c $rlimit_nproc
+
 
 	echo "## nfo ##"
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s nfo -n 0
