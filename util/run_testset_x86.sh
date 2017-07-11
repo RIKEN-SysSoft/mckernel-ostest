@@ -4,7 +4,8 @@ this_dir="$(cd $(dirname $0); pwd)"
 
 # memsize
 total_mem=`free -m | grep Mem: | awk '{print $2}'`
-mem_size_def=$(( $total_mem - ($total_mem * (100 - 45) / 100)))
+#mem_size_def=$(( $total_mem - ($total_mem * (100 - 45) / 100)))
+mem_size_def=2048
 boot_mem="${mem_size_def}M@0"
 
 # path
@@ -137,6 +138,9 @@ do
       num_cpus_m5='${num_cpus_m5}'
       num_other_procs='${num_other_procs}'
       rlimit_nproc='${rlimit_nproc}'
+      mck_max_mem_size='${mck_max_mem_size}'
+      mck_max_mem_size_95p='${mck_max_memsize_95p}'
+      mck_max_mem_size_95p='${mck_max_memsize_110p}'
 
       # test file
       this_dir='${this_dir}'
@@ -206,6 +210,7 @@ if [ $do_initialize = "yes" ]; then
 	echo "core.host.%p" > /proc/sys/kernel/core_pattern
 fi
 
+if [ $do_initialize = "yes" ]; then
 	if [ "${runHOST}" != "yes" ]; then
 	        num_other_procs=0
 		rlimit_nproc=`expr $num_other_procs + $num_cpus`
@@ -225,21 +230,22 @@ fi
 
 		#### get McKernel memory size ####
 		echo "get McKernel memory size."
-		mck_max_mem_size=`"$ihkosctl" 0 query mem | head -c-3`
+		mck_max_mem_size=`"$ihkosctl" 0 query mem | cut -d '@' -f 1`
 	else
 		${DRYRUN} echo "calc test use memory size."
-		mck_max_mem_size=`expr $mem_size_def \* 1024 \* 1024`
+		mck_max_mem_size=`expr $total_mem \* 1024 \* 1024`
 	fi
 
 	mck_max_mem_size_95p=`expr $mck_max_mem_size / 20`
 	mck_max_mem_size_110p=`expr $mck_max_mem_size_95p \* 22`
 	mck_max_mem_size_95p=`expr $mck_max_mem_size_95p \* 19`
 	${DRYRUN} echo "mck_max_mem_size:$mck_max_mem_size"
+fi
 
 if [ $do_initialize = "yes" ]; then
 	#### insmod test driver ####
-	echo "insmod test_drv"
-	sh "$insmod_test_drv_sh"
+#SKIP	echo "insmod test_drv"
+#SKIP	sh "$insmod_test_drv_sh"
 fi
 
 	#### other than test_mck tp case ####
@@ -420,10 +426,10 @@ ${NG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s rt_sigact
 		${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s ptrace -n $tp_num
 	done
 
-${DRYRUN}	echo "## mmap_dev ##"
-${DRYRUN}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mmap_dev -n 0 -- -d /dev/test_mck/mmap_dev -s 8192
-${DRYRUN}${NG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mmap_dev -n 1 -- -d /dev/test_mck/mmap_dev2 -s 8192
-${DRYRUN}${NG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mmap_dev -n 2 -- -d /dev/test_mck/mmap_dev2 -s 8192
+	echo "## mmap_dev ##"
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mmap_dev -n 0 -- -d /dev/test_mck/mmap_dev -s 8192
+${NG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mmap_dev -n 1 -- -d /dev/test_mck/mmap_dev2 -s 8192
+${NG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mmap_dev -n 2 -- -d /dev/test_mck/mmap_dev2 -s 8192
 
 	echo "## tgkill ##"
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s tgkill -n 0
@@ -911,8 +917,8 @@ ${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s clock_g
 #SKIP	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s fpregs -n 4
 #SKIP	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s fpregs -n 5 -- -p $mck_max_cpus
 
-${DRYRUN}	echo "## force_exit ##"
-${DRYRUN}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s force_exit -n 0 -- -f $mmapfile_name -d /dev/test_mck/mmap_dev &
+	echo "## force_exit ##"
+	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s force_exit -n 0 -- -f $mmapfile_name -d /dev/test_mck/mmap_dev &
 ${DRYRUN}	sleep 3
 ${DRYRUN}	echo "send SIGKILL for mcexec."
 ${DRYRUN}	kill -9 `${pidofcomm}`
