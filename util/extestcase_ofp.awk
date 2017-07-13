@@ -73,13 +73,14 @@ BEGIN {
 !/^##/ && flagSkip != 1 {
     testscript = sprintf("%s/%s.%03d", testcasedir, testname, count);
     outputfile = sprintf("%s/%s.%03d", outputdir, testname, count);
-    system("mkdir -p " workdir "/" testname);
+    workdir2 = sprintf("%s/%s.%03d", workdir, testname, count);
+    system("mkdir -p " workdir2);
     print "#!/bin/sh"  > testscript;
     append_testscript("before_run_testcase_ofp.sh");
     printf("\necho \"## %s ##\"\n\n", testname) >> testscript;
     printf("testcase=%s.%03d\n", testname, count) >> testscript;
     printf("testno=%d\n", count) >> testscript;
-    printf("cd " workdir "/" testname) >> testscript;
+    printf("cd " workdir2 "\n") >> testscript;
     if (existScript) {
 	append_testscript("before_" testname ".sh");
     }

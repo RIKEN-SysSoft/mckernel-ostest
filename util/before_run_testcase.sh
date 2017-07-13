@@ -153,15 +153,6 @@ do
 done
 shift `expr $OPTIND - 1`
 
-if [ $do_initialize = "yes" ]; then
-    # get mck ap num
-    mck_ap_num=$num_cpus_m1
-    mck_ap_num_even=$mck_ap_num
-
-    if [ `expr $mck_ap_num_even % 2` -ne 0 ]; then
-	mck_ap_num_even=`expr $mck_ap_num_even - 1`
-    fi
-fi
 
 	#### initialize ####
 	addusr=0
@@ -208,6 +199,14 @@ if [ $do_initialize = "yes" ]; then
 	num_cpus_m3=`expr $num_cpus - 3`
 	num_cpus_m4=`expr $num_cpus - 4`
 	num_cpus_m5=`expr $num_cpus - 5`
+
+	# get mck ap num
+	mck_ap_num=$num_cpus_m1
+	mck_ap_num_even=$mck_ap_num
+
+	if [ `expr $mck_ap_num_even % 2` -ne 0 ]; then
+	    mck_ap_num_even=`expr $mck_ap_num_even - 1`
+	fi
 
 	if [ "${runHOST}" != "yes" ]; then
 	        num_other_procs=0

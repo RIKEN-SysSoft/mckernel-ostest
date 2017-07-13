@@ -155,16 +155,6 @@ do
 done
 shift `expr $OPTIND - 1`
 
-if [ $do_initialize = "yes" ]; then
-    # get mck ap num
-    mck_ap_num=$num_cpus_m1
-    mck_ap_num_even=$mck_ap_num
-
-    if [ `expr $mck_ap_num_even % 2` -ne 0 ]; then
-	mck_ap_num_even=`expr $mck_ap_num_even - 1`
-    fi
-fi
-
 # run regression
 #while :
 #do
@@ -216,6 +206,14 @@ if [ $do_initialize = "yes" ]; then
 	num_cpus_m4=`expr $num_cpus - 4`
 	num_cpus_m5=`expr $num_cpus - 5`
 
+	# get mck ap num
+	mck_ap_num=$num_cpus_m1
+	mck_ap_num_even=$mck_ap_num
+
+	if [ `expr $mck_ap_num_even % 2` -ne 0 ]; then
+	    mck_ap_num_even=`expr $mck_ap_num_even - 1`
+	fi
+
 	if [ "${runHOST}" != "yes" ]; then
 	        num_other_procs=0
 		rlimit_nproc=`expr $num_other_procs + $num_cpus`
@@ -262,7 +260,7 @@ fi
 
 	echo "## lv07 ##"
 	${mcexec} $execve_comm "$app_prefix/lv07-st" $execve_arg_end $ostype_name
-#	${mcexec} $execve_comm "$app_prefix/lv07-pth" $execve_arg_end $ostype_name
+	${mcexec} $execve_comm "$app_prefix/lv07-pth" $execve_arg_end $ostype_name $num_cpus $rlimit_nproc
 
 #	count=1
 #	while [ $count -le $mck_max_cpus ]
