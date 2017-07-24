@@ -23,3 +23,5 @@
 	fi
 
 cd $cwd
+
+exit $rc

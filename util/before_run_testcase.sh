@@ -82,7 +82,7 @@ mck_max_mem_size=
 HANG=":"
 NG=":"
 incNH=
-runHOST=
+runHOST=no
 pidofcomm="pidof mcexec"
 do_initialize="yes"
 DRYRUN=
@@ -244,3 +244,6 @@ if [ $do_initialize = "yes" ]; then
 	echo "insmod test_drv"
 	sh "$insmod_test_drv_sh"
 fi
+
+rc=0
+

@@ -271,7 +271,11 @@ fi
 #	count=0
 
 	echo "## lv09 ##"
+if [ x${DRYRUN} != "x:" ]; then
 	${mcexec} $execve_comm "$app_prefix/lv09-pgf" $execve_arg_end w $temp aaabbbcccdddeeefffggghhh\\n
+else
+	${mcexec} $execve_comm "$app_prefix/lv09-pgf" $execve_arg_end w $temp aaabbbcccdddeeefffggghhh\\\\n
+fi
 	${mcexec} $execve_comm "$app_prefix/lv09-pgf" $execve_arg_end r $temp
 
 	echo "## lv11 ##"
