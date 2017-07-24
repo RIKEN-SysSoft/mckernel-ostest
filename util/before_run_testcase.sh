@@ -1,5 +1,11 @@
+ulimit -c unlimited
+
 cwd=`pwd`
-this_dir="$(cd $(dirname $0); pwd)/.."
+if [ "x${AUTOTEST_HOME}" == "x" ]; then
+    this_dir="$(cd $(dirname $0); pwd)/.."
+else
+    this_dir=$cwd
+fi
 
 # memsize
 total_mem=`free -m | grep Mem: | awk '{print $2}'`

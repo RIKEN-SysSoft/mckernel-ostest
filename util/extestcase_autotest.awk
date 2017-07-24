@@ -48,7 +48,7 @@ BEGIN {
     workdir2 = sprintf("$WORKDIR/ostest-%s.%03d", testname, count);
     workdir2_host = sprintf("$DATADIR/linux/ostest-%s.%03d", testname, count);
     print "#!/bin/sh"  > testscript;
-    printf("export AUTOTEST_HOME=`dirname $0`/../../\n") >> testscript;
+    printf("export AUTOTEST_HOME=%s\n", autotest_home) >> testscript;
     printf(". $AUTOTEST_HOME/bin/config.sh\n") >> testscript;
     printf("cd $AUTOTEST_HOME/ostest/util\n\n") >> testscript;
 
@@ -68,11 +68,16 @@ BEGIN {
     if (existScript) {
 	append_testscript("before_" testname ".sh");
     }
-    if ((testname == "siginfo" || testname == "force_exit") && count == 1) {
+    if ((testname == "siginfo" && count == 1) || testname == "force_exit") {
 	printf("%s > $outputfile &\n", $0)  >> testscript;
     } else {
 	printf("%s > $outputfile\n", $0)  >> testscript;
     }
+
+    if (existScript) {
+	append_testscript("after_" testname ".sh");
+    }
+
     printf("if [ \"${runHOST}\" != \"yes\" ]; then\n") >> testscript;
     printf("	core_linux=`ls %s | wc -l`\n", workdir2_host) >> testscript;
     printf("	core_mck=`ls %s | wc -l`\n", workdir2) >> testscript;
@@ -80,15 +85,13 @@ BEGIN {
     printf("	nl_mck=`wc -l %s | cut -d ' ' -f 1`\n", outputfile) >> testscript;
     printf("	result_linux=`awk -F ':' '$1=="RESULT" {print $2}' %s`\n", outputfile_host) >> testscript;
     printf("	result_mck=`awk -F ':' '$1=="RESULT" {print $2}' %s`\n", outputfile) >> testscript;
-    printf("	if [ $core_linux -eq $core_mck -a $nl_linux -eq $nl_mck -a $result_linux -eq $result_mck ]; then\n") >> testscript;
+    printf("	if [ $core_linux -eq $core_mck ] && [ $nl_linux -eq $nl_mck ] && [ $result_linux -eq $result_mck ]; then\n") >> testscript;
     printf("		rc=0\n") >> testscript;
     printf("	else\n") >> testscript;
     printf("		rc=1\n") >> testscript;
     printf("	fi\n") >> testscript;
     printf("fi\n") >> testscript;
-    if (existScript) {
-	append_testscript("after_" testname ".sh");
-    }
+
     append_testscript("after_run_testcase.sh");
     system("chmod +x " testscript);
 

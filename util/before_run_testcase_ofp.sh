@@ -8,6 +8,8 @@
 #PJM -j
 #PJM -S
 
+ulimit -c unlimited
+
 cwd=`pwd`
 this_dir="$(cd $(dirname $0); pwd)/.."
 
