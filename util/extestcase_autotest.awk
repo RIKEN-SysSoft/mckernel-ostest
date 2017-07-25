@@ -43,9 +43,9 @@ BEGIN {
 
 !/^##/ {
     testscript = sprintf("%s/ostest-%s.%03d", testcasedir, testname, count);
-    outputfile = sprintf("$WORKDIR/ostest-%s.%03d.output", testname, count);
+    outputfile = sprintf("$WORKDIR/output/ostest-%s.%03d.output", testname, count);
     outputfile_host = sprintf("$DATADIR/linux/ostest-%s.%03d.output", testname, count);
-    workdir2 = sprintf("$WORKDIR/ostest-%s.%03d", testname, count);
+    workdir2 = sprintf("$WORKDIR/output/ostest-%s.%03d", testname, count);
     workdir2_host = sprintf("$DATADIR/linux/ostest-%s.%03d", testname, count);
     print "#!/bin/sh"  > testscript;
     printf("export AUTOTEST_HOME=%s\n", autotest_home) >> testscript;
@@ -68,6 +68,8 @@ BEGIN {
     if (existScript) {
 	append_testscript("before_" testname ".sh");
     }
+
+    printf("rm -f $WORKDIR/result.log\n") >> testscript;
     if ((testname == "siginfo" && count == 1) || testname == "force_exit") {
 	printf("%s > $outputfile &\n", $0)  >> testscript;
     } else {
@@ -83,18 +85,20 @@ BEGIN {
     printf("	core_mck=`ls %s | wc -l`\n", workdir2) >> testscript;
     printf("	nl_linux=`wc -l %s | cut -d ' ' -f 1`\n", outputfile_host) >> testscript;
     printf("	nl_mck=`wc -l %s | cut -d ' ' -f 1`\n", outputfile) >> testscript;
-    printf("	result_linux=`awk -F ':' '$1=="RESULT" {print $2}' %s`\n", outputfile_host) >> testscript;
-    printf("	result_mck=`awk -F ':' '$1=="RESULT" {print $2}' %s`\n", outputfile) >> testscript;
-    printf("	if [ $core_linux -eq $core_mck ] && [ $nl_linux -eq $nl_mck ] && [ $result_linux -eq $result_mck ]; then\n") >> testscript;
+    printf("	result_linux=`awk -F ':' '$1==\"RESULT\" {print $2}' %s`\n", outputfile_host) >> testscript;
+    printf("	result_mck=`awk -F ':' '$1==\"RESULT\" {print $2}' %s`\n", outputfile) >> testscript;
+    printf("	if [ $core_linux -eq $core_mck ] && [ $nl_linux -eq $nl_mck ] && [ \"x$result_linux\" = \"x$result_mck\" ]; then\n") >> testscript;
     printf("		rc=0\n") >> testscript;
     printf("	else\n") >> testscript;
     printf("		rc=1\n") >> testscript;
     printf("	fi\n") >> testscript;
     printf("fi\n") >> testscript;
+    printf("echo $rc > $WORKDIR/result.log\n") >> testscript;
 
     append_testscript("after_run_testcase.sh");
     system("chmod +x " testscript);
 
-    printf("$DATADIR/script/ostest-%s.%03d\n", testname, count) >> testlistfile;
+#    printf("$DATADIR/script/ostest-%s.%03d\n", testname, count) >> testlistfile;
+    printf("ostest-%s.%03d\n", testname, count) >> testlistfile;
     count++;
 }
