@@ -11,9 +11,10 @@ function append_testscript(filename) {
 
 BEGIN { 
     "pwd -P" | getline cwd;
+    autotest_home = "/work/mcktest";
     testcasedir = sprintf("%s/%s", cwd, "testcase_linux"); 
-    outputdir = sprintf("%s/%s", cwd, "output_linux");
-    workdir = sprintf("%s/%s", cwd, "work_linux");
+    outputdir = sprintf("%s/data/linux", autotest_home);
+    workdir = sprintf("%s/data/linux", autotest_home);
     testlistfile = sprintf("%s/testlist_linux", cwd);
     system("rm -f " testlistfile);
     system("rm -rf " testcasedir);
@@ -51,7 +52,7 @@ BEGIN {
 
 !/^##/ {
     testscript = sprintf("%s/%s.%03d", testcasedir, testname, count);
-    outputfile = sprintf("%s/%s.%03d", outputdir, testname, count);
+    outputfile = sprintf("%s/%s.%03d.output", outputdir, testname, count);
     workdir2 = sprintf("%s/%s.%03d", workdir, testname, count);
     system("mkdir -p " workdir2);
     print "#!/bin/sh"  > testscript;
