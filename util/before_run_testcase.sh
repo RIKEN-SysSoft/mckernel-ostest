@@ -3,8 +3,10 @@ ulimit -c unlimited
 cwd=`pwd`
 if [ "x${AUTOTEST_HOME}" == "x" ]; then
     this_dir="$(cd $(dirname $0); pwd)/.."
+    autotest_home="$this_dir/../../"
 else
     this_dir=$cwd
+    autotest_home="$AUTOTEST_HOME"
 fi
 
 # memsize
@@ -198,7 +200,8 @@ shift `expr $OPTIND - 1`
 	echo "core.host.%p" > /proc/sys/kernel/core_pattern
 
 if [ $do_initialize = "yes" ]; then
-	num_cpus=`${mcexec} numactl -H | awk '$3=="cpus:"{ncpu += NF - 3} END{print ncpu}'`
+#	num_cpus=`${mcexec} numactl -H | awk '$3=="cpus:"{ncpu += NF - 3} END{print ncpu}'`
+        num_cpus=`${autotest_home}/bin/getncpusmck.sh`
 	num_cpus_p1=`expr $num_cpus + 1`
 	num_cpus_m1=`expr $num_cpus - 1`
 	num_cpus_m2=`expr $num_cpus - 2`
