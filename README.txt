@@ -9,7 +9,7 @@ README
 -------------------------------------------------------------------------------------
 ■ディレクトリ構造
   <root>
-    `- test_set/
+    `- ostest/
         |- README.txt                               :本テキストファイル
         |- NG_item_list.txt                         :NG項目詳細テキストファイル
         |
@@ -51,22 +51,22 @@ README
   ※TPのビルドはドライバを含むため、McKernel実行環境上で行う必要がある。
     ビルド済みバイナリは同梱していない。
 
-  $ cd <root>/test_set/src/
+  $ cd <root>/ostest/src/
   $ make
 
-  上記makeによって、<root>/test_set/bin配下にTPバイナリが生成される。
+  上記makeによって、<root>/ostest/bin配下にTPバイナリが生成される。
 
 
 -------------------------------------------------------------------------------------
 ■TP実行方法
-  ※各テスト実行用スクリプトは、<root>/test_set/installにIHK/McKernelが
+  ※各テスト実行用スクリプトは、<root>/ostest/installにIHK/McKernelが
     インストールされている前提で作成している。
-    そのため、IHK/McKernelを<root>/test_set/installにインストールする必要がある。
+    そのため、IHK/McKernelを<root>/ostest/installにインストールする必要がある。
 
   $ cd <src_dir>/ihk
-  $ ./configure --with-target=smp-x86 --prefix=<root>/test_set/install
+  $ ./configure --with-target=smp-x86 --prefix=<root>/ostest/install
   $ cd <src_dir>/mckernel
-  $ ./configure --with-target=smp-x86 --prefix=<root>/test_set/install
+  $ ./configure --with-target=smp-x86 --prefix=<root>/ostest/install
   $ cd <src_dir>/ihk
   $ make && make install
   $ cd <src_dir>/mckernel
@@ -74,7 +74,7 @@ README
 
   NG項目を除くテストセットの実行は、以下コマンドを実行する。
 
-  $ cd <root>/test_set
+  $ cd <root>/ostest
   $ sh util/run_test_x86.sh -n
 
   run_test_x86.shのオプションは以下の通り。
@@ -105,7 +105,7 @@ README
 ■TP結果確認方法
   TP結果の確認は、下記のログファイルとの比較で行う。
 
-  <root>/test_set/log/run_test_x86_log.txt
+  <root>/ostest/log/run_test_x86_log.txt
 
   差分については、実行毎／環境で変化する可能性がある項目も含まれるため、
   各差分について実行毎／環境で変化する差分であるかどうかを評価する。
