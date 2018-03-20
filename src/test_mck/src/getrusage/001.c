@@ -6,6 +6,7 @@
 #include <signal.h>
 #include <sys/types.h> 
 #include <sys/wait.h>
+#include <sys/mman.h>
 
 #include "test_mck.h"
 #include "testsuite.h"
@@ -34,9 +35,9 @@ void getrusage001_child(void)
 
 	/* allocation memory */
 	printf("allocation memory %ld byte(%ld KiB)\n", TEMP_BUF_SIZE, TEMP_BUF_SIZE / 1024);
-	tmp_buf = malloc(TEMP_BUF_SIZE);
+	tmp_buf = mmap(0, TEMP_BUF_SIZE, PROT_READ|PROT_WRITE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
 	if (!tmp_buf) {
-		printf("malloc() failed.\n");
+		printf("mmap() failed.\n");
 		return;
 	}
 	memset(tmp_buf, 0xff, TEMP_BUF_SIZE);
@@ -55,7 +56,7 @@ void getrusage001_child(void)
 
 	/* free memory */
 	printf("free memory %ld byte(%ld KiB)\n", TEMP_BUF_SIZE, TEMP_BUF_SIZE / 1024);
-	free(tmp_buf);
+	munmap(tmp_buf, TEMP_BUF_SIZE);
 
 	return;
 }

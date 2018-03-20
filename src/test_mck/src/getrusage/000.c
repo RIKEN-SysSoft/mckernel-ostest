@@ -4,6 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <signal.h>
+#include <sys/mman.h>
 
 #include "test_mck.h"
 #include "testsuite.h"
@@ -35,9 +36,9 @@ RUN_FUNC(TEST_SUITE, TEST_NUMBER)
 
 	/* allocation memory */
 	printf("allocation memory %ld byte(%ld KiB)\n", TEMP_BUF_SIZE, TEMP_BUF_SIZE / 1024);
-	tmp_buf = malloc(TEMP_BUF_SIZE);
+	tmp_buf = mmap(0, TEMP_BUF_SIZE, PROT_READ|PROT_WRITE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
 	if (!tmp_buf) {
-		tp_assert(0, "malloc() failed.");
+		tp_assert(0, "mmap() failed.");
 	}
 	memset(tmp_buf, 0xff, TEMP_BUF_SIZE);
 
@@ -58,7 +59,7 @@ RUN_FUNC(TEST_SUITE, TEST_NUMBER)
 
 	/* free memory */
 	printf("free memory %ld byte(%ld KiB)\n", TEMP_BUF_SIZE, TEMP_BUF_SIZE / 1024);
-	free(tmp_buf);
+	munmap(tmp_buf, TEMP_BUF_SIZE);
 
 	/* after free memory show rusage */
 	tp_assert(!send_and_show_rusage(RUSAGE_SELF), "getrusage() failed.");
