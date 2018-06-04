@@ -48,7 +48,7 @@ BEGIN {
     workdir2 = sprintf("$WORKDIR/output/ostest-%s.%03d", testname, count);
     workdir2_host = sprintf("$DATADIR/linux/ostest-%s.%03d", testname, count);
     print "#!/bin/sh"  > testscript;
-    printf("export AUTOTEST_HOME=%s\n", autotest_home) >> testscript;
+    print("if [ \"$AUTOTEST_HOME\" == \"\" ]; then echo AUTOTEST_HOME not defined >&2; exit 1; fi\n") >> testscript;
     printf(". $AUTOTEST_HOME/bin/config.sh\n") >> testscript;
     printf("cd $AUTOTEST_HOME/ostest/util\n\n") >> testscript;
 
