@@ -565,6 +565,9 @@ ${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s nfo -n 
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s remap_file_pages -n 0 -- -s $((256*1024*1024))
 
 	echo "## mem_limits ##"
+	if [ "X$runHOST" = Xyes ]; then
+		swapoff -a
+	fi
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mem_limits -n 0 -- -f mmap -s $((1024*1024)) -c 1
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mem_limits -n 0 -- -f mmap -s $mck_max_mem_size_95p -c 1
 ${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mem_limits -n 0 -- -f mmap -s $mck_max_mem_size -c 1
@@ -579,6 +582,9 @@ ${HANG}	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s mem_lim
 #	else
 #		echo "## large_bss SKIP ##"
 #	fi
+	if [ "X$runHOST" = Xyes ]; then
+		swapon -a
+	fi
 
 	echo "## system ##"
 	${mcexec} $execve_comm "$app_prefix/test_mck" $execve_arg_end -s system -n 0
