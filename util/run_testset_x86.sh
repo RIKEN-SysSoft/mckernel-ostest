@@ -233,7 +233,17 @@ if [ $do_initialize = "yes" ]; then
 
 		#### get McKernel memory size ####
 		echo "get McKernel memory size."
-		mck_max_mem_size=`"$ihkosctl" 0 query mem | cut -d '@' -f 1`
+		mck_max_mem_size=`"$ihkosctl" 0 query mem | awk -F, '
+			{
+				for (i = 1; i <= NF; i++) {
+					split($i, a, /@/)
+					n += a[1]
+				}
+			}
+			END {
+				print n
+			}
+			'`
 	else
 		${DRYRUN} echo "calc test use memory size."
 		mck_max_mem_size=`expr $total_mem \* 1024 \* 1024`
