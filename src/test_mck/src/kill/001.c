@@ -5,6 +5,7 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <sys/wait.h>
+#include <sys/syscall.h>
 
 SETUP_FUNC(TEST_SUITE, TEST_NUMBER)
 {
@@ -21,7 +22,8 @@ RUN_FUNC(TEST_SUITE, TEST_NUMBER)
 	int fork_error_flag = 0;
 
 	tp_assert(args->proc_num > 0, "mandatory parameter '-p <num_of_child_procs>'");
-	tp_assert(get_cpu_id() != -1, "Don't run this TP on HostLinux!!");
+	tp_assert(syscall(__NR_get_cpu_id) != -1,
+		"Don't run this TP on HostLinux!!");
 
 	child_pids = (int *)malloc(sizeof(int) * args->proc_num);
 
