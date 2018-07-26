@@ -2,7 +2,7 @@
 #include "test_mck.h"
 #include "testsuite.h"
 #include <unistd.h>
-#include <sys/syscall.h>
+#include <sched.h>
 
 SETUP_EMPTY(TEST_SUITE, TEST_NUMBER)
 
@@ -11,9 +11,9 @@ RUN_FUNC(TEST_SUITE, TEST_NUMBER)
 	unsigned int cpu;
 	unsigned int node;
 	int stat;
-	unsigned int exp_cpu = (unsigned int)syscall(__NR_get_cpu_id);
+	unsigned int exp_cpu = sched_getcpu();
 
-	tp_assert(0 <= exp_cpu, "get_cpu_id syscall Failed. (You ran the test in Linux?)");
+	tp_assert(0 <= exp_cpu, "Why sched_getcpu failed?");
 
 	stat = getcpu(&cpu, &node);
 	tp_assert(stat == 0, "getcpu error.");
