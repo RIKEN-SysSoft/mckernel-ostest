@@ -34,7 +34,8 @@ BEGIN {
 	testname == "lv11" ||
 	testname == "lv15" ||
 	testname == "readlinkat" ||
-	testname == "force_exit") {
+	testname == "force_exit" ||
+	testname == "mem_limits") {
 	existScript = 1;
     } else {
 	existScript = 0;
