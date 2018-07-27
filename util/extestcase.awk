@@ -11,7 +11,8 @@ function append_testscript(filename) {
 
 BEGIN { 
     "pwd -P" | getline cwd;
-    autotest_home = "/work/mcktest";
+    "dirname " ARGV[0] | getline dir;
+    "cd " dir "/../.. && pwd -P" | getline autotest_home;
     testcasedir = sprintf("%s/%s", cwd, "testcase_linux"); 
     outputdir = sprintf("%s/data/linux", autotest_home);
     workdir = sprintf("%s/data/linux", autotest_home);

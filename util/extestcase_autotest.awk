@@ -11,7 +11,8 @@ function append_testscript(filename) {
 
 BEGIN { 
     "pwd -P" | getline cwd;
-    autotest_home = "/work/mcktest";
+    "dirname " ARGV[0] | getline dir;
+    "cd " dir "/../.. && pwd -P" | getline autotest_home;
     testcasedir = sprintf("%s/data/script", autotest_home); 
     testlistfile = sprintf("%s/data/ostest-testlist", autotest_home);
     testname = "#";
