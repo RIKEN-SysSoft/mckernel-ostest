@@ -123,6 +123,7 @@ do
       app_dir='${app_dir}'
       app_prefix=$app_dir
       num_cpus='${num_cpus}'
+      getaff_cpus='${getaff_cpus}'
       num_cpus_p1='${num_cpus_p1}'
       num_cpus_m1='${num_cpus_m1}'
       num_cpus_m2='${num_cpus_m2}'
@@ -136,6 +137,8 @@ do
       mck_max_mem_size_110p='${mck_max_mem_size_110p}'
       mck_ap_num='${mck_ap_num}'
       mck_ap_num_even='${mck_ap_num_even}'
+      gid='${gid}'
+      uid='${uid}'
 
       # test file
       this_dir='${this_dir}'
