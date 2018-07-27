@@ -72,7 +72,7 @@ BEGIN {
     }
 
     printf("rm -f $WORKDIR/result.log\n") >> testscript;
-    if ((testname == "siginfo" && count == 1) || testname == "force_exit") {
+    if ((testname == "siginfo" && count == 1) || (testname == "force_exit" && count == 0)) {
 	printf("%s > $outputfile &\n", $0)  >> testscript;
     } else {
 	printf("%s > $outputfile\n", $0)  >> testscript;

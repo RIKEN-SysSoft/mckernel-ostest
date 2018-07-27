@@ -66,7 +66,7 @@ BEGIN {
     if (existScript) {
 	append_testscript("before_" testname ".sh");
     }
-    if ((testname == "siginfo" || testname == "force_exit") && count == 1) {
+    if ((testname == "siginfo" && count == 1) || (testname == "force_exit" && count == 0)) {
 	printf("%s > %s &\n", $0, outputfile)  >> testscript;
     } else {
 	printf("%s > %s\n", $0, outputfile)  >> testscript;
