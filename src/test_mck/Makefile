@@ -45,7 +45,7 @@ CPPFLAGS += $(foreach dir,$(INC_DIRS),-I$(dir))
 CPPFLAGS += -D_GNU_SOURCE
 
 # link.
-LDFLAGS  += -lpthread
+LDFLAGS  += -lpthread -lm
 LOADLIBS +=
 
 #--------

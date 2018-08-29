@@ -5,10 +5,12 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <fenv.h>
 #include <sys/ptrace.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/mman.h>
+#include <sys/user.h> /* for GETFPREGS */
 #include "test_mck.h"
 #include "arch_test_ptrace.h"
 
@@ -30,6 +32,9 @@ static int child_func(sem_t *swait, sem_t *swake)
 	/* semaphore wakeup */
 	sem_post(swake);
 
+	/* change current cpu's fpregs */
+	feraiseexcept(FE_ALL_EXCEPT);
+
 	/* semaphore wait */
 	sem_wait(swait);
 
@@ -44,9 +49,13 @@ static int parent_func(sem_t *swait, sem_t *swake, pid_t cpid)
 	pid_t pid = 0;
 	int status = 0;
 	int ret = -1;
+	struct user_fpregs_struct fpregs;
 
 	/* semaphore wait */
 	sem_wait(swait);
+
+	/* wait for child's fpregs is changed */
+	usleep(1000);
 
 	/* send SIGSTOP signal */
 	if (kill(cpid, SIGSTOP)) {
@@ -69,8 +78,15 @@ static int parent_func(sem_t *swait, sem_t *swake, pid_t cpid)
 		goto out;
 	}
 
-	if (getregset_check(cpid)) {
-		printf("getregset_check failed.\n");
+	/* get child's fpregs */
+	if (ptrace(PTRACE_GETFPREGS, cpid, NULL, &fpregs)) {
+		perror("ptrace(PTRACE_GETFPREGS)");
+		goto cont;
+	}
+
+	/* check child's fpregs */
+	printf("child's fpregs.swd is 0x%x (expected NOT ZERO)\n", fpregs.swd);
+	if (fpregs.swd == 0) {
 		goto cont;
 	}
 
@@ -114,6 +130,9 @@ RUN_FUNC(TEST_SUITE, TEST_NUMBER)
 		perror("sem_init()");
 		return "sem_init() failed.";
 	}
+
+	/* change current cpu's fpregs */
+	feclearexcept(FE_ALL_EXCEPT);
 
 	/* create child process */
 	pid = fork();

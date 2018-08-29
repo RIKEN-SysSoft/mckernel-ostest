@@ -70,6 +70,9 @@ unsigned long test_mck_strtoul(const char *nptr, unsigned long default_value);
 /* memory */
 #define PAGE_SIZE    (1UL << PAGE_SHIFT)
 #define PAGE_OFFSET  (PAGE_SIZE - 1UL)
+#ifdef PAGE_MASK
+#undef PAGE_MASK
+#endif
 #define PAGE_MASK    (~PAGE_OFFSET)
 
 #define LARGE_PAGE_SIZE    (1UL << LARGE_PAGE_SHIFT)
