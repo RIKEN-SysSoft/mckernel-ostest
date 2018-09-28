@@ -24,13 +24,12 @@ RUN_FUNC(TEST_SUITE, TEST_NUMBER)
 	tp_assert(cpusetp != NULL, "alloc failed.");
 
 	/*
-	 * size : While having a bit of only can express the number of cores, 
-	 *       and is not a value in multiples of 8.
-	 *
-	 * if nr_cpus equals to 64, then sched_setaffinity will return success.
+	 * The following check, which checks if Linux returns -1 when
+	 * the size isn't multiple of 8 is obsolete so the expected
+	 * return value is modified to zero.
 	 */
 	size = primitive_ceil(nr_cpus, sizeof(unsigned long));
-	expect_error = ((int)size) % sizeof(unsigned long) ? -1 : 0;
+	expect_error = /* ((int)size) % sizeof(unsigned long) ? -1 : */0;
 
 	CPU_ZERO_S(size, cpusetp);
 	CPU_SET_S(nr_cpus - 1, size, cpusetp);
@@ -38,11 +37,7 @@ RUN_FUNC(TEST_SUITE, TEST_NUMBER)
 	result = sched_setaffinity(0, size, cpusetp);
 	CPU_FREE(cpusetp);
 
-	tp_assert(result == expect_error, "sched_setaffinity returns unexpected error.");
-	if(result == 0) {
-		printf("sched_setaffinity result:%d, errno:%d (expect error is \"EINVAL\"=%d)\n", result, errno, EINVAL);
-		tp_assert(errno == EINVAL, "Unexpected error is occur.");
-	}
+	tp_assert(result == expect_error, "sched_setaffinity returned unexpected value.");
 
 	/* テスト成功 */
 	return NULL;
