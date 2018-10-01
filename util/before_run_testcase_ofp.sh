@@ -19,7 +19,7 @@ mem_size_def=$(( $total_mem - ($total_mem * (100 - 45) / 100)))
 boot_mem="${mem_size_def}M@0"
 
 # path
-install_dir=${this_dir}/../install
+install_dir=${WORKDIR}/mck
 mcexec=${install_dir}/bin/mcexec
 app_dir=${this_dir}/../bin
 mcreboot=${install_dir}/sbin/mcreboot.sh
