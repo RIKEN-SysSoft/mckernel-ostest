@@ -16,6 +16,10 @@ if [ $testno -ge 2 ]; then
     ulimit -s unlimited
 fi
 
+ulimit_c_orig=`ulimit -c`
+echo "ulimit -c unlimited"
+ulimit -c unlimited
+
 if [ "X$runHOST" = Xyes ]; then
     swapoff -a
 fi
