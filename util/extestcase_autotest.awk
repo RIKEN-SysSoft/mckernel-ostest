@@ -123,9 +123,22 @@ BEGIN {
     } else {
 	printf("	core_linux=`ls %s | wc -l`\n", workdir2_host) >> testscript;
 	printf("	core_mck=`ls %s | wc -l`\n", workdir2) >> testscript;
-	printf("	if [ $core_linux -eq $core_mck ] && [ $nl_linux -eq $nl_mck ] && [ \"x$result_linux\" = \"x$result_mck\" ]; then\n") >> testscript;
-	printf("		rc=0\n") >> testscript;
-	printf("	else\n") >> testscript;
+
+	printf("	rc=0\n") >> testscript;
+
+	printf("	if [ $core_linux -ne $core_mck ]; then\n") >> testscript;
+	printf("		echo \"Core file counts do not match ($core_linux vs. $core_mck)\"\n") >> testscript;
+
+	printf("		rc=1\n") >> testscript;
+	printf("	fi\n") >> testscript;
+
+	printf("	if [ $nl_linux -ne $nl_mck ]; then\n") >> testscript;
+	printf("		echo \"Numbers of lines of log do not match ($nl_linux vs. $nl_mck)\"\n") >> testscript;
+	printf("		rc=1\n") >> testscript;
+	printf("	fi\n") >> testscript;
+
+	printf("	if [ \"x$result_linux\" != \"x$result_mck\" ]; then\n") >> testscript;
+	printf("		echo \"Exit statuses do not match ($result_linux vs. $result_mck)\"\n") >> testscript;
 	printf("		rc=1\n") >> testscript;
 	printf("	fi\n") >> testscript;
     }
