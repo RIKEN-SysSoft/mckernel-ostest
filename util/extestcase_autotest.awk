@@ -82,13 +82,6 @@ BEGIN {
 	append_testscript("after_" testname ".sh");
     }
 
-    printf("if [ \"${runHOST}\" != \"yes\" ]; then\n") >> testscript;
-    printf("	nl_linux=`wc -l %s | cut -d ' ' -f 1`\n", outputfile_host) >> testscript;
-    printf("	nl_mck=`wc -l %s | cut -d ' ' -f 1`\n", outputfile) >> testscript;
-    printf("	result_linux=`awk -F ':' '$1==\"RESULT\" {print $2}' %s`\n", outputfile_host) >> testscript;
-    printf("	result_mck=`awk -F ':' '$1==\"RESULT\" {print $2}' %s`\n", outputfile) >> testscript;
-
-
     if ((testname == "lv11" && count == 0) ||
 	(testname == "lv11" && count == 2) ||
 	(testname == "lv11" && count == 6) ||
@@ -112,39 +105,23 @@ BEGIN {
 	(testname == "nfo" && count == 3) ||
 	(testname == "times" && count == 1) ||
 	(testname == "clock_gettime" && count == 0)) {
-	printf("	sleep 3\n") >> testscript;
-	printf("	$MCKINSTALL/sbin/ihkosctl 0 kmsg > /tmp/autotest-kmsg.txt\n") >> testscript;
-	printf("	fgrep page_fault_handler /tmp/autotest-kmsg.txt > /dev/null\n") >> testscript;
-	printf("	if [ $? -eq 0 ]; then\n") >> testscript;
-	printf("		rc=0\n") >> testscript;
-	printf("	else\n") >> testscript; 
-	printf("		rc=1\n") >> testscript;
-	printf("	fi\n") >> testscript;
+	check_fn = "check_page_fault.sh";
+    } else if ((testname == "getrusage" && count == 0) ||
+	       (testname == "getrusage" && count == 1) ||
+	       (testname == "getrusage" && count == 2)){
+	check_fn = sprintf("check_" testname ".%03d.sh", count);
     } else {
+	printf("if [ \"${runHOST}\" != \"yes\" ]; then\n") >> testscript;
+	printf("	nl_linux=`wc -l %s | cut -d ' ' -f 1`\n", outputfile_host) >> testscript;
+	printf("	nl_mck=`wc -l %s | cut -d ' ' -f 1`\n", outputfile) >> testscript;
+	printf("	result_linux=`awk -F ':' '$1==\"RESULT\" {print $2}' %s`\n", outputfile_host) >> testscript;
+	printf("	result_mck=`awk -F ':' '$1==\"RESULT\" {print $2}' %s`\n", outputfile) >> testscript;
 	printf("	core_linux=`ls %s | wc -l`\n", workdir2_host) >> testscript;
 	printf("	core_mck=`ls %s | wc -l`\n", workdir2) >> testscript;
-
-	printf("	rc=0\n") >> testscript;
-
-	printf("	if [ $core_linux -ne $core_mck ]; then\n") >> testscript;
-	printf("		echo \"Core file counts do not match ($core_linux vs. $core_mck)\"\n") >> testscript;
-
-	printf("		rc=1\n") >> testscript;
-	printf("	fi\n") >> testscript;
-
-	printf("	if [ $nl_linux -ne $nl_mck ]; then\n") >> testscript;
-	printf("		echo \"Numbers of lines of log do not match ($nl_linux vs. $nl_mck)\"\n") >> testscript;
-	printf("		rc=1\n") >> testscript;
-	printf("	fi\n") >> testscript;
-
-	printf("	if [ \"x$result_linux\" != \"x$result_mck\" ]; then\n") >> testscript;
-	printf("		echo \"Exit statuses do not match ($result_linux vs. $result_mck)\"\n") >> testscript;
-	printf("		rc=1\n") >> testscript;
-	printf("	fi\n") >> testscript;
+	check_fn = "check_default.sh";
     }
 
-    printf("fi\n") >> testscript;
-    printf("echo $rc > $WORKDIR/result.log\n") >> testscript;
+    append_testscript(check_fn);
 
     append_testscript("after_run_testcase.sh");
     system("chmod +x " testscript);
