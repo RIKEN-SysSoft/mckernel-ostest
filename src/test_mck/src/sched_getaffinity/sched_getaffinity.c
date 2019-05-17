@@ -9,13 +9,16 @@ void* sched_getaffinity_parse_args(int argc, char** argv)
 
 	memset(&args, 0 ,sizeof(args));
 
-	while ((opt = getopt(argc, argv, "f:p:")) != -1) {
+	while ((opt = getopt(argc, argv, "f:p:o:")) != -1) {
 		switch (opt) {
 		case 'p':
 			args.num_of_cpus = atoi(optarg);
 			break;
 		case 'f':
 			args.file_path = optarg;
+			break;
+		case 'o':
+			args.cpuset_path = optarg;
 			break;
 		default:
 			break;

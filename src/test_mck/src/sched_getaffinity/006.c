@@ -40,14 +40,19 @@ RUN_FUNC(TEST_SUITE, TEST_NUMBER)
 
 	tp_assert(args->file_path != NULL, "mandatory parameter '-p <num_of_cpus> -f <show_affinity_app_path>'");
 	tp_assert(args->num_of_cpus != 0, "mandatory parameter '-p <num_of_cpus> -f <show_affinity_app_path>'");
+	tp_assert(args->cpuset_path != NULL, "mandatory parameter '-o <cpuset_path>'");
 
 	child_pid = fork();
 
 	if(child_pid == -1){
 		/* error */
 		tp_assert(0, "fork() Failed." );
-	} else if (child_pid == 0) {
-		/* child process */
+	} else if (child_pid == 0) { /* child process */
+		FILE *fp;
+
+		fp = fopen(args->cpuset_path, "w");
+		tp_assert(fp != NULL, "fopen failed.");
+
 		num_cpus = args->num_of_cpus;
 		cpusetp = CPU_ALLOC(num_cpus);
 		tp_assert(cpusetp != NULL, "alloc failed.");
@@ -62,11 +67,11 @@ RUN_FUNC(TEST_SUITE, TEST_NUMBER)
 			tp_assert(0, "sched_getaffinity failed.");
 		}
 
-		printf("========CHILD  PROCESS========\n");
 		for(cpu = 0; cpu < num_cpus; cpu++){
-		        printf("CPU_ISSET(%d)=%s\n", cpu, CPU_ISSET(cpu, cpusetp)?"TRUE":"FALSE");         
+		        fprintf(fp, "CPU_ISSET(%d)=%s\n", cpu, CPU_ISSET(cpu, cpusetp)?"TRUE":"FALSE");
 		}       
-		printf("========CHILD  PROCESS========\n");
+
+		fclose(fp);
 
 		CPU_FREE(cpusetp);
 

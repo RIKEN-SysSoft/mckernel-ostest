@@ -12,6 +12,7 @@ void* sched_getaffinity_parse_args(int argc, char** argv);
 struct sched_getaffinity_args {
 	int num_of_cpus;
 	char *file_path;
+	char *cpuset_path; /* for 006.c */
 	char **argv;
 	int argc;
 };
