@@ -76,7 +76,6 @@ static char* do_malloc(size_t size, long long count)
 
 	for (i = 0; i < count || count == MEM_LIMITS_COUNT_INFINITE; i++) {
 		p = malloc(size);
-		printf("alloc#%lld: p=%p\n", i, p);
 		tp_assert(p != NULL, "out of memory.(malloc)");
 
 		for (off = 0; off < size; off += PAGE_SIZE) {
@@ -96,7 +95,6 @@ static char* do_mmap(size_t size, long long count)
 
 	for (i = 0; i < count || count == MEM_LIMITS_COUNT_INFINITE; i++) {
 		p = mmap(NULL, size, prot, flags, -1, 0);
-		printf("alloc#%lld: p=%p\n", i, p);
 		tp_assert(p != (void*)-1UL, "out of memory.(mmap)");
 
 		for (off = 0; off < size; off += PAGE_SIZE) {
@@ -117,7 +115,6 @@ static char* do_brk(size_t size, long long count)
 	for (i = 0; i < count || count == MEM_LIMITS_COUNT_INFINITE; i++) {
 		/* check current data segment.*/
 		old = sbrk(0);
-		printf("alloc#%lld: old=%p, ", i, old);
 		tp_assert(old != (void*)-1UL, "sbrk error.");
 
 		/* increment .*/
@@ -126,7 +123,6 @@ static char* do_brk(size_t size, long long count)
 
 		/* check new data segment.*/
 		new = sbrk(0);
-		printf("new=%p\n", new);
 		tp_assert(new != (void*)-1UL, "sbrk error.");
 		tp_assert(new == (char*)old + size, "sbrk error.(size)");
 
