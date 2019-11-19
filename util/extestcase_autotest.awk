@@ -68,7 +68,7 @@ BEGIN {
     printf("mkdir -p $workdir\n") >> testscript;
     printf("cd $workdir\n") >> testscript;
     if (existScript) {
-	append_testscript("before_" testname ".sh");
+	append_testscript("init/" testname ".sh");
     }
 
     printf("rm -f $WORKDIR/result.log\n") >> testscript;
@@ -79,7 +79,7 @@ BEGIN {
     }
 
     if (existScript) {
-	append_testscript("after_" testname ".sh");
+	append_testscript("fini/" testname ".sh");
     }
 
     if ((testname == "lv11" && count == 0) ||
@@ -105,11 +105,11 @@ BEGIN {
 	(testname == "nfo" && count == 3) ||
 	(testname == "times" && count == 1) ||
 	(testname == "clock_gettime" && count == 0)) {
-	check_fn = "check_page_fault.sh";
+	check_fn = "check/page_fault.sh";
     } else if ((testname == "getrusage" && count == 0) ||
 	       (testname == "getrusage" && count == 1) ||
 	       (testname == "getrusage" && count == 2)){
-	check_fn = sprintf("check_" testname ".%03d.sh", count);
+	check_fn = sprintf("check/" testname ".%03d.sh", count);
     } else {
 	printf("if [ \"${runHOST}\" != \"yes\" ]; then\n") >> testscript;
 	printf("	nl_linux=`wc -l %s | cut -d ' ' -f 1`\n", outputfile_host) >> testscript;
@@ -118,7 +118,7 @@ BEGIN {
 	printf("	result_mck=`awk -F ':' '$1==\"RESULT\" {print $2}' %s`\n", outputfile) >> testscript;
 	printf("	core_linux=`ls %s | wc -l`\n", workdir2_host) >> testscript;
 	printf("	core_mck=`ls %s | wc -l`\n", workdir2) >> testscript;
-	check_fn = "check_default.sh";
+	check_fn = "check/default.sh";
     }
 
     append_testscript(check_fn);
